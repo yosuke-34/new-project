@@ -456,6 +456,24 @@ function slipPage() {
 </section>`;
 }
 
+// はんこ店へのデータ入稿用：落款だけを載せた原稿（フォントは PDF に埋め込まれる）
+function sealOrderPage() {
+  return `<section class="page">
+  <div class="abs" style="left:20mm;top:18mm;width:170mm">
+    <div class="pagetitle" style="font-size:15pt">落款 入稿原稿<small>SEAL ARTWORK</small></div>
+    <div class="rule" style="margin:3mm 0 6mm"></div>
+    <div style="display:flex;align-items:flex-end;gap:12mm">
+      <div style="text-align:center">${seal(cfg.sealText, 60)}<div class="lbl" style="margin-top:2mm">拡大（確認用）</div></div>
+      <div style="text-align:center">${seal(cfg.sealText, 21)}<div class="lbl" style="margin-top:2mm">21mm 角（実寸）</div></div>
+      <div style="text-align:center">${seal(cfg.sealText, 15)}<div class="lbl" style="margin-top:2mm">15mm 角（実寸）</div></div>
+    </div>
+    <div class="panel prose note" style="margin-top:10mm;font-size:8.4pt">
+      印文：「${esc(cfg.sealText)}」／<b>白文</b>（文字が白く抜ける）、内側に白い枠線／書体：しっぽり明朝 ExtraBold（SIL Open Font License）<br>
+      このデザインどおりの印面で、上のいずれかの実寸サイズの角印を希望します。朱色の部分が朱肉で写る部分です。</div>
+  </div>
+</section>`;
+}
+
 // ---------------------------------------------------------------- 出力
 
 // --bleed：印刷所入稿用に四辺へ 3mm の塗り足しを付ける（爪や色帯を裁ち落としまで伸ばす）
@@ -483,7 +501,7 @@ const doc = (title, pages, a3 = false) => {
 <body>${body}</body></html>`;
 };
 
-const sheets = (type) => Array.from({ length: cfg.sheetsPerType }, () => sheetFront(type) + sheetBack(type));
+const sheets = (type, n = cfg.sheetsPerType) => Array.from({ length: n }, () => sheetFront(type) + sheetBack(type));
 const indexPages = (type) => Array.from({ length: cfg.indexPages[type.key] }, (_, i) => indexPage(type, i * 25 + 1, 25));
 const frontMatter = (type) => [dividerPage(type),
   ...(type.key === 'sake' ? [sakeMapPage(), sakePrefIndexPage()] : [originsPage(type)]), ...indexPages(type)];
@@ -496,7 +514,16 @@ const DOCS = [
   ]),
   { file: '05_wide-sheet_A3', title: 'ワイド台紙（A3）', pages: [wideSheet()], a3: true },
   { file: '06_cover-parts', title: '題簽・背ラベル・落款', pages: [slipPage()] },
+  { file: '07_seal-order', title: '落款 入稿原稿', pages: [sealOrderPage()] },
 ];
+
+// 印刷通販への入稿用：片面ものと両面もの（台紙）をそれぞれ 1 ファイルにまとめる
+if (BLEED) {
+  DOCS.push(
+    { file: 'order_A4_single-sided', title: '入稿用（A4 片面）', pages: [titlePage(), messagePage(), guidePage(), removalPage(), ...TYPES.flatMap(frontMatter)] },
+    { file: 'order_A4_double-sided', title: '入稿用（A4 両面・台紙）', pages: TYPES.flatMap((t) => sheets(t, cfg.orderSheets[t.key])) },
+  );
+}
 
 async function loadPlaywright() {
   try { return await import('playwright'); } catch { /* fall through to the global install */ }

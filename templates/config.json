@@ -8,5 +8,6 @@
   "presentedOn": "",
   "sealText": "酒標",
   "indexPages": { "sake": 4, "whisky": 2, "gin": 2 },
-  "sheetsPerType": 4
+  "sheetsPerType": 4,
+  "orderSheets": { "sake": 24, "whisky": 8, "gin": 8 }
 }
