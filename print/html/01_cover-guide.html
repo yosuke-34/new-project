@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><title>扉・贈る言葉・使い方・剥がし方</title>
+<style>@import url('https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;600;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap');
+
+:root {
+  --ink: #1f1c1a;     /* 墨 */
+  --sub: #6b645c;     /* 鈍色 */
+  --line: #a9a196;
+  --faint: #d6cfc4;
+  --dot: #cfc8bd;
+  --shu: #b7282e;     /* 朱 */
+  --mincho: 'Shippori Mincho', 'Hiragino Mincho ProN', 'Yu Mincho', serif;
+  --gothic: 'Zen Kaku Gothic New', 'Hiragino Sans', 'Yu Gothic', sans-serif;
+}
+
+@page { margin: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { font-family: var(--mincho); color: var(--ink); background: #8f8a84; }
+
+.page {
+  position: relative;
+  width: 210mm; height: 297mm;
+  overflow: hidden;
+  background: #fff;
+  break-after: page;
+}
+.page.a3 { width: 420mm; height: 297mm; }
+@media screen {
+  body { padding: 10mm 0; }
+  .page { margin: 0 auto 10mm; box-shadow: 0 2mm 6mm rgba(0,0,0,.25); }
+}
+
+.abs { position: absolute; }
+.g { font-family: var(--gothic); }
+.sub { color: var(--sub); }
+
+/* ---------- 共通パーツ ---------- */
+.lbl { font-family: var(--gothic); font-size: 6.6pt; color: var(--sub); letter-spacing: .05em; white-space: nowrap; }
+.field { display: flex; align-items: flex-end; gap: 1.6mm; border-bottom: .25mm solid var(--line); height: 100%; padding-bottom: .9mm; }
+.field .lbl { flex: none; }
+.field .fill { flex: 1; }
+.field .unit { font-family: var(--gothic); font-size: 7pt; color: var(--sub); white-space: nowrap; }
+.chk { font-family: var(--gothic); font-size: 7.2pt; white-space: nowrap; }
+.chk::before { content: ''; display: inline-block; width: 2.6mm; height: 2.6mm; border: .25mm solid var(--ink); margin: 0 .8mm -.35mm 0; }
+.circle-opts { font-family: var(--gothic); font-size: 7.4pt; line-height: 2.1; word-spacing: .2em; }
+.circle-opts span { margin-right: 2.2mm; white-space: nowrap; }
+
+/* 爪（小口の区分タブ） */
+.tab {
+  position: absolute; width: 14mm;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-family: var(--gothic); font-weight: 500; font-size: 8.5pt; letter-spacing: .25em;
+  writing-mode: vertical-rl;
+}
+.tab.right { right: 0; padding-left: 3mm; }
+.tab.left { left: 0; padding-right: 3mm; }
+.tab .n { font-family: var(--mincho); font-weight: 800; font-size: 10pt; margin-bottom: 1.5mm; letter-spacing: 0; }
+.tab-ghost { position: absolute; width: 9mm; border: .2mm dashed var(--faint); }
+.tab-ghost.right { right: 5mm; border-right: none; }
+.tab-ghost.left { left: 5mm; border-left: none; }
+
+/* ラベル貼り付け枠 */
+.mount {
+  position: absolute;
+  background-image: radial-gradient(circle, var(--dot) .22mm, transparent .3mm);
+  background-size: 10mm 10mm;
+  background-position: center center;
+}
+.mount .c { position: absolute; width: 6mm; height: 6mm; border-color: var(--ink); border-style: solid; border-width: 0; }
+.mount .c.tl { left: 0; top: 0; border-left-width: .3mm; border-top-width: .3mm; }
+.mount .c.tr { right: 0; top: 0; border-right-width: .3mm; border-top-width: .3mm; }
+.mount .c.bl { left: 0; bottom: 0; border-left-width: .3mm; border-bottom-width: .3mm; }
+.mount .c.br { right: 0; bottom: 0; border-right-width: .3mm; border-bottom-width: .3mm; }
+.mount .m { position: absolute; background: var(--line); }
+.mount .m.t, .mount .m.b { left: 50%; width: .25mm; height: 3mm; }
+.mount .m.t { top: -1.5mm; } .mount .m.b { bottom: -1.5mm; }
+.mount .m.l, .mount .m.r { top: 50%; height: .25mm; width: 3mm; }
+.mount .m.l { left: -1.5mm; } .mount .m.r { right: -1.5mm; }
+.mount .hint { position: absolute; left: 3mm; bottom: 2.4mm; font-family: var(--gothic); font-size: 6.2pt; color: #b3aba0; letter-spacing: .08em; }
+.mount .fold { position: absolute; top: -4mm; bottom: -4mm; left: 50%; border-left: .25mm dashed var(--line); }
+
+/* ヘッダー（台紙） */
+.hdr { position: absolute; display: flex; align-items: flex-end; gap: 4mm; height: 11mm; }
+.no { display: flex; align-items: flex-end; gap: 1.4mm; flex: none; }
+.no .k { font-family: var(--mincho); font-weight: 600; font-size: 11pt; letter-spacing: .04em; }
+.no .box { width: 21mm; height: 9mm; border-bottom: .45mm solid var(--ink); }
+.chip { display: inline-flex; align-items: center; gap: 1.2mm; font-family: var(--gothic); font-size: 7pt; color: var(--sub); white-space: nowrap; }
+.chip i { display: inline-block; width: 3mm; height: 3mm; border-radius: 50%; }
+.foot { position: absolute; bottom: 7mm; display: flex; justify-content: space-between; font-family: var(--gothic); font-size: 6.4pt; color: #a49c91; letter-spacing: .12em; }
+
+/* 記録欄 */
+.rec { position: absolute; }
+.rec .row { display: flex; gap: 4mm; height: 8.6mm; }
+.rec .row > div { height: 100%; }
+.rec h4 { font-family: var(--gothic); font-weight: 500; font-size: 7pt; color: var(--sub); letter-spacing: .15em; margin-bottom: 1.2mm; }
+.taste { position: relative; width: 40mm; height: 40mm; border: .25mm solid var(--line);
+  background-image: linear-gradient(var(--faint) .2mm, transparent .2mm), linear-gradient(90deg, var(--faint) .2mm, transparent .2mm);
+  background-size: 10mm 10mm; background-position: -.1mm -.1mm; }
+.taste::before { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; border-left: .3mm solid var(--line); }
+.taste::after { content: ''; position: absolute; top: 50%; left: 0; right: 0; border-top: .3mm solid var(--line); }
+.taste .ax { position: absolute; font-family: var(--gothic); font-size: 6.4pt; color: var(--sub); white-space: nowrap; }
+.stars { font-size: 15pt; letter-spacing: 1.2mm; color: var(--ink); line-height: 1; }
+.lines { background-image: linear-gradient(transparent calc(100% - .25mm), var(--line) calc(100% - .25mm)); background-size: 100% 7.6mm; }
+
+/* 表 */
+table.idx { border-collapse: collapse; width: 100%; table-layout: fixed; }
+table.idx th { font-family: var(--gothic); font-weight: 500; font-size: 6.8pt; color: var(--sub); letter-spacing: .1em; text-align: left; padding: 0 1.2mm 1.4mm; border-bottom: .45mm solid var(--ink); }
+table.idx td { height: 9.05mm; border-bottom: .25mm solid var(--faint); padding: 0 1.2mm; font-size: 8pt; vertical-align: middle; }
+table.idx td.num { font-family: var(--mincho); font-weight: 600; font-size: 9pt; color: var(--ink); letter-spacing: .05em; }
+table.idx td.rg { border-left: .25mm solid var(--faint); border-right: .25mm solid var(--faint); }
+table.idx td.st { font-size: 7.4pt; color: #b7b0a5; letter-spacing: .4mm; }
+table.idx tr.ms td.num { color: var(--shu); }
+
+/* 見出し */
+.pagetitle { font-family: var(--mincho); font-weight: 800; font-size: 20pt; letter-spacing: .3em; }
+.pagetitle small { font-family: var(--gothic); font-weight: 400; font-size: 7.4pt; letter-spacing: .3em; color: var(--sub); margin-left: 4mm; vertical-align: middle; }
+.rule { border-top: .45mm solid var(--ink); }
+.rule.thin { border-top-width: .25mm; }
+
+.prose { font-size: 9.6pt; line-height: 1.95; letter-spacing: .03em; }
+.prose h3 { font-weight: 800; font-size: 11.5pt; letter-spacing: .14em; margin: 5mm 0 1.5mm; }
+.prose h3 .num { display: inline-block; min-width: 7mm; color: var(--shu); }
+.prose p { margin-bottom: 1.4mm; text-align: justify; }
+.prose .note { font-family: var(--gothic); font-size: 7.6pt; line-height: 1.8; color: var(--sub); }
+.steps { list-style: none; counter-reset: s; }
+.steps li { position: relative; padding-left: 9mm; margin-bottom: 2.4mm; counter-increment: s; }
+.steps li::before { content: counter(s, cjk-ideographic); position: absolute; left: 0; top: 0; font-weight: 800; color: var(--shu); }
+.panel { border: .25mm solid var(--line); padding: 3mm 4mm; }
+
+@page { size: A4 portrait; }</style></head>
+<body><section class="page">
+  <div class="abs" style="inset:14mm;border:.5mm solid var(--ink)"></div>
+  <div class="abs" style="inset:16mm;border:.2mm solid var(--ink)"></div>
+  <div class="abs g sub" style="right:40mm;top:47mm;writing-mode:vertical-rl;font-size:8pt;letter-spacing:.6em">しゅひょうちょう</div>
+  <div class="abs" style="right:48mm;top:44mm;writing-mode:vertical-rl;display:flex;align-items:flex-start">
+    <span style="font-weight:800;font-size:64pt;letter-spacing:.32em;line-height:1">酒標帖</span>
+    <span style="font-weight:600;font-size:15pt;letter-spacing:.3em;margin-top:6mm">第壱巻</span>
+  </div>
+  <div class="abs" style="left:52mm;top:128mm;writing-mode:vertical-rl;display:flex;align-items:flex-start;gap:3mm">
+    <span style="display:inline-block;height:52mm;border-left:.3mm solid var(--line)"></span><span style="font-size:17pt;font-weight:800;margin-top:4mm">蔵</span>
+    <span style="margin-top:10mm"><svg width="17mm" height="17mm" viewBox="0 0 17 17" xmlns="http://www.w3.org/2000/svg">
+    <rect x="0.4" y="0.4" width="16.2" height="16.2" rx="1.1900000000000002" fill="#b7282e"/>
+    <rect x="1.53" y="1.53" width="13.94" height="13.94" rx="0.51" fill="none" stroke="#fff" stroke-width="0.42500000000000004"/>
+    <g fill="#fff" font-family="Shippori Mincho" font-weight="800" text-anchor="middle" dominant-baseline="central"><text x="8.5" y="5.1" font-size="6.46">酒</text><text x="8.5" y="11.899999999999999" font-size="6.46">標</text></g></svg></span>
+  </div>
+  <div class="abs g" style="left:0;right:0;bottom:30mm;text-align:center;font-size:7.6pt;letter-spacing:.6em;color:var(--sub)">SAKE LABEL ARCHIVE　VOL.1</div>
+</section>
+<section class="page">
+  <div class="abs" style="left:24mm;right:24mm;top:30mm;bottom:40mm;
+    background-image:linear-gradient(90deg, var(--faint) .25mm, transparent .25mm);background-size:13mm 100%;border:.3mm solid var(--line)"></div>
+  <div class="abs" style="right:28mm;top:36mm;writing-mode:vertical-rl;font-weight:800;font-size:14pt;letter-spacing:.5em">贈る言葉</div>
+  <div class="abs" style="left:24mm;right:24mm;bottom:26mm;display:flex;justify-content:space-between;font-size:9.5pt;letter-spacing:.2em">
+    <span>　　　　年　　月　　日</span><span>　　　　　　　より</span></div>
+</section>
+<section class="page">
+  <div class="abs" style="left:22mm;top:18mm;width:166mm">
+    <div class="pagetitle">この帖の使い方<small>HOW TO USE</small></div>
+    <div class="rule" style="margin:3mm 0 2mm"></div>
+    <div class="prose">
+      <p>一本呑んだら一枚。台紙は<b>表に表ラベル、裏に裏ラベルと記録</b>。ページをめくると、瓶をくるりと回したように裏ラベルが現れます。</p>
+      <ol class="steps" style="margin-top:4mm">
+        <li><b>剥がす</b>　ラベルを剥がして乾かす（次の頁「ラベルの剥がし方」）。</li>
+        <li><b>番号を振る</b>　「目録」の次の空き番号を、台紙の No. 欄と目録に書く。番号は呑んだ順。</li>
+        <li><b>貼る</b>　産地の区分の台紙（右端の色の爪）を選び、表ラベル・裏ラベルを貼る。長いラベルは縦向きに。それでも収まらなければワイド台紙へ。</li>
+        <li><b>記す</b>　裏面の「呑みの記録」を書く。全部埋めなくてよい。日付と一言だけでも。</li>
+        <li><b>綴じる</b>　ポケットに入れ、同じ色の中扉の後ろへ。区分の中は番号順。</li>
+        <li><b>塗る</b>　「全国制覇地図」の県を塗り、「産地索引」にその No. を書き足す。</li>
+      </ol>
+      <h3><span class="num">◇</span>探すとき</h3>
+      <p>番号がわかれば「目録」→ 区分の爪 → 番号順にめくる。産地から探すなら「産地索引」。閉じたままでも小口の色で区分が分かります。</p>
+      <h3><span class="num">◇</span>こんなときは</h3>
+      <p><b>ラベルが一枚だけ</b>…裏面の上の枠に瓶の写真（L判）を。<br>
+      <b>肩ラベル・首掛け・王冠・お店のレシート</b>…小さなグラシン袋に入れて同じポケットへ。<br>
+      <b>剥がせなかった</b>…正面から写真を撮って表面に。印刷瓶も同様に。<br>
+      <b>台紙が足りない</b>…印刷データから何枚でも追加できます。</p>
+    </div>
+    <div class="panel" style="margin-top:6mm;display:flex;align-items:center;gap:5mm">
+      <svg width="13mm" height="13mm" viewBox="0 0 13 13" xmlns="http://www.w3.org/2000/svg">
+    <rect x="0.4" y="0.4" width="12.2" height="12.2" rx="0.9100000000000001" fill="#b7282e"/>
+    <rect x="1.17" y="1.17" width="10.66" height="10.66" rx="0.39" fill="none" stroke="#fff" stroke-width="0.325"/>
+    <g fill="#fff" font-family="Shippori Mincho" font-weight="800" text-anchor="middle" dominant-baseline="central"><text x="6.5" y="3.9" font-size="4.94">酒</text><text x="6.5" y="9.1" font-size="4.94">標</text></g></svg>
+      <div class="prose note" style="font-size:7.8pt">ラベルの留め方は<b>フォトコーナー</b>か<b>弱粘着の両面テープ</b>がおすすめ。のりやセロハンテープは年月が経つと黄ばみ、剥がせなくなります。</div>
+    </div>
+    <div style="display:flex;gap:8mm;margin-top:7mm;align-items:flex-start">
+      <div style="display:flex;align-items:center;gap:2.5mm"><div style="text-align:center">
+    <div style="position:relative;width:26mm;height:36.8mm;border:.3mm solid var(--ink);background:#fff">
+      <div style="position:absolute;left:5mm;right:5mm;top:5mm;bottom:5mm;border:.25mm solid var(--line);background:#f3efe8;
+      display:flex;align-items:center;justify-content:center;font-size:7pt;font-weight:600">表ラベル</div><div style="position:absolute;right:-.3mm;top:15mm;width:2.2mm;height:5mm;background:#2F6B55"></div></div>
+    <div class="lbl" style="margin-top:1.5mm">表</div></div>
+    <div class="g" style="font-size:6.6pt;color:var(--sub);text-align:center;line-height:1.5;margin-top:-5mm">めくる<br>＝<br>瓶を回す</div><div style="text-align:center">
+    <div style="position:relative;width:26mm;height:36.8mm;border:.3mm solid var(--ink);background:#fff">
+      <div style="position:absolute;left:5mm;right:5mm;top:3mm;height:11mm;border:.25mm solid var(--line);background:#f3efe8;
+      display:flex;align-items:center;justify-content:center;font-size:6pt;font-weight:600">裏ラベル</div>
+      <div style="position:absolute;left:4mm;right:4mm;top:17mm;bottom:3mm;background-image:linear-gradient(transparent 1.6mm, var(--line) 1.6mm, var(--line) 1.85mm, transparent 1.85mm);background-size:100% 2.2mm"></div><div style="position:absolute;left:-.3mm;top:15mm;width:2.2mm;height:5mm;background:#2F6B55"></div></div>
+    <div class="lbl" style="margin-top:1.5mm">裏・記録</div></div></div>
+      <div style="flex:1">
+        <div style="font-weight:800;font-size:10.5pt;letter-spacing:.2em;margin-bottom:2mm">帖の構成</div>
+        <div class="g" style="font-size:7.4pt;line-height:2.2;color:var(--ink)"><span style="white-space:nowrap">扉</span><span style="color:var(--line)">　›　</span><span style="white-space:nowrap">贈る言葉</span><span style="color:var(--line)">　›　</span><span style="white-space:nowrap">使い方</span><span style="color:var(--line)">　›　</span><span style="white-space:nowrap">剥がし方</span><span style="color:var(--line)">　›　</span><span style="white-space:nowrap">全国制覇地図</span><span style="color:var(--line)">　›　</span><span style="white-space:nowrap">産地索引</span><span style="color:var(--line)">　›　</span><span style="white-space:nowrap">目録</span><span style="color:var(--line)">　›　</span><span style="white-space:nowrap"><span style="color:#2D4F6C;font-weight:700">中扉 壱</span> 台紙…</span><span style="color:var(--line)">　›　</span><span style="white-space:nowrap"><span style="color:#6C4A8C;font-weight:700">中扉 弐</span> 台紙…</span><span style="color:var(--line)">　›　</span><span style="white-space:nowrap"><span style="color:#2F6B55;font-weight:700">中扉 参</span> 台紙…</span><span style="color:var(--line)">　›　</span><span style="white-space:nowrap"><span style="color:#9C3A3F;font-weight:700">中扉 肆</span> 台紙…</span><span style="color:var(--line)">　›　</span><span style="white-space:nowrap"><span style="color:#B08A2A;font-weight:700">中扉 伍</span> 台紙…</span><span style="color:var(--line)">　›　</span><span style="white-space:nowrap"><span style="color:#2F8796;font-weight:700">中扉 陸</span> 台紙…</span><span style="color:var(--line)">　›　</span><span style="white-space:nowrap"><span style="color:#7A5230;font-weight:700">中扉 漆</span> 台紙…</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="foot" style="left:22mm;width:166mm"><span></span><span>酒標帖</span></div>
+</section>
+<section class="page">
+  <div class="abs" style="left:22mm;top:18mm;width:166mm">
+    <div class="pagetitle">ラベルの剥がし方<small>HOW TO PEEL</small></div>
+    <div class="rule" style="margin:3mm 0 3mm"></div>
+    <p class="prose" style="margin-bottom:3mm">まず<b>ラベルの端を爪で少しめくって</b>みる。紙がそのまま浮けば「のり貼り」、ツルッとしたフィルムや粘着が伸びれば「シール」です。</p>
+    <div class="panel" style="margin-bottom:3.4mm">
+    <div style="display:flex;align-items:baseline;gap:3mm;margin-bottom:1.2mm"><span style="font-weight:800;font-size:13pt;color:var(--shu)">一</span>
+      <span style="font-weight:800;font-size:11pt;letter-spacing:.12em">ぬるま湯に浸ける</span><span class="lbl">紙ラベル・のり貼り（日本酒に多い）</span></div>
+    <div class="prose" style="font-size:8.8pt;line-height:1.85">空き瓶に水を入れて沈め、<b>40℃前後のぬるま湯</b>に20〜30分。端からゆっくり剥がす。固ければ一晩浸けておく。お湯に台所用洗剤を少し入れると早い。</div></div>
+    <div class="panel" style="margin-bottom:3.4mm">
+    <div style="display:flex;align-items:baseline;gap:3mm;margin-bottom:1.2mm"><span style="font-weight:800;font-size:13pt;color:var(--shu)">二</span>
+      <span style="font-weight:800;font-size:11pt;letter-spacing:.12em">ドライヤーで温める</span><span class="lbl">シール・粘着タイプ（ウイスキー・ワイン・近年の日本酒）</span></div>
+    <div class="prose" style="font-size:8.8pt;line-height:1.85">ラベル全体を1〜2分温め、粘着がやわらいだら端から<b>ゆっくり、低い角度で</b>引く。冷めたらまた温める。乾いたまま剥がせるので紙が傷みにくい。</div></div>
+    <div class="panel" style="margin-bottom:3.4mm">
+    <div style="display:flex;align-items:baseline;gap:3mm;margin-bottom:1.2mm"><span style="font-weight:800;font-size:13pt;color:var(--shu)">三</span>
+      <span style="font-weight:800;font-size:11pt;letter-spacing:.12em">ラベル剥がしシートを使う</span><span class="lbl">どうしても剥がれないもの</span></div>
+    <div class="prose" style="font-size:8.8pt;line-height:1.85">ワイン用の透明な「ラベル剥がしシート」を上から貼り、こすってから剥がすと、ラベルの表面だけが写し取られる。表面がフィルムで覆われた仕上がりになる。</div></div>
+    <h3 class="prose" style="font-weight:800;font-size:11pt;letter-spacing:.14em;margin:4mm 0 1.5mm"><span style="color:var(--shu)">◇</span> 乾かし方</h3>
+    <p class="prose">濡れたラベルは<b>キッチンペーパーで挟み、平らな所で本などの重しを載せて一晩</b>。しっかり乾くまで台紙に貼らない（波打ち・カビの原因）。裏の残りのりは、乾く前に指でそっと落とす。</p>
+    <h3 class="prose" style="font-weight:800;font-size:11pt;letter-spacing:.14em;margin:4mm 0 1.5mm"><span style="color:var(--shu)">◇</span> 気をつけること</h3>
+    <p class="prose note" style="font-size:8pt">・冷えた瓶にいきなり熱湯をかけない（割れることがある）。　・剥がした後の瓶は割れ物。滑りやすいので布巾の上で作業する。<br>
+    ・剥がせない・印刷瓶・お店で呑んだ一杯は、写真で残す。それもまた立派な一枚。</p>
+    <div class="panel" style="margin-top:6mm">
+      <div style="font-weight:800;font-size:10.5pt;letter-spacing:.2em;margin-bottom:2mm">あると便利な道具</div>
+      <div class="g" style="display:grid;grid-template-columns:1fr 1fr;gap:1.4mm 8mm;font-size:8pt;line-height:1.6">
+        <span>・フォトコーナー（透明）…ラベルの四隅を留める</span><span>・弱粘着の両面テープ…貼り直しができる</span>
+        <span>・ラベル剥がしシート…剥がれない一枚の切り札</span><span>・グラシン袋…肩ラベル・王冠・レシート入れ</span>
+        <span>・キッチンペーパーと重し…乾かすときに</span><span>・ドライヤー…シールを温める</span>
+      </div>
+    </div>
+  </div>
+  <div class="foot" style="left:22mm;width:166mm"><span></span><span>酒標帖</span></div>
+</section></body></html>

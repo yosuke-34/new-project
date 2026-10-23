@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><title>全国制覇地図・産地索引・目録</title>
+<style>@import url('https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;600;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap');
+
+:root {
+  --ink: #1f1c1a;     /* 墨 */
+  --sub: #6b645c;     /* 鈍色 */
+  --line: #a9a196;
+  --faint: #d6cfc4;
+  --dot: #cfc8bd;
+  --shu: #b7282e;     /* 朱 */
+  --mincho: 'Shippori Mincho', 'Hiragino Mincho ProN', 'Yu Mincho', serif;
+  --gothic: 'Zen Kaku Gothic New', 'Hiragino Sans', 'Yu Gothic', sans-serif;
+}
+
+@page { margin: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { font-family: var(--mincho); color: var(--ink); background: #8f8a84; }
+
+.page {
+  position: relative;
+  width: 210mm; height: 297mm;
+  overflow: hidden;
+  background: #fff;
+  break-after: page;
+}
+.page.a3 { width: 420mm; height: 297mm; }
+@media screen {
+  body { padding: 10mm 0; }
+  .page { margin: 0 auto 10mm; box-shadow: 0 2mm 6mm rgba(0,0,0,.25); }
+}
+
+.abs { position: absolute; }
+.g { font-family: var(--gothic); }
+.sub { color: var(--sub); }
+
+/* ---------- 共通パーツ ---------- */
+.lbl { font-family: var(--gothic); font-size: 6.6pt; color: var(--sub); letter-spacing: .05em; white-space: nowrap; }
+.field { display: flex; align-items: flex-end; gap: 1.6mm; border-bottom: .25mm solid var(--line); height: 100%; padding-bottom: .9mm; }
+.field .lbl { flex: none; }
+.field .fill { flex: 1; }
+.field .unit { font-family: var(--gothic); font-size: 7pt; color: var(--sub); white-space: nowrap; }
+.chk { font-family: var(--gothic); font-size: 7.2pt; white-space: nowrap; }
+.chk::before { content: ''; display: inline-block; width: 2.6mm; height: 2.6mm; border: .25mm solid var(--ink); margin: 0 .8mm -.35mm 0; }
+.circle-opts { font-family: var(--gothic); font-size: 7.4pt; line-height: 2.1; word-spacing: .2em; }
+.circle-opts span { margin-right: 2.2mm; white-space: nowrap; }
+
+/* 爪（小口の区分タブ） */
+.tab {
+  position: absolute; width: 14mm;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-family: var(--gothic); font-weight: 500; font-size: 8.5pt; letter-spacing: .25em;
+  writing-mode: vertical-rl;
+}
+.tab.right { right: 0; padding-left: 3mm; }
+.tab.left { left: 0; padding-right: 3mm; }
+.tab .n { font-family: var(--mincho); font-weight: 800; font-size: 10pt; margin-bottom: 1.5mm; letter-spacing: 0; }
+.tab-ghost { position: absolute; width: 9mm; border: .2mm dashed var(--faint); }
+.tab-ghost.right { right: 5mm; border-right: none; }
+.tab-ghost.left { left: 5mm; border-left: none; }
+
+/* ラベル貼り付け枠 */
+.mount {
+  position: absolute;
+  background-image: radial-gradient(circle, var(--dot) .22mm, transparent .3mm);
+  background-size: 10mm 10mm;
+  background-position: center center;
+}
+.mount .c { position: absolute; width: 6mm; height: 6mm; border-color: var(--ink); border-style: solid; border-width: 0; }
+.mount .c.tl { left: 0; top: 0; border-left-width: .3mm; border-top-width: .3mm; }
+.mount .c.tr { right: 0; top: 0; border-right-width: .3mm; border-top-width: .3mm; }
+.mount .c.bl { left: 0; bottom: 0; border-left-width: .3mm; border-bottom-width: .3mm; }
+.mount .c.br { right: 0; bottom: 0; border-right-width: .3mm; border-bottom-width: .3mm; }
+.mount .m { position: absolute; background: var(--line); }
+.mount .m.t, .mount .m.b { left: 50%; width: .25mm; height: 3mm; }
+.mount .m.t { top: -1.5mm; } .mount .m.b { bottom: -1.5mm; }
+.mount .m.l, .mount .m.r { top: 50%; height: .25mm; width: 3mm; }
+.mount .m.l { left: -1.5mm; } .mount .m.r { right: -1.5mm; }
+.mount .hint { position: absolute; left: 3mm; bottom: 2.4mm; font-family: var(--gothic); font-size: 6.2pt; color: #b3aba0; letter-spacing: .08em; }
+.mount .fold { position: absolute; top: -4mm; bottom: -4mm; left: 50%; border-left: .25mm dashed var(--line); }
+
+/* ヘッダー（台紙） */
+.hdr { position: absolute; display: flex; align-items: flex-end; gap: 4mm; height: 11mm; }
+.no { display: flex; align-items: flex-end; gap: 1.4mm; flex: none; }
+.no .k { font-family: var(--mincho); font-weight: 600; font-size: 11pt; letter-spacing: .04em; }
+.no .box { width: 21mm; height: 9mm; border-bottom: .45mm solid var(--ink); }
+.chip { display: inline-flex; align-items: center; gap: 1.2mm; font-family: var(--gothic); font-size: 7pt; color: var(--sub); white-space: nowrap; }
+.chip i { display: inline-block; width: 3mm; height: 3mm; border-radius: 50%; }
+.foot { position: absolute; bottom: 7mm; display: flex; justify-content: space-between; font-family: var(--gothic); font-size: 6.4pt; color: #a49c91; letter-spacing: .12em; }
+
+/* 記録欄 */
+.rec { position: absolute; }
+.rec .row { display: flex; gap: 4mm; height: 8.6mm; }
+.rec .row > div { height: 100%; }
+.rec h4 { font-family: var(--gothic); font-weight: 500; font-size: 7pt; color: var(--sub); letter-spacing: .15em; margin-bottom: 1.2mm; }
+.taste { position: relative; width: 40mm; height: 40mm; border: .25mm solid var(--line);
+  background-image: linear-gradient(var(--faint) .2mm, transparent .2mm), linear-gradient(90deg, var(--faint) .2mm, transparent .2mm);
+  background-size: 10mm 10mm; background-position: -.1mm -.1mm; }
+.taste::before { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; border-left: .3mm solid var(--line); }
+.taste::after { content: ''; position: absolute; top: 50%; left: 0; right: 0; border-top: .3mm solid var(--line); }
+.taste .ax { position: absolute; font-family: var(--gothic); font-size: 6.4pt; color: var(--sub); white-space: nowrap; }
+.stars { font-size: 15pt; letter-spacing: 1.2mm; color: var(--ink); line-height: 1; }
+.lines { background-image: linear-gradient(transparent calc(100% - .25mm), var(--line) calc(100% - .25mm)); background-size: 100% 7.6mm; }
+
+/* 表 */
+table.idx { border-collapse: collapse; width: 100%; table-layout: fixed; }
+table.idx th { font-family: var(--gothic); font-weight: 500; font-size: 6.8pt; color: var(--sub); letter-spacing: .1em; text-align: left; padding: 0 1.2mm 1.4mm; border-bottom: .45mm solid var(--ink); }
+table.idx td { height: 9.05mm; border-bottom: .25mm solid var(--faint); padding: 0 1.2mm; font-size: 8pt; vertical-align: middle; }
+table.idx td.num { font-family: var(--mincho); font-weight: 600; font-size: 9pt; color: var(--ink); letter-spacing: .05em; }
+table.idx td.rg { border-left: .25mm solid var(--faint); border-right: .25mm solid var(--faint); }
+table.idx td.st { font-size: 7.4pt; color: #b7b0a5; letter-spacing: .4mm; }
+table.idx tr.ms td.num { color: var(--shu); }
+
+/* 見出し */
+.pagetitle { font-family: var(--mincho); font-weight: 800; font-size: 20pt; letter-spacing: .3em; }
+.pagetitle small { font-family: var(--gothic); font-weight: 400; font-size: 7.4pt; letter-spacing: .3em; color: var(--sub); margin-left: 4mm; vertical-align: middle; }
+.rule { border-top: .45mm solid var(--ink); }
+.rule.thin { border-top-width: .25mm; }
+
+.prose { font-size: 9.6pt; line-height: 1.95; letter-spacing: .03em; }
+.prose h3 { font-weight: 800; font-size: 11.5pt; letter-spacing: .14em; margin: 5mm 0 1.5mm; }
+.prose h3 .num { display: inline-block; min-width: 7mm; color: var(--shu); }
+.prose p { margin-bottom: 1.4mm; text-align: justify; }
+.prose .note { font-family: var(--gothic); font-size: 7.6pt; line-height: 1.8; color: var(--sub); }
+.steps { list-style: none; counter-reset: s; }
+.steps li { position: relative; padding-left: 9mm; margin-bottom: 2.4mm; counter-increment: s; }
+.steps li::before { content: counter(s, cjk-ideographic); position: absolute; left: 0; top: 0; font-weight: 800; color: var(--shu); }
+.panel { border: .25mm solid var(--line); padding: 3mm 4mm; }
+
+@page { size: A4 portrait; }</style></head>
+<body><section class="page">
+  <div class="abs" style="left:20mm;top:34mm;width:95mm">
+    <div class="pagetitle" style="font-size:22pt">全国制覇地図</div>
+    <div class="lbl" style="margin-top:2mm;letter-spacing:.3em">SAKE MAP OF JAPAN</div>
+    <p class="prose" style="margin-top:4mm;font-size:8.6pt;line-height:1.8">呑んだ酒の産地を塗りつぶしてゆく。<br>日本酒・焼酎・ウイスキー、どれでも一県。</p>
+    <div style="margin-top:4mm;display:flex;align-items:flex-end;gap:2mm"><span style="font-weight:800;font-size:11pt;letter-spacing:.2em">制覇</span>
+      <span style="display:inline-block;width:18mm;border-bottom:.45mm solid var(--ink);height:8mm"></span><span style="font-size:11pt">／ 四十七</span></div>
+  </div>
+  <div class="abs" style="left:178.62mm;top:34mm;width:10.6mm;height:10.6mm;border:.35mm solid #2D4F6C;
+      display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-weight:500;font-size:5.6pt;color:#2D4F6C">北海道</div><div class="abs" style="left:178.62mm;top:45.33mm;width:10.6mm;height:10.6mm;border:.35mm solid #2D4F6C;
+      display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-weight:500;font-size:7pt;color:#2D4F6C">青森</div><div class="abs" style="left:167.29mm;top:56.66mm;width:10.6mm;height:10.6mm;border:.35mm solid #2D4F6C;
+      display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-weight:500;font-size:7pt;color:#2D4F6C">秋田</div><div class="abs" style="left:178.62mm;top:56.66mm;width:10.6mm;height:10.6mm;border:.35mm solid #2D4F6C;
+      display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-weight:500;font-size:7pt;color:#2D4F6C">岩手</div><div class="abs" style="left:167.29mm;top:67.99mm;width:10.6mm;height:10.6mm;border:.35mm solid #2D4F6C;
+      display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-weight:500;font-size:7pt;color:#2D4F6C">山形</div><div class="abs" style="left:178.62mm;top:67.99mm;width:10.6mm;height:10.6mm;border:.35mm solid #2D4F6C;
+      display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-weight:500;font-size:7pt;color:#2D4F6C">宮城</div><div class="abs" style="left:133.3mm;top:79.32mm;width:10.6mm;height:10.6mm;border:.35mm solid #2F6B55;
+      display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-weight:500;font-size:7pt;color:#2F6B55">石川</div><div class="abs" style="left:144.63mm;top:79.32mm;width:10.6mm;height:10.6mm;border:.35mm solid #2F6B55;
+      display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-weight:500;font-size:7pt;color:#2F6B55">富山</div><div class="abs" style="left:155.96mm;top:79.32mm;width:10.6mm;height:10.6mm;border:.35mm solid #2F6B55;
+      display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-weight:500;font-size:7pt;color:#2F6B55">新潟</div><div class="abs" style="left:167.29mm;top:79.32mm;width:10.6mm;height:10.6mm;border:.35mm solid #2D4F6C;
+      display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-weight:500;font-size:7pt;color:#2D4F6C">福島</div><div class="abs" style="left:76.65mm;top:90.65mm;width:10.6mm;height:10.6mm;border:.35mm solid #B08A2A;
+      display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-weight:500;font-size:7pt;color:#B08A2A">島根</div><div class="abs" style="left:87.98mm;top:90.65mm;width:10.6mm;height:10.6mm;border:.35mm solid #B08A2A;
+      display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-weight:500;font-size:7pt;color:#B08A2A">鳥取</div><div class="abs" style="left:99.31mm;top:90.65mm;width:10.6mm;height:10.6mm;border:.35mm solid #9C3A3F;
+      display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-weight:500;font-size:7pt;color:#9C3A3F">兵庫</div><div class="abs" style="left:110.64mm;top:90.65mm;width:10.6mm;height:10.6mm;border:.35mm solid #9C3A3F;
+      display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-weight:500;font-size:7pt;color:#9C3A3F">京都</div><div class="abs" style="left:121.97mm;top:90.65mm;width:10.6mm;height:10.6mm;border:.35mm solid #2F6B55;
+      display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-weight:500;font-size:7pt;color:#2F6B55">福井</div><div class="abs" style="left:133.3mm;top:90.65mm;width:10.6mm;height:10.6mm;border:.35mm solid #2F6B55;
+      display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-weight:500;font-size:7pt;color:#2F6B55">岐阜</div><div class="abs" style="left:144.63mm;top:90.65mm;width:10.6mm;height:10.6mm;border:.35mm solid #2F6B55;
+      display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-weight:500;font-size:7pt;color:#2F6B55">長野</div><div class="abs" style="left:155.96mm;top:90.65mm;width:10.6mm;height:10.6mm;border:.35mm solid #6C4A8C;
+      display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-weight:500;font-size:7pt;color:#6C4A8C">群馬</div><div class="abs" style="left:167.29mm;top:90.65mm;width:10.6mm;height:10.6mm;border:.35mm solid #6C4A8C;
+      display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-weight:500;font-size:7pt;color:#6C4A8C">栃木</div><div class="abs" style="left:178.62mm;top:90.65mm;width:10.6mm;height:10.6mm;border:.35mm solid #6C4A8C;
+      display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-weight:500;font-size:7pt;color:#6C4A8C">茨城</div><div class="abs" style="left:31.33mm;top:101.98mm;width:10.6mm;height:10.6mm;border:.35mm solid #2F8796;
+      display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-weight:500;font-size:7pt;color:#2F8796">長崎</div><div class="abs" style="left:42.66mm;top:101.98mm;width:10.6mm;height:10.6mm;border:.35mm solid #2F8796;
+      display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-weight:500;font-size:7pt;color:#2F8796">佐賀</div><div class="abs" style="left:53.99mm;top:101.98mm;width:10.6mm;height:10.6mm;border:.35mm solid #2F8796;
+      display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-weight:500;font-size:7pt;color:#2F8796">福岡</div><div class="abs" style="left:65.32mm;top:101.98mm;width:10.6mm;height:10.6mm;border:.35mm solid #B08A2A;
+      display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-weight:500;font-size:7pt;color:#B08A2A">山口</div><div class="abs" style="left:76.65mm;top:101.98mm;width:10.6mm;height:10.6mm;border:.35mm solid #B08A2A;
+      display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-weight:500;font-size:7pt;color:#B08A2A">広島</div><div class="abs" style="left:87.98mm;top:101.98mm;width:10.6mm;height:10.6mm;border:.35mm solid #B08A2A;
+      display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-weight:500;font-size:7pt;color:#B08A2A">岡山</div><div class="abs" style="left:99.31mm;top:101.98mm;width:10.6mm;height:10.6mm;border:.35mm solid #9C3A3F;
+      display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-weight:500;font-size:7pt;color:#9C3A3F">大阪</div><div class="abs" style="left:110.64mm;top:101.98mm;width:10.6mm;height:10.6mm;border:.35mm solid #9C3A3F;
+      display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-weight:500;font-size:7pt;color:#9C3A3F">奈良</div><div class="abs" style="left:121.97mm;top:101.98mm;width:10.6mm;height:10.6mm;border:.35mm solid #9C3A3F;
+      display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-weight:500;font-size:7pt;color:#9C3A3F">滋賀</div><div class="abs" style="left:133.3mm;top:101.98mm;width:10.6mm;height:10.6mm;border:.35mm solid #2F6B55;
+      display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-weight:500;font-size:7pt;color:#2F6B55">愛知</div><div class="abs" style="left:144.63mm;top:101.98mm;width:10.6mm;height:10.6mm;border:.35mm solid #2F6B55;
+      display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-weight:500;font-size:7pt;color:#2F6B55">山梨</div><div class="abs" style="left:155.96mm;top:101.98mm;width:10.6mm;height:10.6mm;border:.35mm solid #6C4A8C;
+      display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-weight:500;font-size:7pt;color:#6C4A8C">埼玉</div><div class="abs" style="left:167.29mm;top:101.98mm;width:10.6mm;height:10.6mm;border:.35mm solid #6C4A8C;
+      display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-weight:500;font-size:7pt;color:#6C4A8C">東京</div><div class="abs" style="left:178.62mm;top:101.98mm;width:10.6mm;height:10.6mm;border:.35mm solid #6C4A8C;
+      display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-weight:500;font-size:7pt;color:#6C4A8C">千葉</div><div class="abs" style="left:42.66mm;top:113.31mm;width:10.6mm;height:10.6mm;border:.35mm solid #2F8796;
+      display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-weight:500;font-size:7pt;color:#2F8796">熊本</div><div class="abs" style="left:53.99mm;top:113.31mm;width:10.6mm;height:10.6mm;border:.35mm solid #2F8796;
+      display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-weight:500;font-size:7pt;color:#2F8796">大分</div><div class="abs" style="left:110.64mm;top:113.31mm;width:10.6mm;height:10.6mm;border:.35mm solid #9C3A3F;
+      display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-weight:500;font-size:5.6pt;color:#9C3A3F">和歌山</div><div class="abs" style="left:121.97mm;top:113.31mm;width:10.6mm;height:10.6mm;border:.35mm solid #9C3A3F;
+      display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-weight:500;font-size:7pt;color:#9C3A3F">三重</div><div class="abs" style="left:144.63mm;top:113.31mm;width:10.6mm;height:10.6mm;border:.35mm solid #2F6B55;
+      display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-weight:500;font-size:7pt;color:#2F6B55">静岡</div><div class="abs" style="left:155.96mm;top:113.31mm;width:10.6mm;height:10.6mm;border:.35mm solid #6C4A8C;
+      display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-weight:500;font-size:5.6pt;color:#6C4A8C">神奈川</div><div class="abs" style="left:42.66mm;top:124.64mm;width:10.6mm;height:10.6mm;border:.35mm solid #2F8796;
+      display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-weight:500;font-size:5.6pt;color:#2F8796">鹿児島</div><div class="abs" style="left:53.99mm;top:124.64mm;width:10.6mm;height:10.6mm;border:.35mm solid #2F8796;
+      display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-weight:500;font-size:7pt;color:#2F8796">宮崎</div><div class="abs" style="left:76.65mm;top:124.64mm;width:10.6mm;height:10.6mm;border:.35mm solid #B08A2A;
+      display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-weight:500;font-size:7pt;color:#B08A2A">愛媛</div><div class="abs" style="left:87.98mm;top:124.64mm;width:10.6mm;height:10.6mm;border:.35mm solid #B08A2A;
+      display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-weight:500;font-size:7pt;color:#B08A2A">香川</div><div class="abs" style="left:20mm;top:135.97mm;width:10.6mm;height:10.6mm;border:.35mm solid #2F8796;
+      display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-weight:500;font-size:7pt;color:#2F8796">沖縄</div><div class="abs" style="left:76.65mm;top:135.97mm;width:10.6mm;height:10.6mm;border:.35mm solid #B08A2A;
+      display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-weight:500;font-size:7pt;color:#B08A2A">高知</div><div class="abs" style="left:87.98mm;top:135.97mm;width:10.6mm;height:10.6mm;border:.35mm solid #B08A2A;
+      display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-weight:500;font-size:7pt;color:#B08A2A">徳島</div>
+  <div class="abs" style="left:121.97mm;top:125.64mm;width:67.98mm;display:flex;flex-wrap:wrap;gap:1.2mm 3mm"><span class="chip"><i style="background:#2D4F6C"></i>壱 北海道・東北</span><span class="chip"><i style="background:#6C4A8C"></i>弐 関東</span><span class="chip"><i style="background:#2F6B55"></i>参 中部</span><span class="chip"><i style="background:#9C3A3F"></i>肆 近畿</span><span class="chip"><i style="background:#B08A2A"></i>伍 中国・四国</span><span class="chip"><i style="background:#2F8796"></i>陸 九州・沖縄</span><span class="chip"><i style="background:#7A5230"></i>漆 海外</span></div>
+  <div class="abs lbl" style="left:20mm;top:155.3mm">海外　ABROAD</div>
+  <div class="abs" style="left:20mm;top:161.3mm;width:26.8mm;height:10.6mm;border:.35mm solid #7A5230;
+      display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-weight:500;font-size:7pt;color:#7A5230">スコットランド</div><div class="abs" style="left:48.6mm;top:161.3mm;width:26.8mm;height:10.6mm;border:.35mm solid #7A5230;
+      display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-weight:500;font-size:7pt;color:#7A5230">アイルランド</div><div class="abs" style="left:77.2mm;top:161.3mm;width:26.8mm;height:10.6mm;border:.35mm solid #7A5230;
+      display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-weight:500;font-size:7pt;color:#7A5230">アメリカ</div><div class="abs" style="left:105.8mm;top:161.3mm;width:26.8mm;height:10.6mm;border:.35mm solid #7A5230;
+      display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-weight:500;font-size:7pt;color:#7A5230">カナダ</div><div class="abs" style="left:134.4mm;top:161.3mm;width:26.8mm;height:10.6mm;border:.35mm solid #7A5230;
+      display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-weight:500;font-size:7pt;color:#7A5230">フランス</div><div class="abs" style="left:163mm;top:161.3mm;width:26.8mm;height:10.6mm;border:.35mm solid #7A5230;
+      display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-weight:500;font-size:7pt;color:#7A5230">その他の国</div>
+  <div class="abs" style="left:20mm;top:185.3mm;width:170mm">
+    <div style="display:flex;align-items:baseline;gap:3mm"><span style="font-weight:800;font-size:10.5pt;letter-spacing:.3em">道しるべ</span><span class="lbl">到達したら印を押す・日付を書く</span></div>
+    <div class="rule thin" style="margin:1.5mm 0 4mm"></div>
+    <div style="display:flex;justify-content:space-between">
+      <div style="width:25mm;text-align:center">
+        <div style="width:19mm;height:19mm;margin:0 auto;border:.3mm dashed var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-size:6.4pt;color:#b3aba0">1</div>
+        <div style="font-weight:600;font-size:8.6pt;margin-top:2mm;letter-spacing:.1em">初めの一県</div>
+        <div style="border-bottom:.25mm solid var(--line);height:6mm;margin:0 2mm"></div></div><div style="width:25mm;text-align:center">
+        <div style="width:19mm;height:19mm;margin:0 auto;border:.3mm dashed var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-size:6.4pt;color:#b3aba0">5</div>
+        <div style="font-weight:600;font-size:8.6pt;margin-top:2mm;letter-spacing:.1em">五県</div>
+        <div style="border-bottom:.25mm solid var(--line);height:6mm;margin:0 2mm"></div></div><div style="width:25mm;text-align:center">
+        <div style="width:19mm;height:19mm;margin:0 auto;border:.3mm dashed var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-size:6.4pt;color:#b3aba0">10</div>
+        <div style="font-weight:600;font-size:8.6pt;margin-top:2mm;letter-spacing:.1em">十県</div>
+        <div style="border-bottom:.25mm solid var(--line);height:6mm;margin:0 2mm"></div></div><div style="width:25mm;text-align:center">
+        <div style="width:19mm;height:19mm;margin:0 auto;border:.3mm dashed var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-size:6.4pt;color:#b3aba0">24</div>
+        <div style="font-weight:600;font-size:8.6pt;margin-top:2mm;letter-spacing:.1em">折り返し</div>
+        <div style="border-bottom:.25mm solid var(--line);height:6mm;margin:0 2mm"></div></div><div style="width:25mm;text-align:center">
+        <div style="width:19mm;height:19mm;margin:0 auto;border:.3mm dashed var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-size:6.4pt;color:#b3aba0">30</div>
+        <div style="font-weight:600;font-size:8.6pt;margin-top:2mm;letter-spacing:.1em">三十県</div>
+        <div style="border-bottom:.25mm solid var(--line);height:6mm;margin:0 2mm"></div></div><div style="width:25mm;text-align:center">
+        <div style="width:19mm;height:19mm;margin:0 auto;border:.3mm dashed var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--gothic);font-size:6.4pt;color:#b3aba0">47</div>
+        <div style="font-weight:600;font-size:8.6pt;margin-top:2mm;letter-spacing:.1em">全国制覇</div>
+        <div style="border-bottom:.25mm solid var(--line);height:6mm;margin:0 2mm"></div></div>
+    </div>
+    <div style="display:flex;align-items:baseline;gap:3mm;margin-top:9mm"><span style="font-weight:800;font-size:10.5pt;letter-spacing:.3em">区分ごとの制覇</span><span class="lbl">塗った数を書く</span></div>
+    <div class="rule thin" style="margin:1.5mm 0 3mm"></div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:3mm 6mm">
+      <div style="display:flex;align-items:flex-end;gap:2mm;height:8mm;border-bottom:.25mm solid var(--faint)">
+        <span style="font-weight:800;color:#2D4F6C">壱</span><span style="font-size:8.6pt;letter-spacing:.1em;flex:1">北海道・東北</span>
+        <span style="font-size:9pt">／ 7</span></div><div style="display:flex;align-items:flex-end;gap:2mm;height:8mm;border-bottom:.25mm solid var(--faint)">
+        <span style="font-weight:800;color:#6C4A8C">弐</span><span style="font-size:8.6pt;letter-spacing:.1em;flex:1">関東</span>
+        <span style="font-size:9pt">／ 7</span></div><div style="display:flex;align-items:flex-end;gap:2mm;height:8mm;border-bottom:.25mm solid var(--faint)">
+        <span style="font-weight:800;color:#2F6B55">参</span><span style="font-size:8.6pt;letter-spacing:.1em;flex:1">中部</span>
+        <span style="font-size:9pt">／ 9</span></div><div style="display:flex;align-items:flex-end;gap:2mm;height:8mm;border-bottom:.25mm solid var(--faint)">
+        <span style="font-weight:800;color:#9C3A3F">肆</span><span style="font-size:8.6pt;letter-spacing:.1em;flex:1">近畿</span>
+        <span style="font-size:9pt">／ 7</span></div><div style="display:flex;align-items:flex-end;gap:2mm;height:8mm;border-bottom:.25mm solid var(--faint)">
+        <span style="font-weight:800;color:#B08A2A">伍</span><span style="font-size:8.6pt;letter-spacing:.1em;flex:1">中国・四国</span>
+        <span style="font-size:9pt">／ 9</span></div><div style="display:flex;align-items:flex-end;gap:2mm;height:8mm;border-bottom:.25mm solid var(--faint)">
+        <span style="font-weight:800;color:#2F8796">陸</span><span style="font-size:8.6pt;letter-spacing:.1em;flex:1">九州・沖縄</span>
+        <span style="font-size:9pt">／ 8</span></div>
+    </div>
+  </div>
+  <div class="foot" style="left:20mm;width:170mm"><span>番号から探すときは「目録」、産地から探すときは「産地索引」へ</span><span>酒標帖</span></div>
+</section>
+<section class="page">
+  <div class="abs" style="left:20mm;top:16mm;width:170mm;display:flex;align-items:flex-end;justify-content:space-between">
+    <div class="pagetitle">産地索引<small>BY REGION</small></div>
+    <span class="lbl">産地の欄に、その台紙の No. を書き足してゆく</span>
+  </div>
+  <div class="abs" style="left:20mm;top:30mm;width:170mm;display:flex;gap:10mm">
+    <div style="flex:1">
+    <div style="display:flex;align-items:center;gap:2mm;height:6.8mm;border-bottom:.45mm solid #2D4F6C;margin-top:2mm">
+      <span style="font-weight:800;color:#2D4F6C;font-size:9.5pt">壱</span><span style="font-weight:600;font-size:9pt;letter-spacing:.15em">北海道・東北</span></div>
+    <div style="display:flex;align-items:flex-end;height:6.8mm;border-bottom:.25mm solid var(--faint);padding-bottom:1mm">
+      <span class="g" style="width:24mm;font-size:7.6pt;flex:none">北海道</span></div><div style="display:flex;align-items:flex-end;height:6.8mm;border-bottom:.25mm solid var(--faint);padding-bottom:1mm">
+      <span class="g" style="width:24mm;font-size:7.6pt;flex:none">青森</span></div><div style="display:flex;align-items:flex-end;height:6.8mm;border-bottom:.25mm solid var(--faint);padding-bottom:1mm">
+      <span class="g" style="width:24mm;font-size:7.6pt;flex:none">岩手</span></div><div style="display:flex;align-items:flex-end;height:6.8mm;border-bottom:.25mm solid var(--faint);padding-bottom:1mm">
+      <span class="g" style="width:24mm;font-size:7.6pt;flex:none">宮城</span></div><div style="display:flex;align-items:flex-end;height:6.8mm;border-bottom:.25mm solid var(--faint);padding-bottom:1mm">
+      <span class="g" style="width:24mm;font-size:7.6pt;flex:none">秋田</span></div><div style="display:flex;align-items:flex-end;height:6.8mm;border-bottom:.25mm solid var(--faint);padding-bottom:1mm">
+      <span class="g" style="width:24mm;font-size:7.6pt;flex:none">山形</span></div><div style="display:flex;align-items:flex-end;height:6.8mm;border-bottom:.25mm solid var(--faint);padding-bottom:1mm">
+      <span class="g" style="width:24mm;font-size:7.6pt;flex:none">福島</span></div>
+    <div style="display:flex;align-items:center;gap:2mm;height:6.8mm;border-bottom:.45mm solid #6C4A8C;margin-top:2mm">
+      <span style="font-weight:800;color:#6C4A8C;font-size:9.5pt">弐</span><span style="font-weight:600;font-size:9pt;letter-spacing:.15em">関東</span></div>
+    <div style="display:flex;align-items:flex-end;height:6.8mm;border-bottom:.25mm solid var(--faint);padding-bottom:1mm">
+      <span class="g" style="width:24mm;font-size:7.6pt;flex:none">茨城</span></div><div style="display:flex;align-items:flex-end;height:6.8mm;border-bottom:.25mm solid var(--faint);padding-bottom:1mm">
+      <span class="g" style="width:24mm;font-size:7.6pt;flex:none">栃木</span></div><div style="display:flex;align-items:flex-end;height:6.8mm;border-bottom:.25mm solid var(--faint);padding-bottom:1mm">
+      <span class="g" style="width:24mm;font-size:7.6pt;flex:none">群馬</span></div><div style="display:flex;align-items:flex-end;height:6.8mm;border-bottom:.25mm solid var(--faint);padding-bottom:1mm">
+      <span class="g" style="width:24mm;font-size:7.6pt;flex:none">埼玉</span></div><div style="display:flex;align-items:flex-end;height:6.8mm;border-bottom:.25mm solid var(--faint);padding-bottom:1mm">
+      <span class="g" style="width:24mm;font-size:7.6pt;flex:none">千葉</span></div><div style="display:flex;align-items:flex-end;height:6.8mm;border-bottom:.25mm solid var(--faint);padding-bottom:1mm">
+      <span class="g" style="width:24mm;font-size:7.6pt;flex:none">東京</span></div><div style="display:flex;align-items:flex-end;height:6.8mm;border-bottom:.25mm solid var(--faint);padding-bottom:1mm">
+      <span class="g" style="width:24mm;font-size:7.6pt;flex:none">神奈川</span></div>
+    <div style="display:flex;align-items:center;gap:2mm;height:6.8mm;border-bottom:.45mm solid #2F6B55;margin-top:2mm">
+      <span style="font-weight:800;color:#2F6B55;font-size:9.5pt">参</span><span style="font-weight:600;font-size:9pt;letter-spacing:.15em">中部</span></div>
+    <div style="display:flex;align-items:flex-end;height:6.8mm;border-bottom:.25mm solid var(--faint);padding-bottom:1mm">
+      <span class="g" style="width:24mm;font-size:7.6pt;flex:none">新潟</span></div><div style="display:flex;align-items:flex-end;height:6.8mm;border-bottom:.25mm solid var(--faint);padding-bottom:1mm">
+      <span class="g" style="width:24mm;font-size:7.6pt;flex:none">富山</span></div><div style="display:flex;align-items:flex-end;height:6.8mm;border-bottom:.25mm solid var(--faint);padding-bottom:1mm">
+      <span class="g" style="width:24mm;font-size:7.6pt;flex:none">石川</span></div><div style="display:flex;align-items:flex-end;height:6.8mm;border-bottom:.25mm solid var(--faint);padding-bottom:1mm">
+      <span class="g" style="width:24mm;font-size:7.6pt;flex:none">福井</span></div><div style="display:flex;align-items:flex-end;height:6.8mm;border-bottom:.25mm solid var(--faint);padding-bottom:1mm">
+      <span class="g" style="width:24mm;font-size:7.6pt;flex:none">山梨</span></div><div style="display:flex;align-items:flex-end;height:6.8mm;border-bottom:.25mm solid var(--faint);padding-bottom:1mm">
+      <span class="g" style="width:24mm;font-size:7.6pt;flex:none">長野</span></div><div style="display:flex;align-items:flex-end;height:6.8mm;border-bottom:.25mm solid var(--faint);padding-bottom:1mm">
+      <span class="g" style="width:24mm;font-size:7.6pt;flex:none">岐阜</span></div><div style="display:flex;align-items:flex-end;height:6.8mm;border-bottom:.25mm solid var(--faint);padding-bottom:1mm">
+      <span class="g" style="width:24mm;font-size:7.6pt;flex:none">静岡</span></div><div style="display:flex;align-items:flex-end;height:6.8mm;border-bottom:.25mm solid var(--faint);padding-bottom:1mm">
+      <span class="g" style="width:24mm;font-size:7.6pt;flex:none">愛知</span></div>
+    <div style="display:flex;align-items:center;gap:2mm;height:6.8mm;border-bottom:.45mm solid #9C3A3F;margin-top:2mm">
+      <span style="font-weight:800;color:#9C3A3F;font-size:9.5pt">肆</span><span style="font-weight:600;font-size:9pt;letter-spacing:.15em">近畿</span></div>
+    <div style="display:flex;align-items:flex-end;height:6.8mm;border-bottom:.25mm solid var(--faint);padding-bottom:1mm">
+      <span class="g" style="width:24mm;font-size:7.6pt;flex:none">三重</span></div><div style="display:flex;align-items:flex-end;height:6.8mm;border-bottom:.25mm solid var(--faint);padding-bottom:1mm">
+      <span class="g" style="width:24mm;font-size:7.6pt;flex:none">滋賀</span></div><div style="display:flex;align-items:flex-end;height:6.8mm;border-bottom:.25mm solid var(--faint);padding-bottom:1mm">
+      <span class="g" style="width:24mm;font-size:7.6pt;flex:none">京都</span></div><div style="display:flex;align-items:flex-end;height:6.8mm;border-bottom:.25mm solid var(--faint);padding-bottom:1mm">
+      <span class="g" style="width:24mm;font-size:7.6pt;flex:none">大阪</span></div><div style="display:flex;align-items:flex-end;height:6.8mm;border-bottom:.25mm solid var(--faint);padding-bottom:1mm">
+      <span class="g" style="width:24mm;font-size:7.6pt;flex:none">兵庫</span></div><div style="display:flex;align-items:flex-end;height:6.8mm;border-bottom:.25mm solid var(--faint);padding-bottom:1mm">
+      <span class="g" style="width:24mm;font-size:7.6pt;flex:none">奈良</span></div><div style="display:flex;align-items:flex-end;height:6.8mm;border-bottom:.25mm solid var(--faint);padding-bottom:1mm">
+      <span class="g" style="width:24mm;font-size:7.6pt;flex:none">和歌山</span></div></div>
+    <div style="flex:1">
+    <div style="display:flex;align-items:center;gap:2mm;height:6.8mm;border-bottom:.45mm solid #B08A2A;margin-top:2mm">
+      <span style="font-weight:800;color:#B08A2A;font-size:9.5pt">伍</span><span style="font-weight:600;font-size:9pt;letter-spacing:.15em">中国・四国</span></div>
+    <div style="display:flex;align-items:flex-end;height:6.8mm;border-bottom:.25mm solid var(--faint);padding-bottom:1mm">
+      <span class="g" style="width:24mm;font-size:7.6pt;flex:none">鳥取</span></div><div style="display:flex;align-items:flex-end;height:6.8mm;border-bottom:.25mm solid var(--faint);padding-bottom:1mm">
+      <span class="g" style="width:24mm;font-size:7.6pt;flex:none">島根</span></div><div style="display:flex;align-items:flex-end;height:6.8mm;border-bottom:.25mm solid var(--faint);padding-bottom:1mm">
+      <span class="g" style="width:24mm;font-size:7.6pt;flex:none">岡山</span></div><div style="display:flex;align-items:flex-end;height:6.8mm;border-bottom:.25mm solid var(--faint);padding-bottom:1mm">
+      <span class="g" style="width:24mm;font-size:7.6pt;flex:none">広島</span></div><div style="display:flex;align-items:flex-end;height:6.8mm;border-bottom:.25mm solid var(--faint);padding-bottom:1mm">
+      <span class="g" style="width:24mm;font-size:7.6pt;flex:none">山口</span></div><div style="display:flex;align-items:flex-end;height:6.8mm;border-bottom:.25mm solid var(--faint);padding-bottom:1mm">
+      <span class="g" style="width:24mm;font-size:7.6pt;flex:none">徳島</span></div><div style="display:flex;align-items:flex-end;height:6.8mm;border-bottom:.25mm solid var(--faint);padding-bottom:1mm">
+      <span class="g" style="width:24mm;font-size:7.6pt;flex:none">香川</span></div><div style="display:flex;align-items:flex-end;height:6.8mm;border-bottom:.25mm solid var(--faint);padding-bottom:1mm">
+      <span class="g" style="width:24mm;font-size:7.6pt;flex:none">愛媛</span></div><div style="display:flex;align-items:flex-end;height:6.8mm;border-bottom:.25mm solid var(--faint);padding-bottom:1mm">
+      <span class="g" style="width:24mm;font-size:7.6pt;flex:none">高知</span></div>
+    <div style="display:flex;align-items:center;gap:2mm;height:6.8mm;border-bottom:.45mm solid #2F8796;margin-top:2mm">
+      <span style="font-weight:800;color:#2F8796;font-size:9.5pt">陸</span><span style="font-weight:600;font-size:9pt;letter-spacing:.15em">九州・沖縄</span></div>
+    <div style="display:flex;align-items:flex-end;height:6.8mm;border-bottom:.25mm solid var(--faint);padding-bottom:1mm">
+      <span class="g" style="width:24mm;font-size:7.6pt;flex:none">福岡</span></div><div style="display:flex;align-items:flex-end;height:6.8mm;border-bottom:.25mm solid var(--faint);padding-bottom:1mm">
+      <span class="g" style="width:24mm;font-size:7.6pt;flex:none">佐賀</span></div><div style="display:flex;align-items:flex-end;height:6.8mm;border-bottom:.25mm solid var(--faint);padding-bottom:1mm">
+      <span class="g" style="width:24mm;font-size:7.6pt;flex:none">長崎</span></div><div style="display:flex;align-items:flex-end;height:6.8mm;border-bottom:.25mm solid var(--faint);padding-bottom:1mm">
+      <span class="g" style="width:24mm;font-size:7.6pt;flex:none">熊本</span></div><div style="display:flex;align-items:flex-end;height:6.8mm;border-bottom:.25mm solid var(--faint);padding-bottom:1mm">
+      <span class="g" style="width:24mm;font-size:7.6pt;flex:none">大分</span></div><div style="display:flex;align-items:flex-end;height:6.8mm;border-bottom:.25mm solid var(--faint);padding-bottom:1mm">
+      <span class="g" style="width:24mm;font-size:7.6pt;flex:none">宮崎</span></div><div style="display:flex;align-items:flex-end;height:6.8mm;border-bottom:.25mm solid var(--faint);padding-bottom:1mm">
+      <span class="g" style="width:24mm;font-size:7.6pt;flex:none">鹿児島</span></div><div style="display:flex;align-items:flex-end;height:6.8mm;border-bottom:.25mm solid var(--faint);padding-bottom:1mm">
+      <span class="g" style="width:24mm;font-size:7.6pt;flex:none">沖縄</span></div>
+    <div style="display:flex;align-items:center;gap:2mm;height:6.8mm;border-bottom:.45mm solid #7A5230;margin-top:2mm">
+      <span style="font-weight:800;color:#7A5230;font-size:9.5pt">漆</span><span style="font-weight:600;font-size:9pt;letter-spacing:.15em">海外</span></div>
+    <div style="display:flex;align-items:flex-end;height:6.8mm;border-bottom:.25mm solid var(--faint);padding-bottom:1mm">
+      <span class="g" style="width:24mm;font-size:7.6pt;flex:none">スコットランド</span></div><div style="display:flex;align-items:flex-end;height:6.8mm;border-bottom:.25mm solid var(--faint);padding-bottom:1mm">
+      <span class="g" style="width:24mm;font-size:7.6pt;flex:none">アイルランド</span></div><div style="display:flex;align-items:flex-end;height:6.8mm;border-bottom:.25mm solid var(--faint);padding-bottom:1mm">
+      <span class="g" style="width:24mm;font-size:7.6pt;flex:none">アメリカ</span></div><div style="display:flex;align-items:flex-end;height:6.8mm;border-bottom:.25mm solid var(--faint);padding-bottom:1mm">
+      <span class="g" style="width:24mm;font-size:7.6pt;flex:none">カナダ</span></div><div style="display:flex;align-items:flex-end;height:6.8mm;border-bottom:.25mm solid var(--faint);padding-bottom:1mm">
+      <span class="g" style="width:24mm;font-size:7.6pt;flex:none">フランス</span></div><div style="display:flex;align-items:flex-end;height:6.8mm;border-bottom:.25mm solid var(--faint);padding-bottom:1mm">
+      <span class="g" style="width:24mm;font-size:7.6pt;flex:none">その他の国</span></div></div>
+  </div>
+  <div class="foot" style="left:20mm;width:170mm"><span>例）新潟　012　027　041</span><span>酒標帖</span></div>
+</section>
+<section class="page">
+  <div class="abs" style="left:20mm;top:16mm;width:170mm;display:flex;align-items:flex-end;justify-content:space-between">
+    <div class="pagetitle">目録<small>INDEX　No.001 – 025</small></div>
+    <svg width="11mm" height="11mm" viewBox="0 0 11 11" xmlns="http://www.w3.org/2000/svg">
+    <rect x="0.4" y="0.4" width="10.2" height="10.2" rx="0.77" fill="#b7282e"/>
+    <rect x="0.99" y="0.99" width="9.02" height="9.02" rx="0.32999999999999996" fill="none" stroke="#fff" stroke-width="0.275"/>
+    <g fill="#fff" font-family="Shippori Mincho" font-weight="800" text-anchor="middle" dominant-baseline="central"><text x="5.5" y="3.3" font-size="4.18">酒</text><text x="5.5" y="7.699999999999999" font-size="4.18">標</text></g></svg>
+  </div>
+  <div class="abs" style="left:20mm;top:31mm;width:170mm;display:flex;flex-wrap:wrap;gap:1mm 3.2mm"><span class="chip"><i style="background:#2D4F6C"></i>壱 北海道・東北</span><span class="chip"><i style="background:#6C4A8C"></i>弐 関東</span><span class="chip"><i style="background:#2F6B55"></i>参 中部</span><span class="chip"><i style="background:#9C3A3F"></i>肆 近畿</span><span class="chip"><i style="background:#B08A2A"></i>伍 中国・四国</span><span class="chip"><i style="background:#2F8796"></i>陸 九州・沖縄</span><span class="chip"><i style="background:#7A5230"></i>漆 海外</span></div>
+  <div class="abs" style="left:20mm;top:41mm;width:170mm">
+    <table class="idx">
+      <colgroup><col style="width:13mm"><col style="width:8mm"><col><col style="width:36mm"><col style="width:20mm"><col style="width:15mm"><col style="width:20mm"><col style="width:20mm"></colgroup>
+      <tr><th>No.</th><th style="padding:0;text-align:center">区分</th><th>銘柄</th><th>蔵元・蒸溜所</th><th>産地</th><th>種別</th><th>呑んだ日</th><th>評価</th></tr>
+      <tr class=""><td class="num">001</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">002</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">003</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">004</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">005</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">006</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">007</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">008</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">009</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class="ms"><td class="num">010</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">011</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">012</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">013</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">014</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">015</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">016</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">017</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">018</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">019</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">020</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">021</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">022</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">023</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">024</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class="ms"><td class="num">025</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr>
+    </table>
+  </div>
+  <div class="foot" style="left:20mm;width:170mm"><span>区分欄には上の番号（壱〜漆）を。朱色の番号は節目の一本。</span><span>酒標帖</span></div>
+</section>
+<section class="page">
+  <div class="abs" style="left:20mm;top:16mm;width:170mm;display:flex;align-items:flex-end;justify-content:space-between">
+    <div class="pagetitle">目録<small>INDEX　No.026 – 050</small></div>
+    <svg width="11mm" height="11mm" viewBox="0 0 11 11" xmlns="http://www.w3.org/2000/svg">
+    <rect x="0.4" y="0.4" width="10.2" height="10.2" rx="0.77" fill="#b7282e"/>
+    <rect x="0.99" y="0.99" width="9.02" height="9.02" rx="0.32999999999999996" fill="none" stroke="#fff" stroke-width="0.275"/>
+    <g fill="#fff" font-family="Shippori Mincho" font-weight="800" text-anchor="middle" dominant-baseline="central"><text x="5.5" y="3.3" font-size="4.18">酒</text><text x="5.5" y="7.699999999999999" font-size="4.18">標</text></g></svg>
+  </div>
+  <div class="abs" style="left:20mm;top:31mm;width:170mm;display:flex;flex-wrap:wrap;gap:1mm 3.2mm"><span class="chip"><i style="background:#2D4F6C"></i>壱 北海道・東北</span><span class="chip"><i style="background:#6C4A8C"></i>弐 関東</span><span class="chip"><i style="background:#2F6B55"></i>参 中部</span><span class="chip"><i style="background:#9C3A3F"></i>肆 近畿</span><span class="chip"><i style="background:#B08A2A"></i>伍 中国・四国</span><span class="chip"><i style="background:#2F8796"></i>陸 九州・沖縄</span><span class="chip"><i style="background:#7A5230"></i>漆 海外</span></div>
+  <div class="abs" style="left:20mm;top:41mm;width:170mm">
+    <table class="idx">
+      <colgroup><col style="width:13mm"><col style="width:8mm"><col><col style="width:36mm"><col style="width:20mm"><col style="width:15mm"><col style="width:20mm"><col style="width:20mm"></colgroup>
+      <tr><th>No.</th><th style="padding:0;text-align:center">区分</th><th>銘柄</th><th>蔵元・蒸溜所</th><th>産地</th><th>種別</th><th>呑んだ日</th><th>評価</th></tr>
+      <tr class=""><td class="num">026</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">027</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">028</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">029</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">030</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">031</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">032</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">033</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">034</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">035</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">036</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">037</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">038</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">039</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">040</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">041</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">042</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">043</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">044</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">045</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">046</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">047</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">048</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">049</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class="ms"><td class="num">050</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr>
+    </table>
+  </div>
+  <div class="foot" style="left:20mm;width:170mm"><span>区分欄には上の番号（壱〜漆）を。朱色の番号は節目の一本。</span><span>酒標帖</span></div>
+</section>
+<section class="page">
+  <div class="abs" style="left:20mm;top:16mm;width:170mm;display:flex;align-items:flex-end;justify-content:space-between">
+    <div class="pagetitle">目録<small>INDEX　No.051 – 075</small></div>
+    <svg width="11mm" height="11mm" viewBox="0 0 11 11" xmlns="http://www.w3.org/2000/svg">
+    <rect x="0.4" y="0.4" width="10.2" height="10.2" rx="0.77" fill="#b7282e"/>
+    <rect x="0.99" y="0.99" width="9.02" height="9.02" rx="0.32999999999999996" fill="none" stroke="#fff" stroke-width="0.275"/>
+    <g fill="#fff" font-family="Shippori Mincho" font-weight="800" text-anchor="middle" dominant-baseline="central"><text x="5.5" y="3.3" font-size="4.18">酒</text><text x="5.5" y="7.699999999999999" font-size="4.18">標</text></g></svg>
+  </div>
+  <div class="abs" style="left:20mm;top:31mm;width:170mm;display:flex;flex-wrap:wrap;gap:1mm 3.2mm"><span class="chip"><i style="background:#2D4F6C"></i>壱 北海道・東北</span><span class="chip"><i style="background:#6C4A8C"></i>弐 関東</span><span class="chip"><i style="background:#2F6B55"></i>参 中部</span><span class="chip"><i style="background:#9C3A3F"></i>肆 近畿</span><span class="chip"><i style="background:#B08A2A"></i>伍 中国・四国</span><span class="chip"><i style="background:#2F8796"></i>陸 九州・沖縄</span><span class="chip"><i style="background:#7A5230"></i>漆 海外</span></div>
+  <div class="abs" style="left:20mm;top:41mm;width:170mm">
+    <table class="idx">
+      <colgroup><col style="width:13mm"><col style="width:8mm"><col><col style="width:36mm"><col style="width:20mm"><col style="width:15mm"><col style="width:20mm"><col style="width:20mm"></colgroup>
+      <tr><th>No.</th><th style="padding:0;text-align:center">区分</th><th>銘柄</th><th>蔵元・蒸溜所</th><th>産地</th><th>種別</th><th>呑んだ日</th><th>評価</th></tr>
+      <tr class=""><td class="num">051</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">052</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">053</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">054</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">055</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">056</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">057</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">058</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">059</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">060</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">061</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">062</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">063</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">064</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">065</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">066</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">067</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">068</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">069</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">070</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">071</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">072</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">073</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">074</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">075</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr>
+    </table>
+  </div>
+  <div class="foot" style="left:20mm;width:170mm"><span>区分欄には上の番号（壱〜漆）を。朱色の番号は節目の一本。</span><span>酒標帖</span></div>
+</section>
+<section class="page">
+  <div class="abs" style="left:20mm;top:16mm;width:170mm;display:flex;align-items:flex-end;justify-content:space-between">
+    <div class="pagetitle">目録<small>INDEX　No.076 – 100</small></div>
+    <svg width="11mm" height="11mm" viewBox="0 0 11 11" xmlns="http://www.w3.org/2000/svg">
+    <rect x="0.4" y="0.4" width="10.2" height="10.2" rx="0.77" fill="#b7282e"/>
+    <rect x="0.99" y="0.99" width="9.02" height="9.02" rx="0.32999999999999996" fill="none" stroke="#fff" stroke-width="0.275"/>
+    <g fill="#fff" font-family="Shippori Mincho" font-weight="800" text-anchor="middle" dominant-baseline="central"><text x="5.5" y="3.3" font-size="4.18">酒</text><text x="5.5" y="7.699999999999999" font-size="4.18">標</text></g></svg>
+  </div>
+  <div class="abs" style="left:20mm;top:31mm;width:170mm;display:flex;flex-wrap:wrap;gap:1mm 3.2mm"><span class="chip"><i style="background:#2D4F6C"></i>壱 北海道・東北</span><span class="chip"><i style="background:#6C4A8C"></i>弐 関東</span><span class="chip"><i style="background:#2F6B55"></i>参 中部</span><span class="chip"><i style="background:#9C3A3F"></i>肆 近畿</span><span class="chip"><i style="background:#B08A2A"></i>伍 中国・四国</span><span class="chip"><i style="background:#2F8796"></i>陸 九州・沖縄</span><span class="chip"><i style="background:#7A5230"></i>漆 海外</span></div>
+  <div class="abs" style="left:20mm;top:41mm;width:170mm">
+    <table class="idx">
+      <colgroup><col style="width:13mm"><col style="width:8mm"><col><col style="width:36mm"><col style="width:20mm"><col style="width:15mm"><col style="width:20mm"><col style="width:20mm"></colgroup>
+      <tr><th>No.</th><th style="padding:0;text-align:center">区分</th><th>銘柄</th><th>蔵元・蒸溜所</th><th>産地</th><th>種別</th><th>呑んだ日</th><th>評価</th></tr>
+      <tr class=""><td class="num">076</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class="ms"><td class="num">077</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">078</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">079</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">080</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">081</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">082</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">083</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">084</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">085</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">086</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">087</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class="ms"><td class="num">088</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">089</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">090</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">091</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">092</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">093</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">094</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">095</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">096</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">097</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">098</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class=""><td class="num">099</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr><tr class="ms"><td class="num">100</td><td class="rg"></td><td></td><td></td><td></td><td></td><td></td><td class="st">☆☆☆☆☆</td></tr>
+    </table>
+  </div>
+  <div class="foot" style="left:20mm;width:170mm"><span>区分欄には上の番号（壱〜漆）を。朱色の番号は節目の一本。</span><span>酒標帖</span></div>
+</section></body></html>
