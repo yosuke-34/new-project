@@ -100,8 +100,8 @@ function sheetBack(type) {
     ${numBox(type)}
     <span class="lbl" style="margin-left:auto;padding-bottom:1mm">裏ラベル・肩ラベル　BACK LABEL</span>
   </div>
-  ${mount({ left: L, top: 28, width: W, height: 98, hint: '裏ラベル・肩ラベル ─ 表ラベルしか無い瓶は、ここに瓶の写真を' })}
-  ${record(type, L, 132, W)}
+  ${mount({ left: L, top: 28, width: W, height: 120, hint: '裏ラベル・肩ラベル ─ 表ラベルしか無い瓶は、ここに瓶の写真を' })}
+  ${record(type, L, 154, W)}
   <div class="foot" style="left:${mm(L)};width:${mm(W)}"><span>裏</span><span>${brand()}</span></div>
   ${tab(type, 'left')}
 </section>`;
@@ -139,7 +139,7 @@ function record(type, left, top, width) {
       ${checks('入手', ['購入', 'いただきもの', 'お店で'], 'flex:1.3')}
       <div class="field" style="flex:1"><span class="lbl">価格・容量</span><span class="unit">¥</span><span class="fill"></span><span class="unit">／</span><span class="fill" style="flex:.7"></span><span class="unit">ml</span></div></div>
 
-    <div style="display:flex;gap:6mm;margin-top:4mm">
+    <div style="display:flex;gap:6mm;margin-top:3mm">
       <div><h4>味わい（点を打つ）</h4>
         <div class="taste">
           <span class="ax" style="left:1mm;top:50%;transform:translateY(-120%)">${a.left}</span>
@@ -161,8 +161,8 @@ function record(type, left, top, width) {
         <div class="circle-opts"><span>ぜひ</span><span>機会があれば</span><span>一度で十分</span></div>
       </div>
     </div>
-    <h4 style="margin-top:3.4mm">メモ</h4>
-    <div class="lines" style="height:30.4mm"></div>
+    <h4 style="margin-top:2.6mm">メモ</h4>
+    <div class="lines" style="height:15.2mm"></div>
   </div>`;
 }
 

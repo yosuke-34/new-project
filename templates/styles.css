@@ -90,9 +90,9 @@ body { font-family: var(--mincho); color: var(--ink); background: #8f8a84; }
 .rec .row { display: flex; gap: 4mm; height: 8.6mm; }
 .rec .row > div { height: 100%; }
 .rec h4 { font-family: var(--gothic); font-weight: 500; font-size: 7pt; color: var(--sub); letter-spacing: .15em; margin-bottom: 1.2mm; }
-.taste { position: relative; width: 40mm; height: 40mm; border: .25mm solid var(--line);
+.taste { position: relative; width: 36mm; height: 36mm; border: .25mm solid var(--line);
   background-image: linear-gradient(var(--faint) .2mm, transparent .2mm), linear-gradient(90deg, var(--faint) .2mm, transparent .2mm);
-  background-size: 10mm 10mm; background-position: -.1mm -.1mm; }
+  background-size: 9mm 9mm; background-position: -.1mm -.1mm; }
 .taste::before { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; border-left: .3mm solid var(--line); }
 .taste::after { content: ''; position: absolute; top: 50%; left: 0; right: 0; border-top: .3mm solid var(--line); }
 .taste .ax { position: absolute; font-family: var(--gothic); font-size: 6.4pt; color: var(--sub); white-space: nowrap; }
