@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>酒標帖 台紙の印刷</title>
+  <meta name="description" content="酒標帖の銘板（造り手の名前と公式サイトのQR）とラベル台紙を探して印刷するページ">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;600;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Yuji+Syuku&display=swap">
+  <link rel="stylesheet" href="lib/sheet.css">
+  <link rel="stylesheet" href="app.css">
+  <script src="vendor/qrcode.js"></script>
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <div class="app">
+    <header class="masthead">
+      <div>
+        <h1>酒標帖 <span>台紙の追加・印刷</span></h1>
+        <p class="lead">造り手を探して、見開きの<b>銘板</b>（右ページ）と<b>ラベル台紙</b>（左ページ）を印刷します。</p>
+      </div>
+      <p class="data-note" id="data-note"></p>
+    </header>
+
+    <main class="layout">
+      <section class="finder" aria-label="造り手を探す">
+        <div class="search">
+          <input id="q" type="search" placeholder="名前・よみ・市町村で探す" autocomplete="off" aria-label="造り手を検索">
+        </div>
+        <div class="filters">
+          <div class="chips" id="type-filter" role="group" aria-label="種類で絞り込む"></div>
+          <div class="row">
+            <select id="pref" aria-label="都道府県で絞り込む"></select>
+            <label class="toggle"><input type="checkbox" id="has-url"> 公式サイトあり</label>
+          </div>
+        </div>
+        <p class="count" id="count"></p>
+        <ul class="results" id="results"></ul>
+        <button class="more" id="more" hidden>もっと見る</button>
+
+        <details class="manual" id="manual">
+          <summary>見つからないときは、自分で入力して作る</summary>
+          <form id="manual-form">
+            <label>名前<input name="name" required placeholder="〇〇酒造"></label>
+            <label>よみ<input name="kana" placeholder="まるまるしゅぞう"></label>
+            <div class="row">
+              <label>都道府県<select name="pref" id="manual-pref"></select></label>
+              <label>市町村<input name="city" placeholder="〇〇市"></label>
+            </div>
+            <label>公式サイトの URL<input name="url" type="url" placeholder="https://"></label>
+            <label>区分<select name="type" id="manual-type"></select></label>
+            <button type="submit">印刷リストに入れる</button>
+          </form>
+        </details>
+      </section>
+
+      <aside class="cart" aria-label="印刷リスト">
+        <h2>印刷リスト <span id="cart-count"></span></h2>
+        <ol id="cart"></ol>
+        <p class="empty" id="cart-empty">左の一覧から「＋ 印刷リストへ」を押すと、ここに並びます。</p>
+        <label class="toggle"><input type="checkbox" id="with-label" checked> ラベル台紙（左ページ）も一緒に印刷する</label>
+        <div class="blank">
+          <span>空の台紙を足す</span>
+          <div id="blank-buttons"></div>
+        </div>
+        <button class="print" id="print" disabled>印刷する</button>
+        <p class="hint">印刷の設定は <b>A4 横・倍率 100%（実際のサイズ）・余白なし・背景のグラフィックを印刷</b>。<br>
+          ラベル台紙はポケットの<b>裏面</b>、銘板は次のポケットの<b>表面</b>に入れると見開きになります。</p>
+      </aside>
+    </main>
+
+    <section class="preview" aria-label="プレビュー">
+      <h2>プレビュー</h2>
+      <div id="preview"></div>
+    </section>
+  </div>
+
+  <div id="print-root" aria-hidden="true"></div>
+</body>
+</html>

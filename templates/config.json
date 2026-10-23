@@ -4,10 +4,7 @@
   "subtitle": "SAKE LABEL ARCHIVE",
   "volume": "壱",
   "recipient": "",
-  "giver": "",
-  "presentedOn": "",
   "sealText": "酒標",
-  "indexPages": { "sake": 4, "whisky": 2, "gin": 2 },
-  "sheetsPerType": 4,
-  "orderSheets": { "sake": 24, "whisky": 8, "gin": 8 }
+  "siteUrl": "",
+  "indexPages": { "sake": 5, "whisky": 2, "gin": 2, "wine": 2, "beer": 2 }
 }
