@@ -50,15 +50,12 @@ body { font-family: var(--mincho); color: var(--ink); background: #8f8a84; }
 .tab {
   position: absolute; width: 14mm;
   display: flex; align-items: center; justify-content: center;
-  color: #fff; font-family: var(--gothic); font-weight: 500; font-size: 8.5pt; letter-spacing: .25em;
+  color: #fff; font-family: var(--gothic); font-weight: 500; font-size: 9.5pt; letter-spacing: .3em;
   writing-mode: vertical-rl;
 }
 .tab.right { right: 0; padding-left: 3mm; }
 .tab.left { left: 0; padding-right: 3mm; }
 .tab .n { font-family: var(--mincho); font-weight: 800; font-size: 10pt; margin-bottom: 1.5mm; letter-spacing: 0; }
-.tab-ghost { position: absolute; width: 9mm; border: .2mm dashed var(--faint); }
-.tab-ghost.right { right: 5mm; border-right: none; }
-.tab-ghost.left { left: 5mm; border-left: none; }
 
 /* ラベル貼り付け枠 */
 .mount {
@@ -85,6 +82,7 @@ body { font-family: var(--mincho); color: var(--ink); background: #8f8a84; }
 .no { display: flex; align-items: flex-end; gap: 1.4mm; flex: none; }
 .no .k { font-family: var(--mincho); font-weight: 600; font-size: 11pt; letter-spacing: .04em; }
 .no .box { width: 21mm; height: 9mm; border-bottom: .45mm solid var(--ink); }
+.no .pfx { font-family: var(--mincho); font-weight: 800; font-size: 14pt; line-height: 1; margin-bottom: .6mm; }
 .chip { display: inline-flex; align-items: center; gap: 1.2mm; font-family: var(--gothic); font-size: 7pt; color: var(--sub); white-space: nowrap; }
 .chip i { display: inline-block; width: 3mm; height: 3mm; border-radius: 50%; }
 .foot { position: absolute; bottom: 7mm; display: flex; justify-content: space-between; font-family: var(--gothic); font-size: 6.4pt; color: #a49c91; letter-spacing: .12em; }
@@ -133,12 +131,12 @@ table.idx tr.ms td.num { color: var(--shu); }
   <div class="hdr" style="left:20mm;top:12mm;width:380mm">
     <div class="no"><span class="k">No.</span><span class="box"></span></div>
     <div class="field" style="flex:1"><span class="lbl">銘柄</span><span class="fill"></span></div><div class="field" style="width:80mm"><span class="lbl">蔵元・蒸溜所</span><span class="fill"></span></div><div class="field" style="width:50mm"><span class="lbl">産地</span><span class="fill"></span></div>
-    <span class="lbl" style="padding-bottom:1mm">ワイド台紙　WIDE</span>
+    <span style="display:flex;gap:4mm;padding-bottom:1mm"><span class="chk">日本酒</span><span class="chk">ウイスキー</span><span class="chk">ジン</span></span>
   </div>
   <div class="mount" style="left:20mm;top:30mm;width:380mm;height:238mm">
     <i class="c tl"></i><i class="c tr"></i><i class="c bl"></i><i class="c br"></i>
     <i class="m t"></i><i class="m b"></i><i class="m l"></i><i class="m r"></i>
     <i class="fold"></i>
     <span class="hint">長いラベル・巻きつけラベル ─ 中央の点線で二つ折りにして A3 対応ポケットへ</span></div>
-  <div class="foot" style="left:20mm;width:380mm"><span>酒標帖</span><span>記録は同じ No. の標準台紙の裏面へ（表面には瓶の写真を）</span></div>
+  <div class="foot" style="left:20mm;width:380mm"><span>酒標帖　ワイド台紙</span><span>記録は同じ No. の標準台紙の裏面へ（表面には瓶の写真を）</span></div>
 </section></body></html>

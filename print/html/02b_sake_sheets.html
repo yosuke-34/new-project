@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ja"><head><meta charset="utf-8"><title>台紙（関東）</title>
+<html lang="ja"><head><meta charset="utf-8"><title>日本酒の台紙</title>
 <style>@import url('https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;600;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap');
 
 :root {
@@ -50,15 +50,12 @@ body { font-family: var(--mincho); color: var(--ink); background: #8f8a84; }
 .tab {
   position: absolute; width: 14mm;
   display: flex; align-items: center; justify-content: center;
-  color: #fff; font-family: var(--gothic); font-weight: 500; font-size: 8.5pt; letter-spacing: .25em;
+  color: #fff; font-family: var(--gothic); font-weight: 500; font-size: 9.5pt; letter-spacing: .3em;
   writing-mode: vertical-rl;
 }
 .tab.right { right: 0; padding-left: 3mm; }
 .tab.left { left: 0; padding-right: 3mm; }
 .tab .n { font-family: var(--mincho); font-weight: 800; font-size: 10pt; margin-bottom: 1.5mm; letter-spacing: 0; }
-.tab-ghost { position: absolute; width: 9mm; border: .2mm dashed var(--faint); }
-.tab-ghost.right { right: 5mm; border-right: none; }
-.tab-ghost.left { left: 5mm; border-left: none; }
 
 /* ラベル貼り付け枠 */
 .mount {
@@ -85,6 +82,7 @@ body { font-family: var(--mincho); color: var(--ink); background: #8f8a84; }
 .no { display: flex; align-items: flex-end; gap: 1.4mm; flex: none; }
 .no .k { font-family: var(--mincho); font-weight: 600; font-size: 11pt; letter-spacing: .04em; }
 .no .box { width: 21mm; height: 9mm; border-bottom: .45mm solid var(--ink); }
+.no .pfx { font-family: var(--mincho); font-weight: 800; font-size: 14pt; line-height: 1; margin-bottom: .6mm; }
 .chip { display: inline-flex; align-items: center; gap: 1.2mm; font-family: var(--gothic); font-size: 7pt; color: var(--sub); white-space: nowrap; }
 .chip i { display: inline-block; width: 3mm; height: 3mm; border-radius: 50%; }
 .foot { position: absolute; bottom: 7mm; display: flex; justify-content: space-between; font-family: var(--gothic); font-size: 6.4pt; color: #a49c91; letter-spacing: .12em; }
@@ -131,7 +129,7 @@ table.idx tr.ms td.num { color: var(--shu); }
 @page { size: A4 portrait; }</style></head>
 <body><section class="page">
   <div class="hdr" style="left:18mm;top:12mm;width:172mm">
-    <div class="no"><span class="k">No.</span><span class="box"></span></div>
+    <div class="no"><span class="k">No.</span><span class="pfx" style="color:#2D4F6C">S</span><span class="box"></span></div>
     <div class="field" style="flex:1"><span class="lbl">銘柄</span><span class="fill"></span></div>
     <div class="field" style="width:46mm"><span class="lbl">産地</span><span class="fill"></span></div>
   </div>
@@ -140,12 +138,12 @@ table.idx tr.ms td.num { color: var(--shu); }
     <i class="m t"></i><i class="m b"></i><i class="m l"></i><i class="m r"></i>
     
     <span class="hint">表ラベル　FRONT LABEL ─ 長いラベルは縦向きに</span></div>
-  <div class="foot" style="left:18mm;width:172mm"><span>酒標帖</span><span><span class="chip"><i style="background:#6C4A8C"></i>弐 関東</span>　表</span></div>
-  <div class="tab right" style="top:64.3mm;height:32mm;background:#6C4A8C">
-    <span class="n">弐</span>関東</div>
+  <div class="foot" style="left:18mm;width:172mm"><span>酒標帖</span><span><span class="chip"><i style="background:#2D4F6C"></i>壱 日本酒</span>　表</span></div>
+  <div class="tab right" style="top:30mm;height:76mm;background:#2D4F6C">
+    <span class="n">壱</span>日本酒</div>
 </section><section class="page">
   <div class="hdr" style="left:20mm;top:12mm;width:172mm">
-    <div class="no"><span class="k">No.</span><span class="box"></span></div>
+    <div class="no"><span class="k">No.</span><span class="pfx" style="color:#2D4F6C">S</span><span class="box"></span></div>
     <span class="lbl" style="margin-left:auto;padding-bottom:1mm">裏ラベル・肩ラベル　BACK LABEL</span>
   </div>
   <div class="mount" style="left:20mm;top:28mm;width:172mm;height:98mm">
@@ -155,20 +153,19 @@ table.idx tr.ms td.num { color: var(--shu); }
     <span class="hint">裏ラベル・肩ラベル ─ 表ラベルしか無い瓶は、ここに瓶の写真を</span></div>
   <div class="rec" style="left:20mm;top:132mm;width:172mm">
     <div style="display:flex;align-items:baseline;gap:3mm;margin-bottom:.6mm">
-      <span style="font-weight:800;font-size:10.5pt;letter-spacing:.3em">呑みの記録</span><span class="lbl">TASTING NOTE</span>
+      <span style="font-weight:800;font-size:10.5pt;letter-spacing:.3em">呑みの記録</span><span class="lbl">TASTING NOTE ─ SAKE</span>
     </div>
     <div class="rule"></div>
-    <div class="row"><div class="field" style="flex:1.4"><span class="lbl">銘柄</span><span class="fill"></span></div><div class="field" style="flex:1"><span class="lbl">蔵元・蒸溜所</span><span class="fill"></span></div></div>
-    <div class="row"><div class="field" style="width:52mm"><span class="lbl">産地</span><span class="fill"></span><span class="unit">都道府県／国</span></div>
-      <div class="field" style="flex:1;gap:2.6mm"><span class="lbl">種別</span>
-        <span class="chk">日本酒</span><span class="chk">焼酎・泡盛</span><span class="chk">ウイスキー</span><span class="chk">ワイン</span><span class="chk">その他</span></div></div>
-    <div class="row"><div class="field" style="flex:1.4"><span class="lbl">特定名称・種類</span><span class="fill"></span></div><div class="field" style="flex:1"><span class="lbl">原料（米・麦など）</span><span class="fill"></span></div></div>
-    <div class="row"><div class="field" style="flex:1"><span class="lbl">精米歩合</span><span class="fill"></span><span class="unit">%</span></div><div class="field" style="flex:1"><span class="lbl">度数</span><span class="fill"></span><span class="unit">%</span></div><div class="field" style="flex:1"><span class="lbl">日本酒度</span><span class="fill"></span></div><div class="field" style="flex:1"><span class="lbl">酸度</span><span class="fill"></span></div><div class="field" style="flex:1.5"><span class="lbl">熟成・樽</span><span class="fill"></span></div></div>
+    <div class="row"><div class="field" style="flex:1.4"><span class="lbl">銘柄</span><span class="fill"></span></div><div class="field" style="flex:1"><span class="lbl">蔵元</span><span class="fill"></span></div></div>
+    
+    <div class="row"><div class="field" style="width:46mm"><span class="lbl">産地</span><span class="fill"></span><span class="unit">都道府県</span></div><div class="field" style="flex:1"><span class="lbl">特定名称</span><span class="fill"></span></div><div class="field" style="flex:1"><span class="lbl">原料米</span><span class="fill"></span></div></div>
+    <div class="row"><div class="field" style="flex:1"><span class="lbl">精米歩合</span><span class="fill"></span><span class="unit">%</span></div><div class="field" style="flex:1"><span class="lbl">度数</span><span class="fill"></span><span class="unit">%</span></div><div class="field" style="flex:1"><span class="lbl">日本酒度</span><span class="fill"></span></div><div class="field" style="flex:1"><span class="lbl">酸度</span><span class="fill"></span></div><div class="field" style="flex:1"><span class="lbl">酵母</span><span class="fill"></span></div></div>
+    <div class="row"><div class="field" style="flex:1;gap:2.4mm"><span class="lbl">種類</span><span class="chk">生酒</span><span class="chk">生詰・ひやおろし</span><span class="chk">原酒</span><span class="chk">にごり</span><span class="chk">古酒・熟成</span><span class="chk">発泡</span></div></div>
     <div class="row">
       <div class="field" style="width:56mm"><span class="lbl">呑んだ日</span><span class="fill"></span><span class="unit">年</span><span class="fill" style="flex:.6"></span><span class="unit">月</span><span class="fill" style="flex:.6"></span><span class="unit">日</span></div>
       <div class="field" style="flex:1"><span class="lbl">場所</span><span class="fill"></span></div><div class="field" style="flex:1"><span class="lbl">一緒に</span><span class="fill"></span></div></div>
     <div class="row">
-      <div class="field" style="flex:1.3;gap:2.6mm"><span class="lbl">入手</span><span class="chk">購入</span><span class="chk">いただきもの</span><span class="chk">お店で</span></div>
+      <div class="field" style="flex:1.3;gap:2.4mm"><span class="lbl">入手</span><span class="chk">購入</span><span class="chk">いただきもの</span><span class="chk">お店で</span></div>
       <div class="field" style="flex:1"><span class="lbl">価格・容量</span><span class="unit">¥</span><span class="fill"></span><span class="unit">／</span><span class="fill" style="flex:.7"></span><span class="unit">ml</span></div></div>
 
     <div style="display:flex;gap:6mm;margin-top:4mm">
@@ -176,14 +173,14 @@ table.idx tr.ms td.num { color: var(--shu); }
         <div class="taste">
           <span class="ax" style="left:1mm;top:50%;transform:translateY(-120%)">甘口</span>
           <span class="ax" style="right:1mm;top:50%;transform:translateY(-120%)">辛口</span>
-          <span class="ax" style="left:50%;top:.8mm;transform:translateX(12%)">濃醇・重厚</span>
-          <span class="ax" style="left:50%;bottom:.8mm;transform:translateX(12%)">淡麗・軽快</span>
+          <span class="ax" style="left:50%;top:.8mm;transform:translateX(12%)">濃醇</span>
+          <span class="ax" style="left:50%;bottom:.8mm;transform:translateX(12%)">淡麗</span>
         </div></div>
       <div style="flex:1">
         <h4>呑み方（○で囲む）</h4>
-        <div class="circle-opts"><span>冷酒</span><span>常温</span><span>ぬる燗</span><span>熱燗</span><span>ロック</span><span>水割り</span><span>ハイボール</span><span>ストレート</span></div>
+        <div class="circle-opts"><span>冷酒</span><span>常温</span><span>ぬる燗</span><span>熱燗</span><span>ロック</span></div>
         <h4 style="margin-top:1.6mm">香り</h4>
-        <div class="circle-opts"><span>華やか</span><span>穏やか</span><span>果実</span><span>米の旨み</span><span>熟成</span><span>スモーキー</span><span>樽</span></div>
+        <div class="circle-opts"><span>華やか</span><span>穏やか</span><span>果実</span><span>米の旨み</span><span>熟成</span><span>ガス感</span></div>
         <div style="height:8mm;margin-top:1mm"><div class="field" style="flex:1"><span class="lbl">合わせた肴</span><span class="fill"></span></div></div>
       </div>
       <div style="width:44mm">
@@ -197,12 +194,12 @@ table.idx tr.ms td.num { color: var(--shu); }
     <div class="lines" style="height:30.4mm"></div>
   </div>
   <div class="foot" style="left:20mm;width:172mm"><span>裏</span><span>酒標帖</span></div>
-  <div class="tab left" style="top:64.3mm;height:32mm;background:#6C4A8C">
-    <span class="n">弐</span>関東</div>
+  <div class="tab left" style="top:30mm;height:76mm;background:#2D4F6C">
+    <span class="n">壱</span>日本酒</div>
 </section>
 <section class="page">
   <div class="hdr" style="left:18mm;top:12mm;width:172mm">
-    <div class="no"><span class="k">No.</span><span class="box"></span></div>
+    <div class="no"><span class="k">No.</span><span class="pfx" style="color:#2D4F6C">S</span><span class="box"></span></div>
     <div class="field" style="flex:1"><span class="lbl">銘柄</span><span class="fill"></span></div>
     <div class="field" style="width:46mm"><span class="lbl">産地</span><span class="fill"></span></div>
   </div>
@@ -211,12 +208,12 @@ table.idx tr.ms td.num { color: var(--shu); }
     <i class="m t"></i><i class="m b"></i><i class="m l"></i><i class="m r"></i>
     
     <span class="hint">表ラベル　FRONT LABEL ─ 長いラベルは縦向きに</span></div>
-  <div class="foot" style="left:18mm;width:172mm"><span>酒標帖</span><span><span class="chip"><i style="background:#6C4A8C"></i>弐 関東</span>　表</span></div>
-  <div class="tab right" style="top:64.3mm;height:32mm;background:#6C4A8C">
-    <span class="n">弐</span>関東</div>
+  <div class="foot" style="left:18mm;width:172mm"><span>酒標帖</span><span><span class="chip"><i style="background:#2D4F6C"></i>壱 日本酒</span>　表</span></div>
+  <div class="tab right" style="top:30mm;height:76mm;background:#2D4F6C">
+    <span class="n">壱</span>日本酒</div>
 </section><section class="page">
   <div class="hdr" style="left:20mm;top:12mm;width:172mm">
-    <div class="no"><span class="k">No.</span><span class="box"></span></div>
+    <div class="no"><span class="k">No.</span><span class="pfx" style="color:#2D4F6C">S</span><span class="box"></span></div>
     <span class="lbl" style="margin-left:auto;padding-bottom:1mm">裏ラベル・肩ラベル　BACK LABEL</span>
   </div>
   <div class="mount" style="left:20mm;top:28mm;width:172mm;height:98mm">
@@ -226,20 +223,19 @@ table.idx tr.ms td.num { color: var(--shu); }
     <span class="hint">裏ラベル・肩ラベル ─ 表ラベルしか無い瓶は、ここに瓶の写真を</span></div>
   <div class="rec" style="left:20mm;top:132mm;width:172mm">
     <div style="display:flex;align-items:baseline;gap:3mm;margin-bottom:.6mm">
-      <span style="font-weight:800;font-size:10.5pt;letter-spacing:.3em">呑みの記録</span><span class="lbl">TASTING NOTE</span>
+      <span style="font-weight:800;font-size:10.5pt;letter-spacing:.3em">呑みの記録</span><span class="lbl">TASTING NOTE ─ SAKE</span>
     </div>
     <div class="rule"></div>
-    <div class="row"><div class="field" style="flex:1.4"><span class="lbl">銘柄</span><span class="fill"></span></div><div class="field" style="flex:1"><span class="lbl">蔵元・蒸溜所</span><span class="fill"></span></div></div>
-    <div class="row"><div class="field" style="width:52mm"><span class="lbl">産地</span><span class="fill"></span><span class="unit">都道府県／国</span></div>
-      <div class="field" style="flex:1;gap:2.6mm"><span class="lbl">種別</span>
-        <span class="chk">日本酒</span><span class="chk">焼酎・泡盛</span><span class="chk">ウイスキー</span><span class="chk">ワイン</span><span class="chk">その他</span></div></div>
-    <div class="row"><div class="field" style="flex:1.4"><span class="lbl">特定名称・種類</span><span class="fill"></span></div><div class="field" style="flex:1"><span class="lbl">原料（米・麦など）</span><span class="fill"></span></div></div>
-    <div class="row"><div class="field" style="flex:1"><span class="lbl">精米歩合</span><span class="fill"></span><span class="unit">%</span></div><div class="field" style="flex:1"><span class="lbl">度数</span><span class="fill"></span><span class="unit">%</span></div><div class="field" style="flex:1"><span class="lbl">日本酒度</span><span class="fill"></span></div><div class="field" style="flex:1"><span class="lbl">酸度</span><span class="fill"></span></div><div class="field" style="flex:1.5"><span class="lbl">熟成・樽</span><span class="fill"></span></div></div>
+    <div class="row"><div class="field" style="flex:1.4"><span class="lbl">銘柄</span><span class="fill"></span></div><div class="field" style="flex:1"><span class="lbl">蔵元</span><span class="fill"></span></div></div>
+    
+    <div class="row"><div class="field" style="width:46mm"><span class="lbl">産地</span><span class="fill"></span><span class="unit">都道府県</span></div><div class="field" style="flex:1"><span class="lbl">特定名称</span><span class="fill"></span></div><div class="field" style="flex:1"><span class="lbl">原料米</span><span class="fill"></span></div></div>
+    <div class="row"><div class="field" style="flex:1"><span class="lbl">精米歩合</span><span class="fill"></span><span class="unit">%</span></div><div class="field" style="flex:1"><span class="lbl">度数</span><span class="fill"></span><span class="unit">%</span></div><div class="field" style="flex:1"><span class="lbl">日本酒度</span><span class="fill"></span></div><div class="field" style="flex:1"><span class="lbl">酸度</span><span class="fill"></span></div><div class="field" style="flex:1"><span class="lbl">酵母</span><span class="fill"></span></div></div>
+    <div class="row"><div class="field" style="flex:1;gap:2.4mm"><span class="lbl">種類</span><span class="chk">生酒</span><span class="chk">生詰・ひやおろし</span><span class="chk">原酒</span><span class="chk">にごり</span><span class="chk">古酒・熟成</span><span class="chk">発泡</span></div></div>
     <div class="row">
       <div class="field" style="width:56mm"><span class="lbl">呑んだ日</span><span class="fill"></span><span class="unit">年</span><span class="fill" style="flex:.6"></span><span class="unit">月</span><span class="fill" style="flex:.6"></span><span class="unit">日</span></div>
       <div class="field" style="flex:1"><span class="lbl">場所</span><span class="fill"></span></div><div class="field" style="flex:1"><span class="lbl">一緒に</span><span class="fill"></span></div></div>
     <div class="row">
-      <div class="field" style="flex:1.3;gap:2.6mm"><span class="lbl">入手</span><span class="chk">購入</span><span class="chk">いただきもの</span><span class="chk">お店で</span></div>
+      <div class="field" style="flex:1.3;gap:2.4mm"><span class="lbl">入手</span><span class="chk">購入</span><span class="chk">いただきもの</span><span class="chk">お店で</span></div>
       <div class="field" style="flex:1"><span class="lbl">価格・容量</span><span class="unit">¥</span><span class="fill"></span><span class="unit">／</span><span class="fill" style="flex:.7"></span><span class="unit">ml</span></div></div>
 
     <div style="display:flex;gap:6mm;margin-top:4mm">
@@ -247,14 +243,14 @@ table.idx tr.ms td.num { color: var(--shu); }
         <div class="taste">
           <span class="ax" style="left:1mm;top:50%;transform:translateY(-120%)">甘口</span>
           <span class="ax" style="right:1mm;top:50%;transform:translateY(-120%)">辛口</span>
-          <span class="ax" style="left:50%;top:.8mm;transform:translateX(12%)">濃醇・重厚</span>
-          <span class="ax" style="left:50%;bottom:.8mm;transform:translateX(12%)">淡麗・軽快</span>
+          <span class="ax" style="left:50%;top:.8mm;transform:translateX(12%)">濃醇</span>
+          <span class="ax" style="left:50%;bottom:.8mm;transform:translateX(12%)">淡麗</span>
         </div></div>
       <div style="flex:1">
         <h4>呑み方（○で囲む）</h4>
-        <div class="circle-opts"><span>冷酒</span><span>常温</span><span>ぬる燗</span><span>熱燗</span><span>ロック</span><span>水割り</span><span>ハイボール</span><span>ストレート</span></div>
+        <div class="circle-opts"><span>冷酒</span><span>常温</span><span>ぬる燗</span><span>熱燗</span><span>ロック</span></div>
         <h4 style="margin-top:1.6mm">香り</h4>
-        <div class="circle-opts"><span>華やか</span><span>穏やか</span><span>果実</span><span>米の旨み</span><span>熟成</span><span>スモーキー</span><span>樽</span></div>
+        <div class="circle-opts"><span>華やか</span><span>穏やか</span><span>果実</span><span>米の旨み</span><span>熟成</span><span>ガス感</span></div>
         <div style="height:8mm;margin-top:1mm"><div class="field" style="flex:1"><span class="lbl">合わせた肴</span><span class="fill"></span></div></div>
       </div>
       <div style="width:44mm">
@@ -268,12 +264,12 @@ table.idx tr.ms td.num { color: var(--shu); }
     <div class="lines" style="height:30.4mm"></div>
   </div>
   <div class="foot" style="left:20mm;width:172mm"><span>裏</span><span>酒標帖</span></div>
-  <div class="tab left" style="top:64.3mm;height:32mm;background:#6C4A8C">
-    <span class="n">弐</span>関東</div>
+  <div class="tab left" style="top:30mm;height:76mm;background:#2D4F6C">
+    <span class="n">壱</span>日本酒</div>
 </section>
 <section class="page">
   <div class="hdr" style="left:18mm;top:12mm;width:172mm">
-    <div class="no"><span class="k">No.</span><span class="box"></span></div>
+    <div class="no"><span class="k">No.</span><span class="pfx" style="color:#2D4F6C">S</span><span class="box"></span></div>
     <div class="field" style="flex:1"><span class="lbl">銘柄</span><span class="fill"></span></div>
     <div class="field" style="width:46mm"><span class="lbl">産地</span><span class="fill"></span></div>
   </div>
@@ -282,12 +278,12 @@ table.idx tr.ms td.num { color: var(--shu); }
     <i class="m t"></i><i class="m b"></i><i class="m l"></i><i class="m r"></i>
     
     <span class="hint">表ラベル　FRONT LABEL ─ 長いラベルは縦向きに</span></div>
-  <div class="foot" style="left:18mm;width:172mm"><span>酒標帖</span><span><span class="chip"><i style="background:#6C4A8C"></i>弐 関東</span>　表</span></div>
-  <div class="tab right" style="top:64.3mm;height:32mm;background:#6C4A8C">
-    <span class="n">弐</span>関東</div>
+  <div class="foot" style="left:18mm;width:172mm"><span>酒標帖</span><span><span class="chip"><i style="background:#2D4F6C"></i>壱 日本酒</span>　表</span></div>
+  <div class="tab right" style="top:30mm;height:76mm;background:#2D4F6C">
+    <span class="n">壱</span>日本酒</div>
 </section><section class="page">
   <div class="hdr" style="left:20mm;top:12mm;width:172mm">
-    <div class="no"><span class="k">No.</span><span class="box"></span></div>
+    <div class="no"><span class="k">No.</span><span class="pfx" style="color:#2D4F6C">S</span><span class="box"></span></div>
     <span class="lbl" style="margin-left:auto;padding-bottom:1mm">裏ラベル・肩ラベル　BACK LABEL</span>
   </div>
   <div class="mount" style="left:20mm;top:28mm;width:172mm;height:98mm">
@@ -297,20 +293,19 @@ table.idx tr.ms td.num { color: var(--shu); }
     <span class="hint">裏ラベル・肩ラベル ─ 表ラベルしか無い瓶は、ここに瓶の写真を</span></div>
   <div class="rec" style="left:20mm;top:132mm;width:172mm">
     <div style="display:flex;align-items:baseline;gap:3mm;margin-bottom:.6mm">
-      <span style="font-weight:800;font-size:10.5pt;letter-spacing:.3em">呑みの記録</span><span class="lbl">TASTING NOTE</span>
+      <span style="font-weight:800;font-size:10.5pt;letter-spacing:.3em">呑みの記録</span><span class="lbl">TASTING NOTE ─ SAKE</span>
     </div>
     <div class="rule"></div>
-    <div class="row"><div class="field" style="flex:1.4"><span class="lbl">銘柄</span><span class="fill"></span></div><div class="field" style="flex:1"><span class="lbl">蔵元・蒸溜所</span><span class="fill"></span></div></div>
-    <div class="row"><div class="field" style="width:52mm"><span class="lbl">産地</span><span class="fill"></span><span class="unit">都道府県／国</span></div>
-      <div class="field" style="flex:1;gap:2.6mm"><span class="lbl">種別</span>
-        <span class="chk">日本酒</span><span class="chk">焼酎・泡盛</span><span class="chk">ウイスキー</span><span class="chk">ワイン</span><span class="chk">その他</span></div></div>
-    <div class="row"><div class="field" style="flex:1.4"><span class="lbl">特定名称・種類</span><span class="fill"></span></div><div class="field" style="flex:1"><span class="lbl">原料（米・麦など）</span><span class="fill"></span></div></div>
-    <div class="row"><div class="field" style="flex:1"><span class="lbl">精米歩合</span><span class="fill"></span><span class="unit">%</span></div><div class="field" style="flex:1"><span class="lbl">度数</span><span class="fill"></span><span class="unit">%</span></div><div class="field" style="flex:1"><span class="lbl">日本酒度</span><span class="fill"></span></div><div class="field" style="flex:1"><span class="lbl">酸度</span><span class="fill"></span></div><div class="field" style="flex:1.5"><span class="lbl">熟成・樽</span><span class="fill"></span></div></div>
+    <div class="row"><div class="field" style="flex:1.4"><span class="lbl">銘柄</span><span class="fill"></span></div><div class="field" style="flex:1"><span class="lbl">蔵元</span><span class="fill"></span></div></div>
+    
+    <div class="row"><div class="field" style="width:46mm"><span class="lbl">産地</span><span class="fill"></span><span class="unit">都道府県</span></div><div class="field" style="flex:1"><span class="lbl">特定名称</span><span class="fill"></span></div><div class="field" style="flex:1"><span class="lbl">原料米</span><span class="fill"></span></div></div>
+    <div class="row"><div class="field" style="flex:1"><span class="lbl">精米歩合</span><span class="fill"></span><span class="unit">%</span></div><div class="field" style="flex:1"><span class="lbl">度数</span><span class="fill"></span><span class="unit">%</span></div><div class="field" style="flex:1"><span class="lbl">日本酒度</span><span class="fill"></span></div><div class="field" style="flex:1"><span class="lbl">酸度</span><span class="fill"></span></div><div class="field" style="flex:1"><span class="lbl">酵母</span><span class="fill"></span></div></div>
+    <div class="row"><div class="field" style="flex:1;gap:2.4mm"><span class="lbl">種類</span><span class="chk">生酒</span><span class="chk">生詰・ひやおろし</span><span class="chk">原酒</span><span class="chk">にごり</span><span class="chk">古酒・熟成</span><span class="chk">発泡</span></div></div>
     <div class="row">
       <div class="field" style="width:56mm"><span class="lbl">呑んだ日</span><span class="fill"></span><span class="unit">年</span><span class="fill" style="flex:.6"></span><span class="unit">月</span><span class="fill" style="flex:.6"></span><span class="unit">日</span></div>
       <div class="field" style="flex:1"><span class="lbl">場所</span><span class="fill"></span></div><div class="field" style="flex:1"><span class="lbl">一緒に</span><span class="fill"></span></div></div>
     <div class="row">
-      <div class="field" style="flex:1.3;gap:2.6mm"><span class="lbl">入手</span><span class="chk">購入</span><span class="chk">いただきもの</span><span class="chk">お店で</span></div>
+      <div class="field" style="flex:1.3;gap:2.4mm"><span class="lbl">入手</span><span class="chk">購入</span><span class="chk">いただきもの</span><span class="chk">お店で</span></div>
       <div class="field" style="flex:1"><span class="lbl">価格・容量</span><span class="unit">¥</span><span class="fill"></span><span class="unit">／</span><span class="fill" style="flex:.7"></span><span class="unit">ml</span></div></div>
 
     <div style="display:flex;gap:6mm;margin-top:4mm">
@@ -318,14 +313,14 @@ table.idx tr.ms td.num { color: var(--shu); }
         <div class="taste">
           <span class="ax" style="left:1mm;top:50%;transform:translateY(-120%)">甘口</span>
           <span class="ax" style="right:1mm;top:50%;transform:translateY(-120%)">辛口</span>
-          <span class="ax" style="left:50%;top:.8mm;transform:translateX(12%)">濃醇・重厚</span>
-          <span class="ax" style="left:50%;bottom:.8mm;transform:translateX(12%)">淡麗・軽快</span>
+          <span class="ax" style="left:50%;top:.8mm;transform:translateX(12%)">濃醇</span>
+          <span class="ax" style="left:50%;bottom:.8mm;transform:translateX(12%)">淡麗</span>
         </div></div>
       <div style="flex:1">
         <h4>呑み方（○で囲む）</h4>
-        <div class="circle-opts"><span>冷酒</span><span>常温</span><span>ぬる燗</span><span>熱燗</span><span>ロック</span><span>水割り</span><span>ハイボール</span><span>ストレート</span></div>
+        <div class="circle-opts"><span>冷酒</span><span>常温</span><span>ぬる燗</span><span>熱燗</span><span>ロック</span></div>
         <h4 style="margin-top:1.6mm">香り</h4>
-        <div class="circle-opts"><span>華やか</span><span>穏やか</span><span>果実</span><span>米の旨み</span><span>熟成</span><span>スモーキー</span><span>樽</span></div>
+        <div class="circle-opts"><span>華やか</span><span>穏やか</span><span>果実</span><span>米の旨み</span><span>熟成</span><span>ガス感</span></div>
         <div style="height:8mm;margin-top:1mm"><div class="field" style="flex:1"><span class="lbl">合わせた肴</span><span class="fill"></span></div></div>
       </div>
       <div style="width:44mm">
@@ -339,12 +334,12 @@ table.idx tr.ms td.num { color: var(--shu); }
     <div class="lines" style="height:30.4mm"></div>
   </div>
   <div class="foot" style="left:20mm;width:172mm"><span>裏</span><span>酒標帖</span></div>
-  <div class="tab left" style="top:64.3mm;height:32mm;background:#6C4A8C">
-    <span class="n">弐</span>関東</div>
+  <div class="tab left" style="top:30mm;height:76mm;background:#2D4F6C">
+    <span class="n">壱</span>日本酒</div>
 </section>
 <section class="page">
   <div class="hdr" style="left:18mm;top:12mm;width:172mm">
-    <div class="no"><span class="k">No.</span><span class="box"></span></div>
+    <div class="no"><span class="k">No.</span><span class="pfx" style="color:#2D4F6C">S</span><span class="box"></span></div>
     <div class="field" style="flex:1"><span class="lbl">銘柄</span><span class="fill"></span></div>
     <div class="field" style="width:46mm"><span class="lbl">産地</span><span class="fill"></span></div>
   </div>
@@ -353,12 +348,12 @@ table.idx tr.ms td.num { color: var(--shu); }
     <i class="m t"></i><i class="m b"></i><i class="m l"></i><i class="m r"></i>
     
     <span class="hint">表ラベル　FRONT LABEL ─ 長いラベルは縦向きに</span></div>
-  <div class="foot" style="left:18mm;width:172mm"><span>酒標帖</span><span><span class="chip"><i style="background:#6C4A8C"></i>弐 関東</span>　表</span></div>
-  <div class="tab right" style="top:64.3mm;height:32mm;background:#6C4A8C">
-    <span class="n">弐</span>関東</div>
+  <div class="foot" style="left:18mm;width:172mm"><span>酒標帖</span><span><span class="chip"><i style="background:#2D4F6C"></i>壱 日本酒</span>　表</span></div>
+  <div class="tab right" style="top:30mm;height:76mm;background:#2D4F6C">
+    <span class="n">壱</span>日本酒</div>
 </section><section class="page">
   <div class="hdr" style="left:20mm;top:12mm;width:172mm">
-    <div class="no"><span class="k">No.</span><span class="box"></span></div>
+    <div class="no"><span class="k">No.</span><span class="pfx" style="color:#2D4F6C">S</span><span class="box"></span></div>
     <span class="lbl" style="margin-left:auto;padding-bottom:1mm">裏ラベル・肩ラベル　BACK LABEL</span>
   </div>
   <div class="mount" style="left:20mm;top:28mm;width:172mm;height:98mm">
@@ -368,20 +363,19 @@ table.idx tr.ms td.num { color: var(--shu); }
     <span class="hint">裏ラベル・肩ラベル ─ 表ラベルしか無い瓶は、ここに瓶の写真を</span></div>
   <div class="rec" style="left:20mm;top:132mm;width:172mm">
     <div style="display:flex;align-items:baseline;gap:3mm;margin-bottom:.6mm">
-      <span style="font-weight:800;font-size:10.5pt;letter-spacing:.3em">呑みの記録</span><span class="lbl">TASTING NOTE</span>
+      <span style="font-weight:800;font-size:10.5pt;letter-spacing:.3em">呑みの記録</span><span class="lbl">TASTING NOTE ─ SAKE</span>
     </div>
     <div class="rule"></div>
-    <div class="row"><div class="field" style="flex:1.4"><span class="lbl">銘柄</span><span class="fill"></span></div><div class="field" style="flex:1"><span class="lbl">蔵元・蒸溜所</span><span class="fill"></span></div></div>
-    <div class="row"><div class="field" style="width:52mm"><span class="lbl">産地</span><span class="fill"></span><span class="unit">都道府県／国</span></div>
-      <div class="field" style="flex:1;gap:2.6mm"><span class="lbl">種別</span>
-        <span class="chk">日本酒</span><span class="chk">焼酎・泡盛</span><span class="chk">ウイスキー</span><span class="chk">ワイン</span><span class="chk">その他</span></div></div>
-    <div class="row"><div class="field" style="flex:1.4"><span class="lbl">特定名称・種類</span><span class="fill"></span></div><div class="field" style="flex:1"><span class="lbl">原料（米・麦など）</span><span class="fill"></span></div></div>
-    <div class="row"><div class="field" style="flex:1"><span class="lbl">精米歩合</span><span class="fill"></span><span class="unit">%</span></div><div class="field" style="flex:1"><span class="lbl">度数</span><span class="fill"></span><span class="unit">%</span></div><div class="field" style="flex:1"><span class="lbl">日本酒度</span><span class="fill"></span></div><div class="field" style="flex:1"><span class="lbl">酸度</span><span class="fill"></span></div><div class="field" style="flex:1.5"><span class="lbl">熟成・樽</span><span class="fill"></span></div></div>
+    <div class="row"><div class="field" style="flex:1.4"><span class="lbl">銘柄</span><span class="fill"></span></div><div class="field" style="flex:1"><span class="lbl">蔵元</span><span class="fill"></span></div></div>
+    
+    <div class="row"><div class="field" style="width:46mm"><span class="lbl">産地</span><span class="fill"></span><span class="unit">都道府県</span></div><div class="field" style="flex:1"><span class="lbl">特定名称</span><span class="fill"></span></div><div class="field" style="flex:1"><span class="lbl">原料米</span><span class="fill"></span></div></div>
+    <div class="row"><div class="field" style="flex:1"><span class="lbl">精米歩合</span><span class="fill"></span><span class="unit">%</span></div><div class="field" style="flex:1"><span class="lbl">度数</span><span class="fill"></span><span class="unit">%</span></div><div class="field" style="flex:1"><span class="lbl">日本酒度</span><span class="fill"></span></div><div class="field" style="flex:1"><span class="lbl">酸度</span><span class="fill"></span></div><div class="field" style="flex:1"><span class="lbl">酵母</span><span class="fill"></span></div></div>
+    <div class="row"><div class="field" style="flex:1;gap:2.4mm"><span class="lbl">種類</span><span class="chk">生酒</span><span class="chk">生詰・ひやおろし</span><span class="chk">原酒</span><span class="chk">にごり</span><span class="chk">古酒・熟成</span><span class="chk">発泡</span></div></div>
     <div class="row">
       <div class="field" style="width:56mm"><span class="lbl">呑んだ日</span><span class="fill"></span><span class="unit">年</span><span class="fill" style="flex:.6"></span><span class="unit">月</span><span class="fill" style="flex:.6"></span><span class="unit">日</span></div>
       <div class="field" style="flex:1"><span class="lbl">場所</span><span class="fill"></span></div><div class="field" style="flex:1"><span class="lbl">一緒に</span><span class="fill"></span></div></div>
     <div class="row">
-      <div class="field" style="flex:1.3;gap:2.6mm"><span class="lbl">入手</span><span class="chk">購入</span><span class="chk">いただきもの</span><span class="chk">お店で</span></div>
+      <div class="field" style="flex:1.3;gap:2.4mm"><span class="lbl">入手</span><span class="chk">購入</span><span class="chk">いただきもの</span><span class="chk">お店で</span></div>
       <div class="field" style="flex:1"><span class="lbl">価格・容量</span><span class="unit">¥</span><span class="fill"></span><span class="unit">／</span><span class="fill" style="flex:.7"></span><span class="unit">ml</span></div></div>
 
     <div style="display:flex;gap:6mm;margin-top:4mm">
@@ -389,14 +383,14 @@ table.idx tr.ms td.num { color: var(--shu); }
         <div class="taste">
           <span class="ax" style="left:1mm;top:50%;transform:translateY(-120%)">甘口</span>
           <span class="ax" style="right:1mm;top:50%;transform:translateY(-120%)">辛口</span>
-          <span class="ax" style="left:50%;top:.8mm;transform:translateX(12%)">濃醇・重厚</span>
-          <span class="ax" style="left:50%;bottom:.8mm;transform:translateX(12%)">淡麗・軽快</span>
+          <span class="ax" style="left:50%;top:.8mm;transform:translateX(12%)">濃醇</span>
+          <span class="ax" style="left:50%;bottom:.8mm;transform:translateX(12%)">淡麗</span>
         </div></div>
       <div style="flex:1">
         <h4>呑み方（○で囲む）</h4>
-        <div class="circle-opts"><span>冷酒</span><span>常温</span><span>ぬる燗</span><span>熱燗</span><span>ロック</span><span>水割り</span><span>ハイボール</span><span>ストレート</span></div>
+        <div class="circle-opts"><span>冷酒</span><span>常温</span><span>ぬる燗</span><span>熱燗</span><span>ロック</span></div>
         <h4 style="margin-top:1.6mm">香り</h4>
-        <div class="circle-opts"><span>華やか</span><span>穏やか</span><span>果実</span><span>米の旨み</span><span>熟成</span><span>スモーキー</span><span>樽</span></div>
+        <div class="circle-opts"><span>華やか</span><span>穏やか</span><span>果実</span><span>米の旨み</span><span>熟成</span><span>ガス感</span></div>
         <div style="height:8mm;margin-top:1mm"><div class="field" style="flex:1"><span class="lbl">合わせた肴</span><span class="fill"></span></div></div>
       </div>
       <div style="width:44mm">
@@ -410,6 +404,6 @@ table.idx tr.ms td.num { color: var(--shu); }
     <div class="lines" style="height:30.4mm"></div>
   </div>
   <div class="foot" style="left:20mm;width:172mm"><span>裏</span><span>酒標帖</span></div>
-  <div class="tab left" style="top:64.3mm;height:32mm;background:#6C4A8C">
-    <span class="n">弐</span>関東</div>
+  <div class="tab left" style="top:30mm;height:76mm;background:#2D4F6C">
+    <span class="n">壱</span>日本酒</div>
 </section></body></html>

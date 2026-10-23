@@ -7,6 +7,6 @@
   "giver": "",
   "presentedOn": "",
   "sealText": "酒標",
-  "indexPages": 4,
-  "sheetsPerRegion": 4
+  "indexPages": { "sake": 4, "whisky": 2, "gin": 2 },
+  "sheetsPerType": 4
 }
