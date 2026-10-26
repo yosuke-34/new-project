@@ -60,8 +60,8 @@ async function wikitext(title) {
   return { text: r.parse.wikitext, revid: r.parse.revid };
 }
 
-// カテゴリの記事（サブカテゴリは depth 段まで）
-async function categoryMembers(cat, depth = 1, seen = new Set()) {
+// カテゴリの記事（サブカテゴリは depth 段まで。subcat に合うものだけたどる）
+async function categoryMembers(cat, depth = 0, subcat = /$^/, seen = new Set()) {
   if (seen.has(cat)) return [];
   seen.add(cat);
   const out = [];
@@ -70,30 +70,45 @@ async function categoryMembers(cat, depth = 1, seen = new Set()) {
     const r = await wpApi({ action: 'query', list: 'categorymembers', cmtitle: cat, cmlimit: '500', cmnamespace: '0|14', ...cont });
     for (const m of r.query.categorymembers) {
       if (m.ns === 0) out.push(m.title);
-      else if (depth > 0 && !/かつて|廃業|ブランド|商品|の人物/.test(m.title)) out.push(...await categoryMembers(m.title, depth - 1, seen));
+      else if (depth > 0 && subcat.test(m.title)) out.push(...await categoryMembers(m.title, depth - 1, subcat, seen));
     }
     cont = r.continue ?? null;
   } while (cont);
   return out;
 }
 
-// 記事の本文・Wikidata ID をまとめて取得（50 件ずつ）
-async function articles(titles) {
+// 取得済みの記事（以前の実行のキャッシュ）を題名で引けるようにする
+function cachedPages() {
   const out = new Map();
-  const list = [...new Set(titles)];
+  for (const f of fs.readdirSync(CACHE)) {
+    const r = JSON.parse(fs.readFileSync(path.join(CACHE, f), 'utf8'));
+    if (!r.query?.pages?.some((p) => p.revisions)) continue;
+    pagesInto(r, out);
+  }
+  return out;
+}
+
+function pagesInto(r, out) {
+  const alias = new Map();
+  for (const n of [...(r.query.normalized ?? []), ...(r.query.redirects ?? [])]) alias.set(n.to, [...(alias.get(n.to) ?? []), n.from]);
+  for (const p of r.query.pages) {
+    if (p.missing) continue;
+    const info = { title: p.title, text: p.revisions?.[0]?.slots?.main?.content ?? '', qid: p.pageprops?.wikibase_item };
+    const names = [p.title];
+    for (let k = 0; k < names.length; k++) names.push(...(alias.get(names[k]) ?? []));
+    for (const n of names) out.set(n, info);
+  }
+}
+
+// 記事の本文・Wikidata ID をまとめて取得（50 件ずつ。取得済みのものは取りに行かない）
+async function articles(titles) {
+  const out = cachedPages();
+  const list = [...new Set(titles)].filter((t) => !out.has(t));
+  process.stderr.write(`  取得済み ${[...new Set(titles)].length - list.length} 件、これから ${list.length} 件\n`);
   for (let i = 0; i < list.length; i += 50) {
     const batch = list.slice(i, i + 50);
     process.stderr.write(`  記事 ${i + 1}–${i + batch.length} / ${list.length}\n`);
-    const r = await wpApi({ action: 'query', prop: 'revisions|pageprops', rvprop: 'content', rvslots: 'main', ppprop: 'wikibase_item', redirects: '1', titles: batch.join('|') });
-    const alias = new Map();
-    for (const n of [...(r.query.normalized ?? []), ...(r.query.redirects ?? [])]) alias.set(n.to, [...(alias.get(n.to) ?? []), n.from]);
-    for (const p of r.query.pages) {
-      if (p.missing) continue;
-      const info = { title: p.title, text: p.revisions?.[0]?.slots?.main?.content ?? '', qid: p.pageprops?.wikibase_item };
-      const names = [p.title];
-      for (let k = 0; k < names.length; k++) names.push(...(alias.get(names[k]) ?? []));
-      for (const n of names) out.set(n, info);
-    }
+    pagesInto(await wpApi({ action: 'query', prop: 'revisions|pageprops', rvprop: 'content', rvslots: 'main', ppprop: 'wikibase_item', redirects: '1', titles: batch.join('|') }), out);
   }
   return out;
 }
@@ -110,6 +125,7 @@ function stripTemplates(s) {
   return out;
 }
 const clean = (s) => stripTemplates(s
+  .replace(/\{\{\s*Indent\s*\|/gi, '\n').replace(/^\}\}\s*$/gm, '')   // 段落を字下げするだけのテンプレートは中身を残す
   .replace(/<!--[\s\S]*?-->/g, '')
   .replace(/<ref[^>]*\/>/g, '')
   .replace(/<ref[^>]*>[\s\S]*?<\/ref>/g, ''))
@@ -128,13 +144,34 @@ const prefIn = (s) => {
 const prefInHeading = (h) => prefIn(h) || PREFS.find((p) => p !== '北海道' && new RegExp(`^\\s*${p}\\s*$`).test(h)) || (h.includes('北海道') ? '北海道' : '');
 
 const COMPANY = /（株）|（有）|（名）|（資）|（合）|（同）|\(株\)|\(有\)|\(名\)|\(資\)|\(合\)|\(同\)|株式会社|有限会社|合名会社|合資会社|合同会社/g;
-const cleanName = (s) => s.normalize('NFKC').replace(/\(株\)|\(有\)|\(名\)|\(資\)|\(合\)|\(同\)/g, '').replace(COMPANY, ' ')
+const cleanName = (s) => s.normalize('NFKC').replace(COMPANY, ' ').replace(/\([^)]*\)/g, ' ')
   .replace(/\s+/g, ' ').trim();
+// 「(株)運営会社 醸造所名」「運営会社(株) 醸造所名」は醸造所名を、「醸造所名(株)」はそのまま名前にする
+const MARK = /\((?:株|有|同|合|名|資)\)|株式会社|有限会社|合同会社|合名会社|合資会社/;
+function makerName(s) {
+  let t = String(s).normalize('NFKC').trim();
+  const m = t.match(MARK);
+  if (m) {
+    const before = t.slice(0, m.index), after = t.slice(m.index + m[0].length);
+    if (m.index === 0) { const a = after.trim(), sp = a.indexOf(' '); t = sp > 0 ? a.slice(sp + 1) : a; }
+    else if (/^\s+\S/.test(after)) t = after;
+    else t = before + after;
+  }
+  return cleanName(t.split('/')[0]);
+}
 const toHira = (s) => s.normalize('NFKC').replace(/[ァ-ヶ]/g, (c) => String.fromCharCode(c.charCodeAt(0) - 0x60)).replace(/[\s　]/g, '');
-const cityIn = (s, pref) => {
-  const t = String(s ?? '').normalize('NFKC');
-  const after = pref && t.includes(pref) ? t.slice(t.indexOf(pref) + pref.length).replace(/^[都道府県]/, '') : t;
-  return after.match(/^(?:[^\s\d、,（(]{1,6}?郡)?([^\s\d、,（(郡]{1,8}?(?:市|町|村|区))/)?.[1] ?? '';
+const prefFull = (p) => (!p || p === '北海道' ? p : p === '東京' ? '東京都' : p === '京都' || p === '大阪' ? `${p}府` : `${p}県`);
+// 住所などから市区町村を取り出す。prefName（「新潟県」など）を渡すと、その直後から探す
+const cityIn = (s, prefName) => {
+  let t = String(s ?? '').normalize('NFKC').replace(/\s/g, '');
+  if (prefName) {
+    const i = t.indexOf(prefName);
+    if (i < 0) return '';
+    t = t.slice(i + prefName.length);
+  }
+  t = t.replace(/^の/, '');
+  const m = t.match(/^(?:[^\d、。,()郡]{1,6}?郡)?([^\d、。,()郡]{1,8}?(?:市|町|村|区))(?!郡)/);
+  return m?.[1] ?? t.match(/^([^\d、。,()]{1,6}?郡)/)?.[1] ?? '';
 };
 
 // 見出しごとに行を回す
@@ -150,7 +187,7 @@ function* lines(text) {
 // ---------------------------------------------------------------- 一覧記事の読み取り
 
 const entries = [];
-const add = (e) => { if (e.name && !/一覧|メーカー$|^\s*$/.test(e.name)) entries.push(e); };
+const add = (e) => { if (e.name && !/一覧|メーカー$|^\s*$|[\/\[\]=|.]/.test(e.name)) entries.push(e); };
 
 // 「* [[記事|（株）〇〇酒造]] - 銘柄、銘柄」
 function bullet(line) {
@@ -159,7 +196,7 @@ function bullet(line) {
   const article = firstLink(head);
   const text = unlink(head);
   const paren = text.match(/[（(]([^）)]*)[）)]\s*$/)?.[1] ?? '';
-  const name = cleanName(text.replace(/[（(][^）)]*[）)]\s*$/, '').split('/')[0]);
+  const name = makerName(text.replace(/[（(][^）)]*[）)]\s*$/, ''));
   const brands = unlink(rest.join(' - ')).split(/[、,，]/).map((b) => b.replace(/[（(][^）)]*[）)]/g, '').trim()).filter((b) => b && !/未記載|廃業|休業/.test(b));
   return { article, name, paren, brands, closed: /廃業|閉鎖|休業|撤退/.test(body) };
 }
@@ -199,7 +236,7 @@ async function fromShochuList(sources) {
     }
     if (!on || !l.line.startsWith('*')) continue;
     const b = bullet(l.line);
-    if (!b.closed) add({ ...b, name: b.name.replace(/※/g, '').trim(), pref: pref || prefIn(b.paren), city: cityIn(unlink(l.line), ''), types: ['shochu'] });
+    if (!b.closed) add({ ...b, name: b.name.replace(/※/g, '').trim(), pref: pref || prefIn(b.paren), city: cityIn(b.paren, prefFull(prefIn(b.paren))), types: ['shochu'] });
   }
 }
 
@@ -232,7 +269,7 @@ async function fromWhiskyList(sources) {
       add(cur);
     } else if (cur && /^:/.test(l.line)) {
       if (/ジン/.test(l.line)) cur.types = [...new Set([...cur.types, 'gin'])];
-      if (!cur.city) cur.city = cityIn(unlink(l.line), pref === '北海道' ? '北海道' : '');
+      if (!cur.city) cur.city = cityIn(unlink(l.line), prefFull(pref));
     }
   }
 }
@@ -252,12 +289,12 @@ async function fromBeerList(sources) {
     const b = bullet(l.line);
     if (b.closed) continue;
     const where = unlink(l.line.replace(/^\*+\s*/, '')).match(/[（(]([^）)]*(?:市|町|村|区)[^）)]*)[）)]/)?.[1] ?? '';
-    add({ ...b, name: cleanName(unlink(l.line.replace(/^\*+\s*/, '').split(/\s*[-－–]\s+/)[0]).replace(/[（(].*$/, '').split('/')[0]), pref: pref || prefIn(where), city: cityIn(where, ''), types: ['beer'] });
+    add({ ...b, pref: pref || prefIn(where), city: cityIn(where, ''), types: ['beer'] });
   }
 }
 
-async function fromCategory(cat, types, depth) {
-  for (const title of await categoryMembers(cat, depth)) {
+async function fromCategory(cat, types, depth = 0, subcat) {
+  for (const title of await categoryMembers(cat, depth, subcat)) {
     add({ article: title, name: cleanName(title.replace(/\s*[（(][^）)]*[）)]\s*$/, '')), types });
   }
 }
@@ -276,7 +313,7 @@ function fromArticle(text, title) {
   let pref = prefIn(addr);
   if (!pref) pref = prefIn(plain.match(/\[\[Category:([^\]]*?)(?:の企業|の酒|の食品|の醸造|の蒸留|のワイン|のビール)/)?.[1] ?? '');
   if (!pref) pref = prefIn(clean(plain.split('\n').find((x) => x.startsWith("'''")) ?? ''));
-  const city = cityIn(addr, pref === '北海道' ? '北海道' : addr.match(PREF_RE)?.[1] ?? '');
+  const city = cityIn(addr, prefFull(pref));
   let url = urlIn(plain.match(INFOBOX_URL)?.[1]);
   if (!url) url = urlIn(plain.match(/\{\{\s*(?:Official website|official website|公式ウェブサイト|公式サイト)\s*\|\s*([^}]*)\}\}/)?.[1]);
   if (!url) {
@@ -298,10 +335,11 @@ await fromAwamoriList(sources);
 await fromWhiskyList(sources);
 await fromBeerList(sources);
 console.error('カテゴリを読む…');
-await fromCategory('Category:日本のワインメーカー', ['wine'], 2);
-await fromCategory('Category:日本のジンメーカー', ['gin'], 1);
-await fromCategory('Category:日本のウイスキー蒸留所', ['whisky'], 1);
-await fromCategory('Category:日本のビールメーカー', ['beer'], 1);
+// サブカテゴリは「〇〇県のワインメーカー」のような地域別のものだけたどる（ブランドや番組のカテゴリを除く）
+await fromCategory('Category:日本のワインメーカー', ['wine'], 1, /^Category:.+(?:都|道|府|県|地方)のワインメーカー$/);
+await fromCategory('Category:日本のジンメーカー', ['gin']);
+await fromCategory('Category:日本のウイスキー蒸留所', ['whisky']);
+await fromCategory('Category:日本のビールメーカー', ['beer'], 1, /^Category:.+(?:都|道|府|県|地方)のビールメーカー$/);
 
 console.error('記事を読む…');
 const info = await articles(entries.filter((e) => e.article).map((e) => e.article));
