@@ -1,13 +1,14 @@
 // data/makers.csv（造り手の一覧）を、検索・印刷ページが読む site/makers.json に変換する
 //   node scripts/build-makers.mjs
 //
-// CSV の列：name,kana,pref,city,types,url,source
+// CSV の列：name,kana,pref,city,types,url,brands,source
 //   name   造り手の名前（「株式会社」などの会社の種類は自動で外す）
 //   kana   よみ（ひらがな）
 //   pref   都道府県（「新潟」「新潟県」どちらでも可）
 //   city   市区町村
 //   types  sake / shochu / whisky / gin / wine / beer / other を | 区切りで
 //   url    公式サイト（http/https のみ）
+//   brands 代表銘柄（、区切り。検索に使う）
 //   source 出典の名前（data/sources.json のキー）
 import fs from 'node:fs';
 import path from 'node:path';
@@ -55,6 +56,7 @@ export function buildMakers(rows) {
   const col = Object.fromEntries(head.map((h, i) => [h.trim(), i]));
   for (const need of ['name', 'pref', 'types']) if (!(need in col)) throw new Error(`makers.csv に ${need} 列がありません`);
   const get = (r, k) => (col[k] === undefined ? '' : (r[col[k]] ?? '').trim());
+  const brands = (r) => get(r, 'brands').split('、').map((x) => x.trim()).filter(Boolean);
 
   const warnings = [];
   const seen = new Map();
@@ -78,11 +80,13 @@ export function buildMakers(rows) {
       prev.u ||= u;
       prev.k ||= get(r, 'kana');
       prev.c ||= get(r, 'city');
+      prev.b = [...new Set([...prev.b, ...brands(r)])];
       continue;
     }
-    seen.set(key, { n, k: get(r, 'kana'), p, c: get(r, 'city'), t: t.filter((x) => TYPES.has(x)), u, s: get(r, 'source') });
+    seen.set(key, { n, k: get(r, 'kana'), p, c: get(r, 'city'), t: t.filter((x) => TYPES.has(x)), u, b: brands(r), s: get(r, 'source') });
   }
   const makers = [...seen.values()]
+    .map((m) => ({ ...m, b: m.b.join('、') }))
     .map((m) => Object.fromEntries(Object.entries(m).filter(([, v]) => (Array.isArray(v) ? v.length : v !== ''))))
     .sort((a, b) => PREFS.indexOf(a.p) - PREFS.indexOf(b.p) || (a.k || a.n).localeCompare(b.k || b.n, 'ja'));
   return { makers, warnings };

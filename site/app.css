@@ -77,7 +77,8 @@ input:focus-visible, select:focus-visible, button:focus-visible, summary:focus-v
 .cart li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 8px; align-items: center; border-bottom: 1px dashed var(--border); padding-bottom: 8px; }
 .cart li .nm { font-family: var(--kaisho-ui); font-size: 18px; overflow-wrap: anywhere; }
 .cart li select { grid-column: 1; padding: 4px 8px; font-size: 13px; }
-.cart li .rm { grid-row: 1 / span 2; grid-column: 2; border: 0; background: none; color: var(--muted); cursor: pointer; font-size: 20px; padding: 4px 8px; }
+.cart li .url { grid-column: 1; padding: 4px 8px; font-size: 12px; }
+.cart li .rm { grid-row: 1 / span 3; grid-column: 2; border: 0; background: none; color: var(--muted); cursor: pointer; font-size: 20px; padding: 4px 8px; }
 .empty { margin: 0; color: var(--muted); font-size: 13px; }
 .blank { display: grid; gap: 6px; font-size: 13px; color: var(--muted); }
 .blank div { display: flex; flex-wrap: wrap; gap: 6px; }
