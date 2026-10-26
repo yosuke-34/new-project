@@ -15,5 +15,10 @@
     "name": "Wikipedia 日本語版・Wikidata",
     "url": "https://www.wikidata.org/",
     "license": "CC BY-SA 4.0 / CC0"
+  },
+  "nta": {
+    "name": "国税庁「酒蔵マップ」（各国税局）を加工して作成",
+    "url": "https://www.nta.go.jp/",
+    "license": "公共データ利用規約（第1.0版）"
   }
 }
