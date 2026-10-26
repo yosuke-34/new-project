@@ -4,7 +4,7 @@
 // 見開きの考え方（A4 横のページ 2 枚で 1 本）
 //   左ページ＝ラベル台紙（表ラベル）  … 綴じ側が右、小口が左
 //   右ページ＝銘板（メーカー名・QR・裏ラベル） … 綴じ側が左、小口が右
-import { TYPES, REGIONS, TILES, TASTE } from './data.js';
+import { TYPES, REGIONS, TILES } from './data.js';
 
 let cfg = {};
 let qrcode = null;
@@ -144,7 +144,7 @@ export function meibanPage(type, maker = null) {
         <div style="width:24mm;height:100%;border:.25mm dashed var(--faint);display:flex;align-items:flex-end;justify-content:center;padding-bottom:2mm">
           <span class="lbl" style="writing-mode:vertical-rl;color:#b3aba0;letter-spacing:.3em">メーカー名を筆ペンで</span></div></div>`;
   // 味わい：両端の言葉か、間の点をペンで丸する
-  const taste = TASTE.map(([a, b]) => `<div class="taste"><span>${esc(a)}</span><i></i><i></i><i></i><span>${esc(b)}</span></div>`).join('');
+  const taste = type.taste.map(([a, b]) => `<div class="taste"><span>${esc(a)}</span><i></i><i></i><i></i><span>${esc(b)}</span></div>`).join('');
   return `<section class="page">
   <div class="hdr" style="left:${mm(L)};top:7mm;width:132mm">
     ${numBox(type)}

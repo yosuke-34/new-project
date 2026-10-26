@@ -116,6 +116,7 @@ table.idx tr.ms td.num { color: var(--shu); }
 .date { display: flex; align-items: flex-end; gap: 1mm; font-family: var(--gothic); font-size: 7.4pt; color: var(--sub); white-space: nowrap; }
 .date .lbl { margin-right: 1.4mm; }
 .date i { display: inline-block; width: 8mm; height: 5mm; border-bottom: .25mm solid var(--line); }
-.taste { display: flex; align-items: center; justify-content: space-between; width: 62mm; height: 8.5mm; font-family: var(--mincho); font-weight: 600; font-size: 9.5pt; letter-spacing: .15em; }
+/* 言葉の長さが違っても点の位置がそろうよう、5 列のグリッドにする */
+.taste { display: grid; grid-template-columns: 24mm 1fr 1fr 1fr 24mm; justify-items: center; align-items: center; width: 74mm; height: 8.5mm; font-family: var(--mincho); font-weight: 600; font-size: 9.5pt; letter-spacing: .1em; }
 .taste i { width: 1.4mm; height: 1.4mm; border-radius: 50%; background: var(--line); }
-.taste span { width: 13mm; text-align: center; }
+.taste span { white-space: nowrap; }

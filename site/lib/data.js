@@ -1,17 +1,20 @@
 // 帖の区分（＝バインダー内のセクション）。小口の爪の位置と色はこの順番で決まる。
 // 番号は区分ごとの通し番号で、先頭に prefix が付く（S001, W001 …）。
 // maker はメーカー一覧（makers.json）の type と対応する。
+// taste は銘板の QR の横に置く味わいの目盛り（両端の言葉か、間の点をペンで丸する）。
 export const TYPES = [
-  { key: 'sake', id: 1, num: '壱', name: '日本酒', en: 'SAKE', prefix: 'S', color: '#2D4F6C', colorName: '藍', makerLabel: '酒蔵' },
-  { key: 'whisky', id: 2, num: '弐', name: 'ウイスキー', en: 'WHISKY', prefix: 'W', color: '#8A5A2B', colorName: '琥珀', makerLabel: '蒸溜所' },
-  { key: 'gin', id: 3, num: '参', name: 'ジン', en: 'GIN', prefix: 'G', color: '#2F6B55', colorName: '常磐', makerLabel: '蒸溜所' },
-  { key: 'wine', id: 4, num: '肆', name: 'ワイン', en: 'WINE', prefix: 'V', color: '#6C2C40', colorName: '葡萄', makerLabel: 'ワイナリー' },
-  { key: 'beer', id: 5, num: '伍', name: 'ビール', en: 'BEER', prefix: 'B', color: '#A27B1E', colorName: '黄金', makerLabel: 'ブルワリー' },
+  { key: 'sake', id: 1, num: '壱', name: '日本酒', en: 'SAKE', prefix: 'S', color: '#2D4F6C', colorName: '藍', makerLabel: '酒蔵',
+    taste: [['甘口', '辛口'], ['淡麗', '濃醇']] },
+  { key: 'whisky', id: 2, num: '弐', name: 'ウイスキー', en: 'WHISKY', prefix: 'W', color: '#8A5A2B', colorName: '琥珀', makerLabel: '蒸溜所',
+    taste: [['スモーキー', 'フルーティー'], ['ライト', 'リッチ']] },
+  { key: 'gin', id: 3, num: '参', name: 'ジン', en: 'GIN', prefix: 'G', color: '#2F6B55', colorName: '常磐', makerLabel: '蒸溜所',
+    taste: [['シトラス', 'ハーバル'], ['ドライ', 'スイート']] },
+  { key: 'wine', id: 4, num: '肆', name: 'ワイン', en: 'WINE', prefix: 'V', color: '#6C2C40', colorName: '葡萄', makerLabel: 'ワイナリー',
+    taste: [['甘口', '辛口'], ['ライト', 'フル']] },
+  { key: 'beer', id: 5, num: '伍', name: 'ビール', en: 'BEER', prefix: 'B', color: '#A27B1E', colorName: '黄金', makerLabel: 'ブルワリー',
+    taste: [['マイルド', 'ビター'], ['すっきり', 'コク']] },
 ];
 export const typeOf = (key) => TYPES.find((t) => t.key === key);
-
-// 銘板の QR の横に置く味わいの目盛り（両端の言葉か、間の点をペンで丸する）
-export const TASTE = [['甘口', '辛口'], ['淡麗', '濃醇']];
 
 // 全国制覇地図・検索の絞り込みで使う地方区分
 export const REGIONS = [

@@ -119,9 +119,10 @@ table.idx tr.ms td.num { color: var(--shu); }
 .date { display: flex; align-items: flex-end; gap: 1mm; font-family: var(--gothic); font-size: 7.4pt; color: var(--sub); white-space: nowrap; }
 .date .lbl { margin-right: 1.4mm; }
 .date i { display: inline-block; width: 8mm; height: 5mm; border-bottom: .25mm solid var(--line); }
-.taste { display: flex; align-items: center; justify-content: space-between; width: 62mm; height: 8.5mm; font-family: var(--mincho); font-weight: 600; font-size: 9.5pt; letter-spacing: .15em; }
+/* 言葉の長さが違っても点の位置がそろうよう、5 列のグリッドにする */
+.taste { display: grid; grid-template-columns: 24mm 1fr 1fr 1fr 24mm; justify-items: center; align-items: center; width: 74mm; height: 8.5mm; font-family: var(--mincho); font-weight: 600; font-size: 9.5pt; letter-spacing: .1em; }
 .taste i { width: 1.4mm; height: 1.4mm; border-radius: 50%; background: var(--line); }
-.taste span { width: 13mm; text-align: center; }
+.taste span { white-space: nowrap; }
 
 @page { size: A4 landscape; margin: 0; }
 body { margin: 0; background: #8f8a84; }
@@ -177,7 +178,7 @@ body { margin: 0; background: #8f8a84; }
         <div style="width:24mm;height:100%;border:.25mm dashed var(--faint);display:flex;align-items:flex-end;justify-content:center;padding-bottom:2mm">
           <span class="lbl" style="writing-mode:vertical-rl;color:#b3aba0;letter-spacing:.3em">メーカー名を筆ペンで</span></div></div></div>
   <div class="abs" style="left:166mm;top:173mm;width:78mm">
-    <div class="lbl" style="margin-bottom:1.6mm;letter-spacing:.3em">味わい</div><div class="taste"><span>甘口</span><i></i><i></i><i></i><span>辛口</span></div><div class="taste"><span>淡麗</span><i></i><i></i><i></i><span>濃醇</span></div>
+    <div class="lbl" style="margin-bottom:1.6mm;letter-spacing:.3em">味わい</div><div class="taste"><span>スモーキー</span><i></i><i></i><i></i><span>フルーティー</span></div><div class="taste"><span>ライト</span><i></i><i></i><i></i><span>リッチ</span></div>
   </div>
   <div class="abs" style="left:254mm;top:167mm;width:26mm;text-align:center">
     <div style="width:26mm;height:26mm;border:.3mm dashed var(--line);display:flex;align-items:center;justify-content:center;
@@ -208,7 +209,7 @@ body { margin: 0; background: #8f8a84; }
         <div style="width:24mm;height:100%;border:.25mm dashed var(--faint);display:flex;align-items:flex-end;justify-content:center;padding-bottom:2mm">
           <span class="lbl" style="writing-mode:vertical-rl;color:#b3aba0;letter-spacing:.3em">メーカー名を筆ペンで</span></div></div></div>
   <div class="abs" style="left:166mm;top:173mm;width:78mm">
-    <div class="lbl" style="margin-bottom:1.6mm;letter-spacing:.3em">味わい</div><div class="taste"><span>甘口</span><i></i><i></i><i></i><span>辛口</span></div><div class="taste"><span>淡麗</span><i></i><i></i><i></i><span>濃醇</span></div>
+    <div class="lbl" style="margin-bottom:1.6mm;letter-spacing:.3em">味わい</div><div class="taste"><span>シトラス</span><i></i><i></i><i></i><span>ハーバル</span></div><div class="taste"><span>ドライ</span><i></i><i></i><i></i><span>スイート</span></div>
   </div>
   <div class="abs" style="left:254mm;top:167mm;width:26mm;text-align:center">
     <div style="width:26mm;height:26mm;border:.3mm dashed var(--line);display:flex;align-items:center;justify-content:center;
@@ -239,7 +240,7 @@ body { margin: 0; background: #8f8a84; }
         <div style="width:24mm;height:100%;border:.25mm dashed var(--faint);display:flex;align-items:flex-end;justify-content:center;padding-bottom:2mm">
           <span class="lbl" style="writing-mode:vertical-rl;color:#b3aba0;letter-spacing:.3em">メーカー名を筆ペンで</span></div></div></div>
   <div class="abs" style="left:166mm;top:173mm;width:78mm">
-    <div class="lbl" style="margin-bottom:1.6mm;letter-spacing:.3em">味わい</div><div class="taste"><span>甘口</span><i></i><i></i><i></i><span>辛口</span></div><div class="taste"><span>淡麗</span><i></i><i></i><i></i><span>濃醇</span></div>
+    <div class="lbl" style="margin-bottom:1.6mm;letter-spacing:.3em">味わい</div><div class="taste"><span>甘口</span><i></i><i></i><i></i><span>辛口</span></div><div class="taste"><span>ライト</span><i></i><i></i><i></i><span>フル</span></div>
   </div>
   <div class="abs" style="left:254mm;top:167mm;width:26mm;text-align:center">
     <div style="width:26mm;height:26mm;border:.3mm dashed var(--line);display:flex;align-items:center;justify-content:center;
@@ -270,7 +271,7 @@ body { margin: 0; background: #8f8a84; }
         <div style="width:24mm;height:100%;border:.25mm dashed var(--faint);display:flex;align-items:flex-end;justify-content:center;padding-bottom:2mm">
           <span class="lbl" style="writing-mode:vertical-rl;color:#b3aba0;letter-spacing:.3em">メーカー名を筆ペンで</span></div></div></div>
   <div class="abs" style="left:166mm;top:173mm;width:78mm">
-    <div class="lbl" style="margin-bottom:1.6mm;letter-spacing:.3em">味わい</div><div class="taste"><span>甘口</span><i></i><i></i><i></i><span>辛口</span></div><div class="taste"><span>淡麗</span><i></i><i></i><i></i><span>濃醇</span></div>
+    <div class="lbl" style="margin-bottom:1.6mm;letter-spacing:.3em">味わい</div><div class="taste"><span>マイルド</span><i></i><i></i><i></i><span>ビター</span></div><div class="taste"><span>すっきり</span><i></i><i></i><i></i><span>コク</span></div>
   </div>
   <div class="abs" style="left:254mm;top:167mm;width:26mm;text-align:center">
     <div style="width:26mm;height:26mm;border:.3mm dashed var(--line);display:flex;align-items:center;justify-content:center;
