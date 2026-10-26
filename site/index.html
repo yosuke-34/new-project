@@ -55,8 +55,11 @@
         </details>
       </section>
 
-      <aside class="cart" aria-label="印刷リスト">
-        <h2>印刷リスト <span id="cart-count"></span></h2>
+      <aside class="cart" id="cart-panel" aria-label="印刷リスト">
+        <div class="cart-head">
+          <h2>印刷リスト <span id="cart-count"></span></h2>
+          <button type="button" class="close" id="cart-close" aria-label="印刷リストを閉じる">×</button>
+        </div>
         <ol id="cart"></ol>
         <p class="empty" id="cart-empty">左の一覧から「＋ 印刷リストへ」を押すと、ここに並びます。</p>
         <label class="toggle"><input type="checkbox" id="with-label" checked> ラベル台紙（左ページ）も一緒に印刷する</label>
@@ -65,16 +68,23 @@
           <div id="blank-buttons"></div>
         </div>
         <button class="print" id="print" disabled>印刷する</button>
+        <button type="button" class="to-preview" id="to-preview">プレビューを見る</button>
         <p class="hint">印刷の設定は <b>A4 横・倍率 100%（実際のサイズ）・余白なし・背景のグラフィックを印刷</b>。<br>
           ラベル台紙はポケットの<b>裏面</b>、銘板は次のポケットの<b>表面</b>に入れると見開きになります。</p>
       </aside>
     </main>
 
-    <section class="preview" aria-label="プレビュー">
+    <section class="preview" id="preview-section" aria-label="プレビュー">
       <h2>プレビュー</h2>
       <div id="preview"></div>
     </section>
   </div>
+
+  <!-- スマホ：印刷リストに入れると右上に出る。押すと印刷リストが右から出てくる -->
+  <button type="button" class="fab" id="fab" hidden aria-controls="cart-panel" aria-expanded="false">
+    <span class="fab-n" id="fab-n">0</span><span class="fab-t">印刷へ</span>
+  </button>
+  <div class="scrim" id="scrim" hidden></div>
 
   <div id="print-root" aria-hidden="true"></div>
 </body>

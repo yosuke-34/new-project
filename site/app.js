@@ -77,11 +77,13 @@ function bind() {
   $('pref').addEventListener('change', (e) => { state.pref = e.target.value; state.limit = 60; renderResults(); });
   $('has-url').addEventListener('change', (e) => { state.hasUrl = e.target.checked; state.limit = 60; renderResults(); });
   $('more').addEventListener('click', () => { state.limit += 60; renderResults(); });
+  // 一覧のボタンは「＋ 印刷リストへ」⇔「✓ 追加済み」を切り替える（もう一度押すと外す）
   $('results').addEventListener('click', (e) => {
     const b = e.target.closest('[data-add]'); if (!b) return;
     const m = filtered()[+b.dataset.add];
-    addToCart({ name: m.n, kana: m.k, pref: m.p, city: m.c, url: m.u, type: (m.t ?? []).find((k) => typeOf(k)) ?? 'sake' });
-    b.textContent = '追加しました';
+    const at = state.cart.findIndex((it) => !it.blank && cartKey(it) === cartKey({ name: m.n, pref: m.p }));
+    if (at >= 0) { state.cart.splice(at, 1); save(); renderCart(); }
+    else addToCart({ name: m.n, kana: m.k, pref: m.p, city: m.c, url: m.u, type: (m.t ?? []).find((k) => typeOf(k)) ?? 'sake' });
   });
   $('manual-form').addEventListener('submit', (e) => {
     e.preventDefault();
@@ -107,7 +109,23 @@ function bind() {
   });
   $('with-label').addEventListener('change', (e) => { state.withLabel = e.target.checked; save(); renderCart(); });
   $('print').addEventListener('click', print);
+  $('fab').addEventListener('click', () => toggleDrawer(true));
+  $('cart-close').addEventListener('click', () => toggleDrawer(false));
+  $('scrim').addEventListener('click', () => toggleDrawer(false));
+  $('to-preview').addEventListener('click', () => { toggleDrawer(false); $('preview-section').scrollIntoView({ behavior: 'smooth' }); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && $('cart-panel').classList.contains('open')) toggleDrawer(false); });
   window.addEventListener('resize', fitThumbs);
+}
+
+const cartKey = (it) => `${it.name}|${it.pref ?? ''}`;
+
+// スマホ：印刷リストを右から出し入れする（PC では横に常に出ているので使わない）
+function toggleDrawer(open) {
+  $('cart-panel').classList.toggle('open', open);
+  $('scrim').hidden = !open;
+  $('fab').setAttribute('aria-expanded', open);
+  document.documentElement.classList.toggle('drawer-open', open);
+  (open ? $('cart-close') : $('fab')).focus({ preventScroll: true });
 }
 
 function filtered() {
@@ -122,7 +140,10 @@ function filtered() {
 function renderResults() {
   const list = filtered();
   $('count').textContent = state.makers.length ? `${list.length.toLocaleString()} 件` : '';
-  $('results').innerHTML = list.slice(0, state.limit).map((m, i) => `<li>
+  const inCart = new Set(state.cart.filter((it) => !it.blank).map(cartKey));
+  $('results').innerHTML = list.slice(0, state.limit).map((m, i) => {
+    const added = inCart.has(cartKey({ name: m.n, pref: m.p }));
+    return `<li${added ? ' class="in-cart"' : ''}>
       <div>
         <div class="name">${esc(m.n)}</div>
         <div class="meta">
@@ -133,8 +154,9 @@ function renderResults() {
           ${m.u ? `<a href="${esc(m.u)}" target="_blank" rel="noopener">公式サイト</a>` : '<span>公式サイト未登録</span>'}
         </div>
       </div>
-      <button type="button" class="add" data-add="${i}">＋ 印刷リストへ</button>
-    </li>`).join('');
+      <button type="button" class="add" data-add="${i}" aria-pressed="${added}">${added ? '✓ 追加済み' : '＋ 印刷リストへ'}</button>
+    </li>`;
+  }).join('');
   $('more').hidden = list.length <= state.limit;
 }
 
@@ -142,6 +164,8 @@ function addToCart(item) {
   state.cart.push(item);
   save();
   renderCart();
+  const fab = $('fab');   // 右上の「印刷へ」を軽く弾ませて、増えたことを知らせる
+  fab.classList.remove('pop'); void fab.offsetWidth; fab.classList.add('pop');
 }
 
 function pagesFor(item) {
@@ -156,6 +180,10 @@ function renderCart() {
   const c = state.cart;
   $('cart-count').textContent = c.length ? `${c.length} 件` : '';
   $('cart-empty').hidden = c.length > 0;
+  $('fab').hidden = c.length === 0;
+  $('fab-n').textContent = c.length;
+  $('fab').setAttribute('aria-label', `印刷リスト（${c.length} 件）を開く`);
+  if (!c.length && $('cart-panel').classList.contains('open')) toggleDrawer(false);
   $('cart').innerHTML = c.map((item, i) => `<li>
       <span class="nm">${item.blank ? '（空の台紙）' : esc(item.name)}</span>
       ${item.blank ? '' : `<input class="url" data-url="${i}" type="url" value="${esc(item.url ?? '')}" placeholder="公式サイトの URL（無ければ空欄）" aria-label="公式サイトの URL">`}
@@ -163,6 +191,7 @@ function renderCart() {
       <button type="button" class="rm" data-rm="${i}" aria-label="取り除く">×</button>
     </li>`).join('');
   renderPreview();
+  if (state.makers.length) renderResults();
 }
 
 // URL を打っている途中でも入力欄を作り直さないよう、プレビューだけを更新する

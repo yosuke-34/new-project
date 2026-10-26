@@ -59,7 +59,11 @@ input:focus-visible, select:focus-visible, button:focus-visible, summary:focus-v
 .badge { display: inline-flex; align-items: center; gap: 4px; }
 .badge i { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
 .add { border: 1px solid var(--text); background: transparent; border-radius: 8px; padding: 6px 12px; cursor: pointer; white-space: nowrap; font-size: 13px; }
-.add:hover { background: var(--text); color: var(--bg); }
+@media (hover: hover) { .add:hover { background: var(--text); color: var(--bg); } }
+/* 印刷リストに入っている造り手 */
+.results li.in-cart { background: color-mix(in srgb, var(--accent) 9%, transparent); box-shadow: inset 3px 0 0 var(--accent); }
+.add[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-text); }
+@media (hover: hover) { .add[aria-pressed="true"]:hover { background: transparent; color: var(--text); border-color: var(--text); } }
 .more[hidden] { display: none; }
 .more { margin: 12px auto 0; display: block; border: 1px solid var(--border); background: var(--surface); border-radius: 8px; padding: 8px 20px; cursor: pointer; }
 
@@ -70,7 +74,8 @@ input:focus-visible, select:focus-visible, button:focus-visible, summary:focus-v
 .manual button { justify-self: start; border: 0; background: var(--accent); color: var(--accent-text); border-radius: 8px; padding: 8px 16px; cursor: pointer; }
 
 .cart { position: sticky; top: 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px; display: grid; gap: 12px; }
-@media (max-width: 860px) { .cart { position: static; } }
+.cart-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.cart .close, .to-preview { display: none; }
 .cart h2 { margin: 0; font-family: var(--serif); font-size: 18px; letter-spacing: .15em; }
 .cart h2 span { font-family: var(--ui); font-size: 13px; color: var(--muted); letter-spacing: 0; }
 .cart ol { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
@@ -92,6 +97,32 @@ input:focus-visible, select:focus-visible, button:focus-visible, summary:focus-v
 .thumb { position: relative; width: 100%; aspect-ratio: 297 / 210; overflow: hidden; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,.18); background: #fff; }
 .thumb > .page { position: absolute; left: 0; top: 0; transform-origin: 0 0; }
 .thumb-cap { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+/* ---------- スマホ：右上の「印刷へ」と、右から出る印刷リスト ---------- */
+.fab, .scrim { display: none; }
+@media (max-width: 860px) {
+  .fab:not([hidden]) {
+    display: inline-flex; align-items: center; gap: 8px; position: fixed; top: 12px; right: 12px; z-index: 20;
+    border: 0; border-radius: 999px; padding: 6px 14px 6px 6px; background: var(--shu); color: #fff;
+    font-weight: 700; font-size: 14px; letter-spacing: .1em; box-shadow: 0 4px 14px rgba(0,0,0,.25); cursor: pointer;
+  }
+  .fab-n { min-width: 30px; height: 30px; border-radius: 50%; background: #fff; color: var(--shu); display: inline-flex; align-items: center; justify-content: center; font-size: 15px; letter-spacing: 0; padding: 0 6px; }
+  .fab.pop { animation: pop .35s ease; }
+  @keyframes pop { 40% { transform: scale(1.15); } }
+
+  .cart {
+    position: fixed; top: 0; right: 0; bottom: 0; z-index: 40; width: min(92vw, 380px);
+    border-radius: 14px 0 0 14px; overflow-y: auto; overscroll-behavior: contain; align-content: start;
+    transform: translateX(105%); visibility: hidden; transition: transform .25s ease, visibility 0s .25s;
+    box-shadow: -8px 0 24px rgba(0,0,0,.25); padding-bottom: calc(16px + env(safe-area-inset-bottom));
+  }
+  .cart.open { transform: none; visibility: visible; transition: transform .25s ease; }
+  .cart .close { display: block; border: 0; background: none; color: var(--muted); font-size: 26px; line-height: 1; padding: 4px 8px; cursor: pointer; }
+  .to-preview { display: block; border: 1px solid var(--border); background: var(--surface); border-radius: 10px; padding: 10px; cursor: pointer; }
+  .scrim:not([hidden]) { display: block; position: fixed; inset: 0; z-index: 30; background: rgba(0,0,0,.4); }
+  html.drawer-open { overflow: hidden; }
+}
+@media (prefers-reduced-motion: reduce) { .cart, .fab.pop { transition: none; animation: none; } }
 
 #print-root { display: none; }
 @media print {
