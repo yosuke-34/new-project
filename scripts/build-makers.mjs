@@ -105,6 +105,18 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const head = tables[0][0];
   const rows = tables.flatMap(([h, ...body]) => body.map((r) => head.map((name) => r[h.indexOf(name)] ?? '')));
   const { makers, warnings } = buildMakers([head, ...rows]);
+
+  // data/urls.csv（name,pref,url）：ウェブ検索で補った公式サイト。URL の無い造り手にだけ使う
+  const URLS = path.join(ROOT, 'data', 'urls.csv');
+  if (fs.existsSync(URLS)) {
+    const [h, ...body] = parseCsv(fs.readFileSync(URLS, 'utf8'));
+    const key = (n, p) => `${foldVariants(n.normalize('NFKC'))}|${cleanPref(p)}`;
+    const found = new Map(body.map((r) => [key(r[h.indexOf('name')], r[h.indexOf('pref')]), r[h.indexOf('url')]]));
+    for (const m of makers) {
+      const u = found.get(key(m.n, m.p));
+      if (!m.u && u && /^https?:\/\/\S+$/.test(u)) { m.u = u; m.s = [m.s, 'web'].filter(Boolean).join('|'); }
+    }
+  }
   const allSources = fs.existsSync(SOURCES) ? JSON.parse(fs.readFileSync(SOURCES, 'utf8')) : {};
   const used = new Set(makers.flatMap((m) => (m.s ?? '').split('|')).filter(Boolean));
   const meta = {
