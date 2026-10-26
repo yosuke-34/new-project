@@ -115,6 +115,14 @@ table.idx tr.ms td.num { color: var(--shu); }
 .steps li::before { content: counter(s, cjk-ideographic); position: absolute; left: 0; top: 0; font-weight: 800; color: var(--shu); }
 .panel { border: .25mm solid var(--line); padding: 3mm 4mm; }
 
+/* 銘板：日付と味わい */
+.date { display: flex; align-items: flex-end; gap: 1mm; font-family: var(--gothic); font-size: 7.4pt; color: var(--sub); white-space: nowrap; }
+.date .lbl { margin-right: 1.4mm; }
+.date i { display: inline-block; width: 8mm; height: 5mm; border-bottom: .25mm solid var(--line); }
+.taste { display: flex; align-items: center; justify-content: space-between; width: 62mm; height: 8.5mm; font-family: var(--mincho); font-weight: 600; font-size: 9.5pt; letter-spacing: .15em; }
+.taste i { width: 1.4mm; height: 1.4mm; border-radius: 50%; background: var(--line); }
+.taste span { width: 13mm; text-align: center; }
+
 @page { size: A4 portrait; margin: 0; }
 body { margin: 0; background: #8f8a84; }
 @media screen { body { padding: 10mm 0; } .page { margin: 0 auto 10mm; box-shadow: 0 2mm 6mm rgba(0,0,0,.25); } }</style></head>

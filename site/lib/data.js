@@ -10,6 +10,9 @@ export const TYPES = [
 ];
 export const typeOf = (key) => TYPES.find((t) => t.key === key);
 
+// 銘板の QR の横に置く味わいの目盛り（両端の言葉か、間の点をペンで丸する）
+export const TASTE = [['甘口', '辛口'], ['淡麗', '濃醇']];
+
 // 全国制覇地図・検索の絞り込みで使う地方区分
 export const REGIONS = [
   { name: '北海道・東北', prefs: ['北海道', '青森', '岩手', '宮城', '秋田', '山形', '福島'] },

@@ -4,7 +4,7 @@
 // 見開きの考え方（A4 横のページ 2 枚で 1 本）
 //   左ページ＝ラベル台紙（表ラベル）  … 綴じ側が右、小口が左
 //   右ページ＝銘板（メーカー名・QR・裏ラベル） … 綴じ側が左、小口が右
-import { TYPES, REGIONS, TILES } from './data.js';
+import { TYPES, REGIONS, TILES, TASTE } from './data.js';
 
 let cfg = {};
 let qrcode = null;
@@ -127,16 +127,24 @@ function makerFontSize(name, columnMm) {
 // maker: { name, kana, pref, city, url }
 export function meibanPage(type, maker = null) {
   const L = 20, W = 262;
-  const place = maker ? [prefName(maker.pref), maker.city].filter(Boolean).join(' ') : '';
-  const nameCol = 164;
+  // 所在地はメーカー名の右に縦書きで（「新潟県　〇〇市」）
+  const place = maker ? [prefName(maker.pref), maker.city].filter(Boolean).join('　') : '';
+  const nameCol = 140;
   const name = maker
-    ? `<div style="display:flex;flex-direction:row-reverse;justify-content:center;align-items:center;gap:3mm;height:${mm(nameCol)}">
-        ${maker.kana ? `<div class="g" style="writing-mode:vertical-rl;font-size:7.4pt;letter-spacing:.35em;color:var(--sub)">${esc(maker.kana)}</div>` : ''}
-        <div class="maker" style="font-size:${makerFontSize(maker.name, nameCol).toFixed(1)}pt;letter-spacing:.06em">${esc(maker.name)}</div>
+    ? `<div style="display:flex;justify-content:center;align-items:center;height:${mm(nameCol)}">
+        <div style="display:flex;flex-direction:row-reverse;align-items:flex-start;gap:3mm;max-height:100%">
+          ${place ? `<div style="writing-mode:vertical-rl;font-family:var(--kaisho);font-size:14pt;letter-spacing:.12em;margin:0 2mm 0 0;padding-top:4mm;color:#3a3531">${esc(place)}</div>` : ''}
+          ${maker.kana ? `<div class="g" style="writing-mode:vertical-rl;font-size:7.4pt;letter-spacing:.35em;color:var(--sub);align-self:center">${esc(maker.kana)}</div>` : ''}
+          <div class="maker" style="font-size:${makerFontSize(maker.name, nameCol).toFixed(1)}pt;letter-spacing:.06em">${esc(maker.name)}</div>
+        </div>
       </div>`
-    : `<div style="display:flex;justify-content:center;height:${mm(nameCol)}">
+    : `<div style="display:flex;flex-direction:row-reverse;justify-content:center;align-items:flex-start;gap:4mm;height:${mm(nameCol)}">
+        <div style="width:11mm;height:78%;margin-top:6mm;border:.25mm dashed var(--faint);display:flex;align-items:flex-end;justify-content:center;padding-bottom:2mm">
+          <span class="lbl" style="writing-mode:vertical-rl;color:#b3aba0;letter-spacing:.3em">所在地</span></div>
         <div style="width:24mm;height:100%;border:.25mm dashed var(--faint);display:flex;align-items:flex-end;justify-content:center;padding-bottom:2mm">
           <span class="lbl" style="writing-mode:vertical-rl;color:#b3aba0;letter-spacing:.3em">メーカー名を筆ペンで</span></div></div>`;
+  // 味わい：両端の言葉か、間の点をペンで丸する
+  const taste = TASTE.map(([a, b]) => `<div class="taste"><span>${esc(a)}</span><i></i><i></i><i></i><span>${esc(b)}</span></div>`).join('');
   return `<section class="page">
   <div class="hdr" style="left:${mm(L)};top:7mm;width:132mm">
     ${numBox(type)}
@@ -145,10 +153,13 @@ export function meibanPage(type, maker = null) {
   ${mount({ left: L, top: 22, width: 132, height: 176, hint: '裏ラベル・肩ラベル' })}
   <div class="abs" style="left:160mm;top:9mm;width:120mm;display:flex;align-items:flex-end;justify-content:space-between;gap:3mm">
     <span style="display:flex;gap:3mm;align-items:center">${chip(type)}<span class="lbl">${esc(type.makerLabel)}</span></span>
-    <span class="g" style="font-size:8pt;letter-spacing:.15em">${esc(place)}</span>
+    <span class="date"><span class="lbl">日付</span><i style="width:13mm"></i>年<i></i>月<i></i>日</span>
   </div>
   <div class="abs rule thin" style="left:160mm;top:18mm;width:120mm"></div>
-  <div class="abs" style="left:160mm;top:26mm;width:88mm">${name}</div>
+  <div class="abs" style="left:160mm;top:24mm;width:88mm">${name}</div>
+  <div class="abs" style="left:166mm;top:${mm(198 - 26 + 1)};width:78mm">
+    <div class="lbl" style="margin-bottom:1.6mm;letter-spacing:.3em">味わい</div>${taste}
+  </div>
   <div class="abs" style="left:254mm;top:${mm(198 - 26 - 5)};width:26mm;text-align:center">
     ${qrBox(maker?.url, 26, maker ? '公式サイト<br>未登録' : 'QR')}
     <div class="lbl" style="margin-top:1mm;font-size:5.8pt">${maker?.url ? '公式サイト' : ''}</div>

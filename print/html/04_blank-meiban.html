@@ -115,6 +115,14 @@ table.idx tr.ms td.num { color: var(--shu); }
 .steps li::before { content: counter(s, cjk-ideographic); position: absolute; left: 0; top: 0; font-weight: 800; color: var(--shu); }
 .panel { border: .25mm solid var(--line); padding: 3mm 4mm; }
 
+/* 銘板：日付と味わい */
+.date { display: flex; align-items: flex-end; gap: 1mm; font-family: var(--gothic); font-size: 7.4pt; color: var(--sub); white-space: nowrap; }
+.date .lbl { margin-right: 1.4mm; }
+.date i { display: inline-block; width: 8mm; height: 5mm; border-bottom: .25mm solid var(--line); }
+.taste { display: flex; align-items: center; justify-content: space-between; width: 62mm; height: 8.5mm; font-family: var(--mincho); font-weight: 600; font-size: 9.5pt; letter-spacing: .15em; }
+.taste i { width: 1.4mm; height: 1.4mm; border-radius: 50%; background: var(--line); }
+.taste span { width: 13mm; text-align: center; }
+
 @page { size: A4 landscape; margin: 0; }
 body { margin: 0; background: #8f8a84; }
 @media screen { body { padding: 10mm 0; } .page { margin: 0 auto 10mm; box-shadow: 0 2mm 6mm rgba(0,0,0,.25); } }</style></head>
@@ -129,12 +137,17 @@ body { margin: 0; background: #8f8a84; }
     <span class="hint">裏ラベル・肩ラベル</span></div>
   <div class="abs" style="left:160mm;top:9mm;width:120mm;display:flex;align-items:flex-end;justify-content:space-between;gap:3mm">
     <span style="display:flex;gap:3mm;align-items:center"><span class="chip"><i style="background:#2D4F6C"></i>壱 日本酒</span><span class="lbl">酒蔵</span></span>
-    <span class="g" style="font-size:8pt;letter-spacing:.15em"></span>
+    <span class="date"><span class="lbl">日付</span><i style="width:13mm"></i>年<i></i>月<i></i>日</span>
   </div>
   <div class="abs rule thin" style="left:160mm;top:18mm;width:120mm"></div>
-  <div class="abs" style="left:160mm;top:26mm;width:88mm"><div style="display:flex;justify-content:center;height:164mm">
+  <div class="abs" style="left:160mm;top:24mm;width:88mm"><div style="display:flex;flex-direction:row-reverse;justify-content:center;align-items:flex-start;gap:4mm;height:140mm">
+        <div style="width:11mm;height:78%;margin-top:6mm;border:.25mm dashed var(--faint);display:flex;align-items:flex-end;justify-content:center;padding-bottom:2mm">
+          <span class="lbl" style="writing-mode:vertical-rl;color:#b3aba0;letter-spacing:.3em">所在地</span></div>
         <div style="width:24mm;height:100%;border:.25mm dashed var(--faint);display:flex;align-items:flex-end;justify-content:center;padding-bottom:2mm">
           <span class="lbl" style="writing-mode:vertical-rl;color:#b3aba0;letter-spacing:.3em">メーカー名を筆ペンで</span></div></div></div>
+  <div class="abs" style="left:166mm;top:173mm;width:78mm">
+    <div class="lbl" style="margin-bottom:1.6mm;letter-spacing:.3em">味わい</div><div class="taste"><span>甘口</span><i></i><i></i><i></i><span>辛口</span></div><div class="taste"><span>淡麗</span><i></i><i></i><i></i><span>濃醇</span></div>
+  </div>
   <div class="abs" style="left:254mm;top:167mm;width:26mm;text-align:center">
     <div style="width:26mm;height:26mm;border:.3mm dashed var(--line);display:flex;align-items:center;justify-content:center;
     text-align:center;font-family:var(--gothic);font-size:5.6pt;line-height:1.5;color:#b3aba0">QR</div>
@@ -155,12 +168,17 @@ body { margin: 0; background: #8f8a84; }
     <span class="hint">裏ラベル・肩ラベル</span></div>
   <div class="abs" style="left:160mm;top:9mm;width:120mm;display:flex;align-items:flex-end;justify-content:space-between;gap:3mm">
     <span style="display:flex;gap:3mm;align-items:center"><span class="chip"><i style="background:#8A5A2B"></i>弐 ウイスキー</span><span class="lbl">蒸溜所</span></span>
-    <span class="g" style="font-size:8pt;letter-spacing:.15em"></span>
+    <span class="date"><span class="lbl">日付</span><i style="width:13mm"></i>年<i></i>月<i></i>日</span>
   </div>
   <div class="abs rule thin" style="left:160mm;top:18mm;width:120mm"></div>
-  <div class="abs" style="left:160mm;top:26mm;width:88mm"><div style="display:flex;justify-content:center;height:164mm">
+  <div class="abs" style="left:160mm;top:24mm;width:88mm"><div style="display:flex;flex-direction:row-reverse;justify-content:center;align-items:flex-start;gap:4mm;height:140mm">
+        <div style="width:11mm;height:78%;margin-top:6mm;border:.25mm dashed var(--faint);display:flex;align-items:flex-end;justify-content:center;padding-bottom:2mm">
+          <span class="lbl" style="writing-mode:vertical-rl;color:#b3aba0;letter-spacing:.3em">所在地</span></div>
         <div style="width:24mm;height:100%;border:.25mm dashed var(--faint);display:flex;align-items:flex-end;justify-content:center;padding-bottom:2mm">
           <span class="lbl" style="writing-mode:vertical-rl;color:#b3aba0;letter-spacing:.3em">メーカー名を筆ペンで</span></div></div></div>
+  <div class="abs" style="left:166mm;top:173mm;width:78mm">
+    <div class="lbl" style="margin-bottom:1.6mm;letter-spacing:.3em">味わい</div><div class="taste"><span>甘口</span><i></i><i></i><i></i><span>辛口</span></div><div class="taste"><span>淡麗</span><i></i><i></i><i></i><span>濃醇</span></div>
+  </div>
   <div class="abs" style="left:254mm;top:167mm;width:26mm;text-align:center">
     <div style="width:26mm;height:26mm;border:.3mm dashed var(--line);display:flex;align-items:center;justify-content:center;
     text-align:center;font-family:var(--gothic);font-size:5.6pt;line-height:1.5;color:#b3aba0">QR</div>
@@ -181,12 +199,17 @@ body { margin: 0; background: #8f8a84; }
     <span class="hint">裏ラベル・肩ラベル</span></div>
   <div class="abs" style="left:160mm;top:9mm;width:120mm;display:flex;align-items:flex-end;justify-content:space-between;gap:3mm">
     <span style="display:flex;gap:3mm;align-items:center"><span class="chip"><i style="background:#2F6B55"></i>参 ジン</span><span class="lbl">蒸溜所</span></span>
-    <span class="g" style="font-size:8pt;letter-spacing:.15em"></span>
+    <span class="date"><span class="lbl">日付</span><i style="width:13mm"></i>年<i></i>月<i></i>日</span>
   </div>
   <div class="abs rule thin" style="left:160mm;top:18mm;width:120mm"></div>
-  <div class="abs" style="left:160mm;top:26mm;width:88mm"><div style="display:flex;justify-content:center;height:164mm">
+  <div class="abs" style="left:160mm;top:24mm;width:88mm"><div style="display:flex;flex-direction:row-reverse;justify-content:center;align-items:flex-start;gap:4mm;height:140mm">
+        <div style="width:11mm;height:78%;margin-top:6mm;border:.25mm dashed var(--faint);display:flex;align-items:flex-end;justify-content:center;padding-bottom:2mm">
+          <span class="lbl" style="writing-mode:vertical-rl;color:#b3aba0;letter-spacing:.3em">所在地</span></div>
         <div style="width:24mm;height:100%;border:.25mm dashed var(--faint);display:flex;align-items:flex-end;justify-content:center;padding-bottom:2mm">
           <span class="lbl" style="writing-mode:vertical-rl;color:#b3aba0;letter-spacing:.3em">メーカー名を筆ペンで</span></div></div></div>
+  <div class="abs" style="left:166mm;top:173mm;width:78mm">
+    <div class="lbl" style="margin-bottom:1.6mm;letter-spacing:.3em">味わい</div><div class="taste"><span>甘口</span><i></i><i></i><i></i><span>辛口</span></div><div class="taste"><span>淡麗</span><i></i><i></i><i></i><span>濃醇</span></div>
+  </div>
   <div class="abs" style="left:254mm;top:167mm;width:26mm;text-align:center">
     <div style="width:26mm;height:26mm;border:.3mm dashed var(--line);display:flex;align-items:center;justify-content:center;
     text-align:center;font-family:var(--gothic);font-size:5.6pt;line-height:1.5;color:#b3aba0">QR</div>
@@ -207,12 +230,17 @@ body { margin: 0; background: #8f8a84; }
     <span class="hint">裏ラベル・肩ラベル</span></div>
   <div class="abs" style="left:160mm;top:9mm;width:120mm;display:flex;align-items:flex-end;justify-content:space-between;gap:3mm">
     <span style="display:flex;gap:3mm;align-items:center"><span class="chip"><i style="background:#6C2C40"></i>肆 ワイン</span><span class="lbl">ワイナリー</span></span>
-    <span class="g" style="font-size:8pt;letter-spacing:.15em"></span>
+    <span class="date"><span class="lbl">日付</span><i style="width:13mm"></i>年<i></i>月<i></i>日</span>
   </div>
   <div class="abs rule thin" style="left:160mm;top:18mm;width:120mm"></div>
-  <div class="abs" style="left:160mm;top:26mm;width:88mm"><div style="display:flex;justify-content:center;height:164mm">
+  <div class="abs" style="left:160mm;top:24mm;width:88mm"><div style="display:flex;flex-direction:row-reverse;justify-content:center;align-items:flex-start;gap:4mm;height:140mm">
+        <div style="width:11mm;height:78%;margin-top:6mm;border:.25mm dashed var(--faint);display:flex;align-items:flex-end;justify-content:center;padding-bottom:2mm">
+          <span class="lbl" style="writing-mode:vertical-rl;color:#b3aba0;letter-spacing:.3em">所在地</span></div>
         <div style="width:24mm;height:100%;border:.25mm dashed var(--faint);display:flex;align-items:flex-end;justify-content:center;padding-bottom:2mm">
           <span class="lbl" style="writing-mode:vertical-rl;color:#b3aba0;letter-spacing:.3em">メーカー名を筆ペンで</span></div></div></div>
+  <div class="abs" style="left:166mm;top:173mm;width:78mm">
+    <div class="lbl" style="margin-bottom:1.6mm;letter-spacing:.3em">味わい</div><div class="taste"><span>甘口</span><i></i><i></i><i></i><span>辛口</span></div><div class="taste"><span>淡麗</span><i></i><i></i><i></i><span>濃醇</span></div>
+  </div>
   <div class="abs" style="left:254mm;top:167mm;width:26mm;text-align:center">
     <div style="width:26mm;height:26mm;border:.3mm dashed var(--line);display:flex;align-items:center;justify-content:center;
     text-align:center;font-family:var(--gothic);font-size:5.6pt;line-height:1.5;color:#b3aba0">QR</div>
@@ -233,12 +261,17 @@ body { margin: 0; background: #8f8a84; }
     <span class="hint">裏ラベル・肩ラベル</span></div>
   <div class="abs" style="left:160mm;top:9mm;width:120mm;display:flex;align-items:flex-end;justify-content:space-between;gap:3mm">
     <span style="display:flex;gap:3mm;align-items:center"><span class="chip"><i style="background:#A27B1E"></i>伍 ビール</span><span class="lbl">ブルワリー</span></span>
-    <span class="g" style="font-size:8pt;letter-spacing:.15em"></span>
+    <span class="date"><span class="lbl">日付</span><i style="width:13mm"></i>年<i></i>月<i></i>日</span>
   </div>
   <div class="abs rule thin" style="left:160mm;top:18mm;width:120mm"></div>
-  <div class="abs" style="left:160mm;top:26mm;width:88mm"><div style="display:flex;justify-content:center;height:164mm">
+  <div class="abs" style="left:160mm;top:24mm;width:88mm"><div style="display:flex;flex-direction:row-reverse;justify-content:center;align-items:flex-start;gap:4mm;height:140mm">
+        <div style="width:11mm;height:78%;margin-top:6mm;border:.25mm dashed var(--faint);display:flex;align-items:flex-end;justify-content:center;padding-bottom:2mm">
+          <span class="lbl" style="writing-mode:vertical-rl;color:#b3aba0;letter-spacing:.3em">所在地</span></div>
         <div style="width:24mm;height:100%;border:.25mm dashed var(--faint);display:flex;align-items:flex-end;justify-content:center;padding-bottom:2mm">
           <span class="lbl" style="writing-mode:vertical-rl;color:#b3aba0;letter-spacing:.3em">メーカー名を筆ペンで</span></div></div></div>
+  <div class="abs" style="left:166mm;top:173mm;width:78mm">
+    <div class="lbl" style="margin-bottom:1.6mm;letter-spacing:.3em">味わい</div><div class="taste"><span>甘口</span><i></i><i></i><i></i><span>辛口</span></div><div class="taste"><span>淡麗</span><i></i><i></i><i></i><span>濃醇</span></div>
+  </div>
   <div class="abs" style="left:254mm;top:167mm;width:26mm;text-align:center">
     <div style="width:26mm;height:26mm;border:.3mm dashed var(--line);display:flex;align-items:center;justify-content:center;
     text-align:center;font-family:var(--gothic);font-size:5.6pt;line-height:1.5;color:#b3aba0">QR</div>
