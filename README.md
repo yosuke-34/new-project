@@ -74,7 +74,9 @@ npm install
 npm run serve      # http://localhost:8080 で開く
 ```
 
-**公開先はまだ未定**です。決まったら `templates/config.json` の `siteUrl` に URL を入れて `npm run build` し直すと、扉と表紙シールに QR コードが入ります。
+**公開先：https://yosuke-34.github.io/new-project/**（GitHub Pages）。`site/` を変更してプッシュすると、`.github/workflows/pages.yml` が自動で公開し直します。扉と表紙シールの QR コードはこの URL を指しています。
+
+初回だけ、リポジトリの **Settings → Pages → Build and deployment → Source** を「**GitHub Actions**」にして、Actions タブの「Deploy site to GitHub Pages」を **Run workflow** してください。
 
 ### 造り手の一覧（`data/makers.csv` → `site/makers.json`）
 
@@ -133,7 +135,7 @@ name,kana,pref,city,types,url,source
   "volume": "壱",            // 巻数
   "recipient": "",           // 贈る相手の名前（空なら扉は手書き用の線）
   "sealText": "酒標",        // 落款の文字
-  "siteUrl": "",             // 検索・印刷ページの公開 URL（扉と表紙シールの QR になる）
+  "siteUrl": "https://yosuke-34.github.io/new-project/",  // 検索・印刷ページの公開 URL（扉と表紙シールの QR になる）
   "indexPages": { "sake": 5, "whisky": 2, "gin": 2, "wine": 2, "beer": 2 }  // 目録のページ数（1 ページ 20 本）
 }
 ```

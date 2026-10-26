@@ -36,11 +36,10 @@
 
 ### Step 1　検索・印刷ページを公開して、QR を入れる
 
-1. `site/` フォルダを公開する（公開先は未定。決まったら手順を追記します）
-2. `templates/config.json` の `siteUrl` に公開 URL を入れて `npm run build`
-3. 扉（`print/01_cover-guide.pdf` の 1 ページ目）と表紙用の QR シール（`print/05_cover-parts.pdf`）に QR コードが入る。スマホで読み取れるか必ず確かめる
-
-> 公開前でも、扉の QR の場所は点線の枠になっているので印刷はできます。ただし表紙の QR シールは公開後に。
+1. `site/` フォルダは **GitHub Pages**（https://yosuke-34.github.io/new-project/ ）に公開する。`.github/workflows/pages.yml` が、`site/` を変更してプッシュするたびに自動で公開し直す
+   - 初回だけ、GitHub のリポジトリの **Settings → Pages → Build and deployment → Source** を「**GitHub Actions**」にして、**Actions** タブで「Deploy site to GitHub Pages」を **Run workflow** する
+2. `templates/config.json` の `siteUrl` には公開 URL を入れてあり、扉（`print/01_cover-guide.pdf` の 1 ページ目）と表紙用の QR シール（`print/05_cover-parts.pdf`）に QR コードが入っている
+3. 公開されたら、印刷した QR を**スマホで読み取ってページが開くか必ず確かめる**
 
 ### Step 2　試し刷り
 
