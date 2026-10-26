@@ -1,5 +1,5 @@
 // 酒標帖 台紙の検索・印刷ページ
-import { TYPES, REGIONS, typeOf } from './lib/data.js';
+import { TYPES, REGIONS, typeOf, foldVariants } from './lib/data.js';
 import * as R from './lib/render.js';
 
 // 一覧データにはあるが、帖の区分には無い種類（区分は印刷時に選び直す）
@@ -14,7 +14,7 @@ const state = { makers: [], q: '', type: 'all', pref: '', hasUrl: false, limit: 
 
 // 検索用の正規化：全角半角・カタカナ/ひらがな・空白・会社の種類をそろえる
 function norm(s) {
-  return String(s ?? '').normalize('NFKC').toLowerCase()
+  return foldVariants(String(s ?? '').normalize('NFKC')).toLowerCase()
     .replace(/[ァ-ヶ]/g, (c) => String.fromCharCode(c.charCodeAt(0) - 0x60))
     .replace(/株式会社|有限会社|合名会社|合資会社|\(株\)|\(有\)|\(名\)|\(資\)|[\s・･\-ー－]/g, '');
 }

@@ -13,7 +13,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { PREFS } from '../site/lib/data.js';
+import { PREFS, foldVariants } from '../site/lib/data.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const CSV = path.join(ROOT, 'data', 'makers.csv');
@@ -48,7 +48,7 @@ const cleanName = (s) => s.normalize('NFKC').trim()
   .replace(/\s+/g, ' ');
 const cleanPref = (s) => {
   const p = s.normalize('NFKC').trim();
-  return p === '北海道' ? p : p.replace(/[都府県]$/, '');
+  return PREFS.includes(p) ? p : p.replace(/[都府県]$/, '');   // 「京都」はそのまま、「京都府」→「京都」
 };
 
 export function buildMakers(rows) {
@@ -72,8 +72,8 @@ export function buildMakers(rows) {
     if (bad.length) warnings.push(`${line}行目：種類「${bad.join('|')}」が不明（${n}）`);
     if (u && !/^https?:\/\/[^\s]+$/.test(u)) { warnings.push(`${line}行目：URL「${u}」を無視（${n}）`); u = ''; }
 
-    // 同じ名前・同じ都道府県は 1 件にまとめる（種類と URL を補い合う）
-    const key = `${n}|${p}`;
+    // 同じ名前（旧字体の違いは同じとみなす）・同じ都道府県は 1 件にまとめる（種類と URL を補い合う）
+    const key = `${foldVariants(n).replace(/[ヶケが]/g, 'ケ')}|${p}`;
     const prev = seen.get(key);
     if (prev) {
       prev.t = [...new Set([...prev.t, ...t.filter((x) => TYPES.has(x))])];

@@ -1,1 +1,19 @@
-{}
+{
+  "wikipedia": {
+    "name": "Wikipedia 日本語版",
+    "url": "https://ja.wikipedia.org/wiki/日本酒メーカー一覧",
+    "license": "CC BY-SA 4.0",
+    "revisions": {
+      "wp_sake": 111421504,
+      "wp_shochu": 110862558,
+      "wp_awamori": 98169306,
+      "wp_whisky": 110395160,
+      "wp_beer": 111507814
+    }
+  },
+  "wikipedia+wikidata": {
+    "name": "Wikipedia 日本語版・Wikidata",
+    "url": "https://www.wikidata.org/",
+    "license": "CC BY-SA 4.0 / CC0"
+  }
+}

@@ -145,7 +145,7 @@ const prefInHeading = (h) => prefIn(h) || PREFS.find((p) => p !== '北海道' &&
 
 const COMPANY = /（株）|（有）|（名）|（資）|（合）|（同）|\(株\)|\(有\)|\(名\)|\(資\)|\(合\)|\(同\)|株式会社|有限会社|合名会社|合資会社|合同会社/g;
 const cleanName = (s) => s.normalize('NFKC').replace(COMPANY, ' ').replace(/\([^)]*\)/g, ' ')
-  .replace(/\s+/g, ' ').trim();
+  .replace(/[()〈〉〔〕「」『』]/g, ' ').replace(/\s+/g, ' ').trim().replace(/[・、,]+$/, '');
 // 「(株)運営会社 醸造所名」「運営会社(株) 醸造所名」は醸造所名を、「醸造所名(株)」はそのまま名前にする
 const MARK = /\((?:株|有|同|合|名|資)\)|株式会社|有限会社|合同会社|合名会社|合資会社/;
 function makerName(s) {
@@ -169,7 +169,7 @@ const cityIn = (s, prefName) => {
     if (i < 0) return '';
     t = t.slice(i + prefName.length);
   }
-  t = t.replace(/^の/, '');
+  t = t.replace(/^.*?[:：]/, '').replace(/^の/, '');   // 「本社:軽井沢町」
   const m = t.match(/^(?:[^\d、。,()郡]{1,6}?郡)?([^\d、。,()郡]{1,8}?(?:市|町|村|区))(?!郡)/);
   return m?.[1] ?? t.match(/^([^\d、。,()]{1,6}?郡)/)?.[1] ?? '';
 };
@@ -302,8 +302,10 @@ async function fromCategory(cat, types, depth = 0, subcat) {
 // ---------------------------------------------------------------- 記事から、よみ・所在地・公式サイト
 
 const INFOBOX_ADDR = /\|\s*(?:本社所在地|所在地|本店所在地|住所|本社)\s*=\s*([^\n|]*(?:\n(?!\s*\|)[^\n]*)*)/;
-const INFOBOX_URL = /\|\s*(?:外部リンク|URL|ウェブサイト|公式サイト|website|homepage)\s*=\s*([^\n]*)/i;
-const SOCIAL = /twitter|x\.com|facebook|instagram|youtube|wikipedia|wikimedia|archive\.org|google\.|amazon\.|rakuten|yahoo|note\.com|ameblo|tabelog/i;
+// 情報ボックスの欄だけを見る（行頭の「| URL =」。出典テンプレートの「|url=」は拾わない）
+const INFOBOX_URL = /^\s*\|\s*(?:外部リンク|URL|ウェブサイト|公式サイト|ホームページ|homepage)\s*=\s*(.*)$/m;
+// 公式サイトではないもの（SNS・報道・官公庁・論文・PDF など）
+const SOCIAL = /twitter|x\.com|facebook|instagram|youtube|wikipedia|wikimedia|archive\.org|google\.|amazon\.|rakuten|yahoo|note\.com|ameblo|tabelog|\.pdf(?:$|[?#])|\.(?:lg|go|ac|ed)\.jp|handle\.net|doi\.org|nikkei|prtimes|asahi\.com|yomiuri|mainichi|sankei|jiji|kyodo|nhk\.or|news|press|release|nii\.ac|jstage|kotobank|weblio/i;
 const urlIn = (s) => (String(s ?? '').match(/https?:\/\/[^\s\]|}<>"']+/g) ?? []).find((u) => !SOCIAL.test(u)) ?? '';
 
 function fromArticle(text, title) {
@@ -322,7 +324,8 @@ function fromArticle(text, title) {
     url = m?.[1] ?? '';
   }
   const closed = /\[\[Category:[^\]]*(?:廃業|かつて存在した|解散した)[^\]]*\]\]/.test(plain) || /\|\s*(?:解散|廃業|消滅)\s*=\s*\S/.test(plain);
-  return { kana: /^[ぁ-ゖー]+$/.test(kana) ? kana : '', pref, city, url, closed };
+  const disambiguation = /\{\{\s*(?:aimai|Aimai|曖昧さ回避|人名の曖昧さ回避|地名の曖昧さ回避)/.test(plain);
+  return { kana: /^[ぁ-ゖー]+$/.test(kana) ? kana : '', pref, city, url, closed, disambiguation };
 }
 
 // ---------------------------------------------------------------- 実行
@@ -347,11 +350,14 @@ for (const e of entries) {
   const a = info.get(e.article);
   if (!a) continue;
   const f = fromArticle(a.text, a.title);
+  if (f.disambiguation) continue;
+  // 同じ名前の別の蔵の記事にリンクされていることがあるので、県が食い違うなら記事の情報は使わない
+  if (e.pref && f.pref && e.pref !== f.pref) continue;
   e.qid = a.qid;
   e.closed ||= f.closed;
   e.kana ||= f.kana;
   e.pref ||= f.pref;
-  e.city ||= f.city;
+  if (!e.city && (!e.pref || e.pref === f.pref)) e.city = f.city;   // 工場と本社で県が違うときは市町村を使わない
   e.url ||= f.url;
 }
 
@@ -360,7 +366,7 @@ const qids = [...new Set(entries.filter((e) => !e.url && e.qid).map((e) => e.qid
 const official = new Map();
 for (let i = 0; i < qids.length; i += 200) {
   const r = await sparql(`SELECT ?item ?url WHERE { VALUES ?item { ${qids.slice(i, i + 200).map((q) => `wd:${q}`).join(' ')} } ?item wdt:P856 ?url }`);
-  for (const b of r.results.bindings) official.set(b.item.value.split('/').pop(), b.url.value);
+  for (const b of r.results.bindings) if (!SOCIAL.test(b.url.value)) official.set(b.item.value.split('/').pop(), b.url.value);
 }
 for (const e of entries) if (!e.url && official.has(e.qid)) { e.url = official.get(e.qid); e.urlFromWikidata = true; }
 
