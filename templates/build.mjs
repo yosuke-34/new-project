@@ -13,6 +13,7 @@ import { fileURLToPath } from 'node:url';
 import { execSync } from 'node:child_process';
 import { TYPES } from '../site/lib/data.js';
 import * as R from '../site/lib/render.js';
+import { setupHandouts, handoutCss, quickGuidePage, makingStepsPage } from './handouts.js';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '..');
@@ -26,9 +27,10 @@ const cfg = {
   ...(PRIVATE ? JSON.parse(fs.readFileSync(LOCAL, 'utf8')) : {}),
 };
 const CSS = fs.readFileSync(path.join(ROOT, 'site', 'lib', 'sheet.css'), 'utf8');
-const FONTS = 'https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;600;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Yuji+Syuku&display=swap';
+const FONTS = 'https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;600;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Zen+Maru+Gothic:wght@500;700;900&family=Yuji+Syuku&display=swap';
 
 R.setup(cfg, createRequire(import.meta.url)('qrcode-generator'));
+setupHandouts(cfg);
 
 // 検索・印刷ページにも同じ題名・名前を使わせる（--private の設定は公開ページに出さない）
 const { title, titleReading, subtitle, volume, recipient, sealText } = cfg;
@@ -58,7 +60,7 @@ const doc = (title, pages, portrait = false) => {
   return `<!doctype html>
 <html lang="ja"><head><meta charset="utf-8"><title>${R.esc(title)}</title>
 <link rel="stylesheet" href="${FONTS}">
-<style>${CSS}${BLEED ? BLEED_CSS : ''}
+<style>${CSS}${handoutCss}${BLEED ? BLEED_CSS : ''}
 @page { size: ${size}; margin: 0; }
 body { margin: 0; background: #8f8a84; }
 @media screen { body { padding: 10mm 0; } .page { margin: 0 auto 10mm; box-shadow: 0 2mm 6mm rgba(0,0,0,.25); } }</style></head>
@@ -74,6 +76,8 @@ const DOCS = [
   { file: '04_blank-meiban', title: '空の銘板（右ページ・手書き用）', pages: TYPES.map((t) => R.meibanPage(t)) },
   { file: '05_cover-parts', title: '題簽・QRシール・背表紙', pages: [R.coverPartsPage(), R.spinePage()], portrait: true },
   { file: '06_seal-order', title: '落款 入稿原稿', pages: [R.sealOrderPage()], portrait: true },
+  { file: '07_quick-guide', title: 'つかいかた早見表', pages: [quickGuidePage()] },
+  { file: '08_making-steps', title: '作り方（作る人用）', pages: [makingStepsPage()] },
 ];
 
 async function loadPlaywright() {
@@ -111,6 +115,7 @@ if (process.argv.includes('--preview') && !BLEED && !PRIVATE) {
     title: R.titlePage(), guide: R.guidePage(), peel: R.removalPage(), map: R.mapPage(),
     divider: R.dividerPage(sake), index: R.indexPage(sake, 1, 20),
     'meiban-blank': R.meibanPage(TYPES[1]), 'cover-parts': R.coverPartsPage(), spine: R.spinePage(),
+    'quick-guide': quickGuidePage(), 'making-steps': makingStepsPage(),
   };
   const tmp = path.join(DEST, 'html', '_preview.html');
   for (const [name, html] of Object.entries(shots)) {
