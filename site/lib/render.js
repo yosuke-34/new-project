@@ -172,9 +172,10 @@ export function meibanPage(type, maker = null) {
 // ---------------------------------------------------------------- 扉・使い方
 
 export function titlePage() {
+  // 名前があれば「〇〇〇 蔵」、無ければ手書き用の線と「蔵」
   const who = cfg.recipient
-    ? `<span style="font-size:16pt;font-weight:600;letter-spacing:.3em">${esc(cfg.recipient)}</span>`
-    : `<span style="display:inline-block;height:44mm;border-left:.3mm solid var(--line)"></span>`;
+    ? `<span style="font-size:17pt;font-weight:600;letter-spacing:.3em">${esc(cfg.recipient)}<span style="font-weight:800;letter-spacing:0;margin-top:1.5mm;display:inline-block">蔵</span></span>`
+    : `<span style="display:inline-block;height:44mm;border-left:.3mm solid var(--line)"></span><span style="font-size:16pt;font-weight:800;margin-top:4mm">蔵</span>`;
   return `<section class="page">
   <div class="abs" style="inset:12mm;border:.5mm solid var(--ink)"></div>
   <div class="abs" style="inset:14mm;border:.2mm solid var(--ink)"></div>
@@ -184,7 +185,7 @@ export function titlePage() {
     <span style="font-weight:600;font-size:14pt;letter-spacing:.3em;margin-top:5mm">第${esc(cfg.volume)}巻</span>
   </div>
   <div class="abs" style="left:150mm;top:70mm;writing-mode:vertical-rl;display:flex;align-items:flex-start;gap:3mm">
-    ${who}<span style="font-size:16pt;font-weight:800;margin-top:4mm">蔵</span>
+    ${who}
     <span style="margin-top:8mm">${seal(cfg.sealText, 15)}</span>
   </div>
   <div class="abs" style="left:24mm;bottom:24mm;display:flex;align-items:flex-end;gap:4mm">

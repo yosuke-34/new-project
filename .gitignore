@@ -1,3 +1,5 @@
 node_modules/
 print/bleed/html/
 data/.cache/
+templates/config.local.json
+print/private/

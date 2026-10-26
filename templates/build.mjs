@@ -2,6 +2,8 @@
 //   node templates/build.mjs           … print/ に PDF と HTML を出力
 //   node templates/build.mjs --bleed   … print/bleed/ に塗り足し 3mm 付きの PDF を出力
 //   node templates/build.mjs --preview … docs/images/ にプレビュー PNG も出力
+//   node templates/build.mjs --private … templates/config.local.json（贈る相手の名前など、公開しない設定）を
+//                                        重ねて print/private/ に出力（どちらも .gitignore 済み。検索ページには使わない）
 // ページの描画は site/lib/render.js（検索・印刷ページと共用）
 import fs from 'node:fs';
 import path from 'node:path';
@@ -13,17 +15,23 @@ import * as R from '../site/lib/render.js';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '..');
-const OUT = path.join(ROOT, 'print');
+const PRIVATE = process.argv.includes('--private');
+const OUT = path.join(ROOT, 'print', ...(PRIVATE ? ['private'] : []));
 const IMG = path.join(ROOT, 'docs', 'images');
-const cfg = JSON.parse(fs.readFileSync(path.join(HERE, 'config.json'), 'utf8'));
+const LOCAL = path.join(HERE, 'config.local.json');
+if (PRIVATE && !fs.existsSync(LOCAL)) throw new Error('templates/config.local.json がありません（例：{ "recipient": "名前" }）');
+const cfg = {
+  ...JSON.parse(fs.readFileSync(path.join(HERE, 'config.json'), 'utf8')),
+  ...(PRIVATE ? JSON.parse(fs.readFileSync(LOCAL, 'utf8')) : {}),
+};
 const CSS = fs.readFileSync(path.join(ROOT, 'site', 'lib', 'sheet.css'), 'utf8');
 const FONTS = 'https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;600;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Yuji+Syuku&display=swap';
 
 R.setup(cfg, createRequire(import.meta.url)('qrcode-generator'));
 
-// 検索・印刷ページにも同じ題名・名前を使わせる
+// 検索・印刷ページにも同じ題名・名前を使わせる（--private の設定は公開ページに出さない）
 const { title, titleReading, subtitle, volume, recipient, sealText } = cfg;
-fs.writeFileSync(path.join(ROOT, 'site', 'config.json'), JSON.stringify({ title, titleReading, subtitle, volume, recipient, sealText }, null, 2) + '\n');
+if (!PRIVATE) fs.writeFileSync(path.join(ROOT, 'site', 'config.json'), JSON.stringify({ title, titleReading, subtitle, volume, recipient, sealText }, null, 2) + '\n');
 
 // プレビュー画像用の見本（実在のメーカーではない）
 const SAMPLE = { name: '〇〇酒造', kana: 'まるまるしゅぞう', pref: '新潟', city: '〇〇市', url: 'https://example.com/' };
@@ -92,7 +100,7 @@ for (const d of DOCS) {
   console.log('✓', path.relative(ROOT, path.join(DEST, `${d.file}.pdf`)));
 }
 
-if (process.argv.includes('--preview') && !BLEED) {
+if (process.argv.includes('--preview') && !BLEED && !PRIVATE) {
   fs.mkdirSync(IMG, { recursive: true });
   await page.setViewportSize({ width: 2400, height: 1200 });
   await page.emulateMedia({ media: 'print' });

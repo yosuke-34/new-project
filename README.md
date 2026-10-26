@@ -134,17 +134,20 @@ name,kana,pref,city,types,url,source
 {
   "title": "酒標帖",
   "volume": "壱",            // 巻数
-  "recipient": "",           // 贈る相手の名前（空なら扉は手書き用の線）
+  "recipient": "",           // 贈る相手の名前（空なら扉は手書き用の線）。公開したくなければ下の config.local.json に書く
   "sealText": "酒標",        // 落款の文字
   "siteUrl": "https://yosuke-34.github.io/new-project/",  // 検索・印刷ページの公開 URL（扉と表紙シールの QR になる）
   "indexPages": { "sake": 5, "whisky": 2, "gin": 2, "wine": 2, "beer": 2 }  // 目録のページ数（1 ページ 20 本）
 }
 ```
 
+贈る相手の名前のように**公開したくない設定**は、`templates/config.local.json`（例：`{ "recipient": "名前" }`）に書いて `npm run build:private` すると、`print/private/` に名前入りの PDF ができます。どちらも `.gitignore` 済みで GitHub には上がらず、公開中の検索・印刷ページにも使われません。
+
 ```sh
 npm run build          # print/ に PDF と HTML（site/config.json も更新）
 npm run build:bleed    # print/bleed/ に塗り足し付き PDF
 npm run preview        # docs/images/ のプレビュー画像も更新
+npm run build:private  # templates/config.local.json（公開しない設定）を重ねて print/private/ に出力
 npm run fetch-makers   # Wikipedia・Wikidata から data/makers.csv を作る（取得結果は data/.cache/ に保存）
 npm run fetch-nta      # 国税庁の酒蔵マップから data/nta.csv を作る（Python と pdfplumber が必要）
 npm run makers         # data/makers.csv → site/makers.json

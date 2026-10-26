@@ -8,6 +8,7 @@
     "build": "node templates/build.mjs",
     "build:bleed": "node templates/build.mjs --bleed",
     "preview": "node templates/build.mjs --preview",
+    "build:private": "node templates/build.mjs --private && node templates/build.mjs --private --bleed",
     "makers": "node scripts/build-makers.mjs",
     "serve": "npx http-server site -p 8080",
     "fetch-makers": "NODE_USE_ENV_PROXY=1 node scripts/fetch-makers.mjs",
