@@ -19,7 +19,8 @@ export function setup(config, qr) {
 export const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const mm = (n) => `${+n.toFixed(2)}mm`;
 const pad = (n) => String(n).padStart(3, '0');
-const brand = () => esc([cfg.title, cfg.recipient && `${cfg.recipient} 蔵`].filter(Boolean).join(' · '));
+// ページの隅の名前。贈る相手の名前は扉だけに入れるので、ここには使わない
+const brand = () => esc(cfg.title);
 
 // ---------------------------------------------------------------- 部品
 
@@ -362,12 +363,6 @@ export function coverPartsPage() {
       writing-mode:vertical-rl;display:flex;align-items:center;justify-content:space-between;padding:${mm(h * 0.08)} 0">
       <span style="font-weight:800;font-size:${fs}pt;letter-spacing:.35em">${esc(cfg.title)}</span>
       <span style="font-weight:600;font-size:${fs * 0.42}pt;letter-spacing:.2em">${esc(cfg.volume)}</span></div></div>`;
-  const spine = (w) => `<div style="width:${mm(w)};height:170mm;border:.2mm solid var(--line);background:#fff;
-      writing-mode:vertical-rl;display:flex;align-items:center;justify-content:space-between;padding:10mm 0 8mm">
-      <span style="font-weight:800;font-size:${Math.min(w * 0.7, 24)}pt;letter-spacing:.3em">${esc(cfg.title)}</span>
-      <span style="display:flex;flex-direction:column;align-items:center;gap:3mm">
-        <span style="font-weight:600;font-size:${Math.min(w * 0.34, 11)}pt;letter-spacing:.3em">第${esc(cfg.volume)}巻</span>
-        ${seal(cfg.sealText, Math.min(w * 0.42, 11))}</span></div>`;
   const sticker = (size) => `<div style="width:${mm(size + 10)};border:.2mm solid var(--line);padding:3mm;text-align:center">
       ${qrBox(cfg.siteUrl, size, '公開URLが<br>決まったら<br>ここにQR')}
       <div style="font-weight:800;font-size:${size > 25 ? 7.5 : 6.5}pt;letter-spacing:.15em;margin-top:1.6mm">台紙の追加・印刷</div></div>`;
@@ -378,18 +373,45 @@ export function coverPartsPage() {
   <div class="abs" style="left:16mm;top:30mm;display:flex;gap:4mm;align-items:flex-start">
     <div><div class="lbl" style="margin-bottom:1.5mm">題簽（大）</div>${daisen(34, 150, 26)}</div>
     <div><div class="lbl" style="margin-bottom:1.5mm">題簽（小）</div>${daisen(26, 115, 19)}</div>
-    <div><div class="lbl" style="margin-bottom:1.5mm">背 25mm</div>${spine(25)}</div>
-    <div><div class="lbl" style="margin-bottom:1.5mm">背 35mm</div>${spine(35)}</div>
-    <div><div class="lbl" style="margin-bottom:1.5mm">背 45mm</div>${spine(45)}</div>
   </div>
-  <div class="abs" style="left:16mm;top:212mm;width:178mm">
+  <div class="abs" style="left:100mm;top:30mm;width:94mm">
     <div class="lbl" style="margin-bottom:2mm">表紙の隅に貼る QR シール（検索・印刷ページへ）</div>
     <div style="display:flex;gap:8mm;align-items:flex-end">${sticker(30)}${sticker(22)}</div>
   </div>
+  <div class="abs lbl" style="left:16mm;top:192mm">背表紙は次のページ</div>
 </section>`;
 }
 
 // はんこ店へのデータ入稿用：落款だけを載せた原稿
+// 背表紙（バインダーの背に貼る・背のポケットに差し込む）。背幅ごとに 1 本ずつ、高さは上下を切って合わせる
+export function spinePage() {
+  const H = 230;
+  const strip = (w) => {
+    const fs = Math.min(w * 0.62, 30);
+    const bar = Math.min(w * 0.11, 4.2);
+    return `<div style="position:relative;width:${mm(w)};height:${mm(H)};border:.2mm solid var(--line);background:#fff">
+      <div style="position:absolute;inset:${mm(14)} 2.4mm;border:.45mm solid var(--ink);outline:.2mm solid var(--ink);outline-offset:-1.3mm;
+        display:flex;flex-direction:column;align-items:center;padding:6mm 0 5mm">
+        <div style="display:flex;gap:.7mm">${TYPES.map((t) => `<i style="display:block;width:${mm(bar)};height:6mm;background:${t.color}"></i>`).join('')}</div>
+        <div style="writing-mode:vertical-rl;font-weight:800;font-size:${fs.toFixed(1)}pt;letter-spacing:.32em;line-height:1;margin-top:8mm">${esc(cfg.title)}</div>
+        <div class="g" style="writing-mode:vertical-rl;font-size:${Math.min(w * 0.2, 7)}pt;letter-spacing:.45em;color:var(--sub);margin-top:2mm">${esc(cfg.titleReading)}</div>
+        <div style="flex:1"></div>
+        <div style="writing-mode:vertical-rl;font-weight:600;font-size:${Math.min(w * 0.36, 12).toFixed(1)}pt;letter-spacing:.3em">第${esc(cfg.volume)}巻</div>
+        <div style="margin-top:5mm">${seal(cfg.sealText, Math.min(w * 0.44, 13))}</div>
+        <div class="g" style="writing-mode:vertical-rl;font-size:5.4pt;letter-spacing:.35em;color:var(--sub);margin-top:5mm">${esc(cfg.subtitle)}</div>
+      </div></div>`;
+  };
+  const widths = [25, 30, 35, 40, 45];
+  return `<section class="page portrait">
+  <div class="abs" style="left:10mm;top:14mm;width:190mm;display:flex;align-items:flex-end;justify-content:space-between">
+    <div class="pagetitle" style="font-size:15pt">背表紙<small>SPINE</small></div>
+    <span class="lbl" style="text-align:right;line-height:1.6">バインダーの背幅にいちばん近いものを、外側の細線で切り取る<br>高さは ${H}mm。背に合わせて上下を同じだけ切る（それぞれ 10mm まで）</span></div>
+  <div class="abs" style="left:10mm;top:30mm;width:190mm;display:flex;justify-content:space-between;align-items:flex-start">
+    ${widths.map((w) => `<div><div class="lbl" style="margin-bottom:1.5mm">背幅 ${w}mm</div>${strip(w)}</div>`).join('')}
+  </div>
+</section>`;
+}
+
 export function sealOrderPage() {
   return `<section class="page portrait">
   <div class="abs" style="left:20mm;top:18mm;width:170mm">

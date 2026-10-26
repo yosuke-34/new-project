@@ -3,7 +3,8 @@
 //   node templates/build.mjs --bleed   … print/bleed/ に塗り足し 3mm 付きの PDF を出力
 //   node templates/build.mjs --preview … docs/images/ にプレビュー PNG も出力
 //   node templates/build.mjs --private … templates/config.local.json（贈る相手の名前など、公開しない設定）を
-//                                        重ねて print/private/ に出力（どちらも .gitignore 済み。検索ページには使わない）
+//                                        重ねて、名前の入る扉（01）だけを print/private/ に出力
+//                                        （どちらも .gitignore 済み。検索ページには使わない）
 // ページの描画は site/lib/render.js（検索・印刷ページと共用）
 import fs from 'node:fs';
 import path from 'node:path';
@@ -71,7 +72,7 @@ const DOCS = [
   { file: '02_dividers-index', title: '中扉・目録', pages: TYPES.flatMap((t) => [R.dividerPage(t), ...indexPages(t)]) },
   { file: '03_label-sheets', title: 'ラベル台紙（左ページ）', pages: TYPES.map(R.labelPage) },
   { file: '04_blank-meiban', title: '空の銘板（右ページ・手書き用）', pages: TYPES.map((t) => R.meibanPage(t)) },
-  { file: '05_cover-parts', title: '題簽・背ラベル・QRシール', pages: [R.coverPartsPage()], portrait: true },
+  { file: '05_cover-parts', title: '題簽・QRシール・背表紙', pages: [R.coverPartsPage(), R.spinePage()], portrait: true },
   { file: '06_seal-order', title: '落款 入稿原稿', pages: [R.sealOrderPage()], portrait: true },
 ];
 
@@ -92,7 +93,7 @@ async function open(file) {
   await page.evaluate(() => document.fonts.ready);
 }
 
-for (const d of DOCS) {
+for (const d of PRIVATE ? DOCS.slice(0, 1) : DOCS) {
   const htmlPath = path.join(DEST, 'html', `${d.file}.html`);
   fs.writeFileSync(htmlPath, doc(d.title, d.pages, d.portrait));
   await open(htmlPath);
@@ -109,7 +110,7 @@ if (process.argv.includes('--preview') && !BLEED && !PRIVATE) {
     spread: `<div style="display:flex;gap:1.5mm;background:#3b3632;padding:1.5mm">${R.labelPage(sake)}${R.meibanPage(sake, SAMPLE)}</div>`,
     title: R.titlePage(), guide: R.guidePage(), peel: R.removalPage(), map: R.mapPage(),
     divider: R.dividerPage(sake), index: R.indexPage(sake, 1, 20),
-    'meiban-blank': R.meibanPage(TYPES[1]), 'cover-parts': R.coverPartsPage(),
+    'meiban-blank': R.meibanPage(TYPES[1]), 'cover-parts': R.coverPartsPage(), spine: R.spinePage(),
   };
   const tmp = path.join(DEST, 'html', '_preview.html');
   for (const [name, html] of Object.entries(shots)) {

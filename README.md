@@ -35,8 +35,8 @@ A4 横のクリアポケット 1 枚には表と裏で 2 ページ入ります�
 | 扉（左下に検索・印刷ページの QR） | 使い方 | ラベルの剥がし方 |
 | ![全国制覇地図](docs/images/map.png) | ![中扉](docs/images/divider.png) | ![目録](docs/images/index.png) |
 | 全国制覇地図 | 中扉 | 目録 |
-| ![空の銘板](docs/images/meiban-blank.png) | ![表紙まわり](docs/images/cover-parts.png) | |
-| 空の銘板（手書き用） | 題簽・背ラベル・表紙の QR シール | |
+| ![空の銘板](docs/images/meiban-blank.png) | ![表紙まわり](docs/images/cover-parts.png) | ![背表紙](docs/images/spine.png) |
+| 空の銘板（手書き用） | 題簽・表紙の QR シール | 背表紙（背幅 25〜45mm） |
 
 ---
 
@@ -48,7 +48,7 @@ A4 横のクリアポケット 1 枚には表と裏で 2 ページ入ります�
 | `02_dividers-index.pdf` | 区分ごとの中扉と目録（日本酒 100 本・ほか各 40 本分） | A4 横・片面 |
 | `03_label-sheets.pdf` | ラベル台紙（左ページ）。区分ごとに 1 ページ | A4 横・片面、必要な枚数だけ |
 | `04_blank-meiban.pdf` | 空の銘板（右ページ・造り手名を手書きする用）。区分ごとに 1 ページ | A4 横・片面 |
-| `05_cover-parts.pdf` | 題簽・背ラベル・表紙の隅に貼る QR シール | A4 縦（和紙・シール用紙） |
+| `05_cover-parts.pdf` | 1 ページ目：題簽・表紙の隅に貼る QR シール／2 ページ目：背表紙（背幅 25・30・35・40・45mm、高さ 230mm を背に合わせて切る） | A4 縦（和紙・シール用紙） |
 | `06_seal-order.pdf` | 落款はんこの入稿原稿 | はんこ店にデータで渡す |
 | `bleed/` | 上記の**塗り足し 3mm 付き**版（印刷通販に入稿する場合） | |
 | `html/` | ブラウザで開いて印刷もできる HTML 版 | |
@@ -141,13 +141,13 @@ name,kana,pref,city,types,url,source
 }
 ```
 
-贈る相手の名前のように**公開したくない設定**は、`templates/config.local.json`（例：`{ "recipient": "名前" }`）に書いて `npm run build:private` すると、`print/private/` に名前入りの PDF ができます。どちらも `.gitignore` 済みで GitHub には上がらず、公開中の検索・印刷ページにも使われません。
+贈る相手の名前のように**公開したくない設定**は、`templates/config.local.json`（例：`{ "recipient": "名前" }`）に書いて `npm run build:private` すると、`print/private/` に名前入りの扉（`01_cover-guide.pdf`）ができます。名前が入るのは扉だけで、ほかのページや背表紙には入りません。どちらも `.gitignore` 済みで GitHub には上がらず、公開中の検索・印刷ページにも使われません。
 
 ```sh
 npm run build          # print/ に PDF と HTML（site/config.json も更新）
 npm run build:bleed    # print/bleed/ に塗り足し付き PDF
 npm run preview        # docs/images/ のプレビュー画像も更新
-npm run build:private  # templates/config.local.json（公開しない設定）を重ねて print/private/ に出力
+npm run build:private  # templates/config.local.json（公開しない設定）を重ねて、扉だけ print/private/ に出力
 npm run fetch-makers   # Wikipedia・Wikidata から data/makers.csv を作る（取得結果は data/.cache/ に保存）
 npm run fetch-nta      # 国税庁の酒蔵マップから data/nta.csv を作る（Python と pdfplumber が必要）
 npm run makers         # data/makers.csv → site/makers.json
